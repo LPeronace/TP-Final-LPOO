@@ -8,19 +8,19 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema tp_final
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema Censo
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema Censo
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8mb3 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `Censo` DEFAULT CHARACTER SET utf8mb3 ;
+USE `Censo` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`comuna`
+-- Table `Censo`.`comuna`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`comuna` (
+CREATE TABLE IF NOT EXISTS `Censo`.`comuna` (
   `ID_comuna` INT NOT NULL,
   `Nombre_sede` VARCHAR(45) NOT NULL,
   `Junta_Comunal` VARCHAR(67) NOT NULL,
@@ -30,9 +30,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`complejos_habitacionales`
+-- Table `Censo`.`complejos_habitacionales`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`complejos_habitacionales` (
+CREATE TABLE IF NOT EXISTS `Censo`.`complejos_habitacionales` (
   `ID_CH` INT NOT NULL,
   `Cant_monoblock` INT NOT NULL,
   `Macro_activo` BIT(1) NOT NULL,
@@ -42,9 +42,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`trazado_formal`
+-- Table `Censo`.`trazado_formal`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`trazado_formal` (
+CREATE TABLE IF NOT EXISTS `Censo`.`trazado_formal` (
   `ID_TF` INT NOT NULL,
   `Cant_edificios` INT NOT NULL,
   `Porcentaje_asf` VARCHAR(67) NOT NULL,
@@ -54,9 +54,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`urbanizacion_planificada`
+-- Table `Censo`.`urbanizacion_planificada`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`urbanizacion_planificada` (
+CREATE TABLE IF NOT EXISTS `Censo`.`urbanizacion_planificada` (
   `ID_UP` INT NOT NULL,
   `Nro_ley` VARCHAR(20) NOT NULL,
   `Conexion_agua` BIT(1) NOT NULL,
@@ -66,9 +66,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`tipo_barrio`
+-- Table `Censo`.`tipo_barrio`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`tipo_barrio` (
+CREATE TABLE IF NOT EXISTS `Censo`.`tipo_barrio` (
   `ID_tipo_barrio` INT NOT NULL,
   `Superficie_H` FLOAT NOT NULL,
   `nombre` VARCHAR(40) NOT NULL,
@@ -81,21 +81,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`tipo_barrio` (
   INDEX `fk_Tipo_barrio_Urbanizacion_Planificada1_idx` (`Urbanizacion_Planificada_ID_UP` ASC) VISIBLE,
   CONSTRAINT `fk_Tipo_barrio_Complejos_habitacionales1`
     FOREIGN KEY (`Complejos_habitacionales_ID_CH`)
-    REFERENCES `mydb`.`complejos_habitacionales` (`ID_CH`),
+    REFERENCES `Censo`.`complejos_habitacionales` (`ID_CH`),
   CONSTRAINT `fk_Tipo_barrio_Trazado_formal1`
     FOREIGN KEY (`Trazado_formal_ID_TF`)
-    REFERENCES `mydb`.`trazado_formal` (`ID_TF`),
+    REFERENCES `Censo`.`trazado_formal` (`ID_TF`),
   CONSTRAINT `fk_Tipo_barrio_Urbanizacion_Planificada1`
     FOREIGN KEY (`Urbanizacion_Planificada_ID_UP`)
-    REFERENCES `mydb`.`urbanizacion_planificada` (`ID_UP`))
+    REFERENCES `Censo`.`urbanizacion_planificada` (`ID_UP`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`barrio`
+-- Table `Censo`.`barrio`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`barrio` (
+CREATE TABLE IF NOT EXISTS `Censo`.`barrio` (
   `ID_barrio` INT NOT NULL,
   `Superficie_H` FLOAT NOT NULL,
   `nombre` VARCHAR(20) NOT NULL,
@@ -106,18 +106,18 @@ CREATE TABLE IF NOT EXISTS `mydb`.`barrio` (
   INDEX `fk_Barrio_Comuna1_idx` (`Comuna_ID_comuna` ASC) VISIBLE,
   CONSTRAINT `fk_Barrio_Comuna1`
     FOREIGN KEY (`Comuna_ID_comuna`)
-    REFERENCES `mydb`.`comuna` (`ID_comuna`),
+    REFERENCES `Censo`.`comuna` (`ID_comuna`),
   CONSTRAINT `fk_Barrio_Tipo_barrio`
     FOREIGN KEY (`Tipo_barrio_ID_tipo_barrio`)
-    REFERENCES `mydb`.`tipo_barrio` (`ID_tipo_barrio`))
+    REFERENCES `Censo`.`tipo_barrio` (`ID_tipo_barrio`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
 
 -----------------------------------------------------
--- Table `mydb`.`situacion_laboral`
+-- Table `Censo`.`situacion_laboral`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`situacion_laboral` (
+CREATE TABLE IF NOT EXISTS `Censo`.`situacion_laboral` (
   `ID_Situacion_laboral` INT NOT NULL,
   `estado` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`ID_Situacion_laboral`))
@@ -126,9 +126,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`persona`
+-- Table `Censo`.`persona`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`persona` (
+CREATE TABLE IF NOT EXISTS `Censo`.`persona` (
   `DNI` VARCHAR(20) NOT NULL,
   `ID_persona` INT NOT NULL,
   `Nombre` VARCHAR(45) NOT NULL,
@@ -141,17 +141,17 @@ CREATE TABLE IF NOT EXISTS `mydb`.`persona` (
   INDEX `fk_Persona_Barrio1_idx` (`Barrio_ID_barrio` ASC) VISIBLE,
   CONSTRAINT `fk_Persona_Barrio1`
     FOREIGN KEY (`Barrio_ID_barrio`)
-    REFERENCES `mydb`.`barrio` (`ID_barrio`),
+    REFERENCES `Censo`.`barrio` (`ID_barrio`),
   CONSTRAINT `fk_Persona_Situacion_laboral1`
     FOREIGN KEY (`Situacion_laboral_ID_Situacion_laboral`)
-    REFERENCES `mydb`.`situacion_laboral` (`ID_Situacion_laboral`))
+    REFERENCES `Censo`.`situacion_laboral` (`ID_Situacion_laboral`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
 -- -----------------------------------------------------
--- Table `mydb`.`historial`
+-- Table `Censo`.`historial`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`historial` (
+CREATE TABLE IF NOT EXISTS `Censo`.`historial` (
   `ID_persona` INT NOT NULL,
   `Fecha_traslado` DATE NOT NULL,
   `ID_historial` INT NOT NULL,
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`historial` (
   INDEX `fk_Historial_Persona_idx` (`ID_persona` ASC) VISIBLE,
   CONSTRAINT `fk_Historial_Persona`
     FOREIGN KEY (`ID_persona`)
-    REFERENCES `mydb`.`persona` (`ID_persona`)
+    REFERENCES `Censo`.`persona` (`ID_persona`)
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
