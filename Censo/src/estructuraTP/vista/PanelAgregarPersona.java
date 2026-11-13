@@ -10,7 +10,7 @@ public class PanelAgregarPersona extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelAgregarPersona() {
-		setBounds(100, 100, 750, 500);
+		setBounds(0,0,750,500);
 	}
 
 }

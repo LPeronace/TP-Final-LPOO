@@ -1,6 +1,7 @@
 package estructuraTP.vista;
 
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 public class PanelMenuBarrio extends JPanel {
 
@@ -10,7 +11,13 @@ public class PanelMenuBarrio extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelMenuBarrio() {
-		setBounds(100, 100, 750, 500);
+		setBounds(0,0,750,500);
+		setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Barrio");
+		lblNewLabel.setBounds(322, 11, 46, 14);
+		add(lblNewLabel);
+		
 	}
 
 }

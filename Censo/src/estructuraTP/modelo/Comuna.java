@@ -4,14 +4,17 @@ import java.util.ArrayList;
 
 public class Comuna {
 	private String nombre;
-	private String juntaComunal;
+	private String numeroSede;
 	private ArrayList<Barrio> barrios = new ArrayList<>();
+	private int cantidadBarrio = barrios.size();
 	
-	
+	public Comuna(String nombre, String numeroSede) {
+		this.nombre = nombre;
+		this.numeroSede = numeroSede;
+	}
 	
 	
 	public boolean esPrioritaria() {	
-		int tamañoTotal = barrios.size();
 		int contadorPrioritario = 0;
 		
 		for(Barrio b: barrios) {
@@ -21,10 +24,6 @@ public class Comuna {
 		}
 		
 		
-		return (tamañoTotal*0.5) <= contadorPrioritario;
-	}
-	
-	public void mostrarBarrios() {
-		
+		return (cantidadBarrio*0.5) <= contadorPrioritario;
 	}
 }

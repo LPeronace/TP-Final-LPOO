@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import estructuraTP.modelo.Comuna;
+
 public class Conexion {
 	String user = "root";
 	String psw = "admin";
@@ -24,6 +26,10 @@ public class Conexion {
 		}
 		
 		return c;
+	}
+	
+	public void cargarComuna(Comuna c) {
+		
 	}
 	
 	

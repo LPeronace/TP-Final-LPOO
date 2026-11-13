@@ -10,7 +10,7 @@ public class PanelAgregarBarrio extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelAgregarBarrio() {
-		setBounds(100, 100, 750, 500);
+		setBounds(0, 0, 750, 500);
 	}
 
 }

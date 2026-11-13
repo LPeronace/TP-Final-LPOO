@@ -1,16 +1,68 @@
 package estructuraTP.vista;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelMenuComuna extends JPanel {
-
+	
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Create the panel.
-	 */
-	public PanelMenuComuna() {
-		setBounds(100, 100, 750, 500);
+	private JFrame marco;
+	private JLabel titulo;
+	private JButton botonCargar;
+	private JButton botonConsultar;
+	private PanelAgregarComuna PanelAgregar;
+	private PanelComunaConsulta PanelConsultar;
+	
+	public PanelMenuComuna(JFrame marco) {
+		this.marco = marco;
+		setLayout(null);
+		setBounds(0,0,750,500);
+		crearLabels();
+		crearBotones();
+		crearPaneles();
+		eventoBotones();
 	}
-
+	
+	public void crearLabels() {
+		titulo = new JLabel("Comuna");
+		titulo.setBounds(318, 28, 46, 14);
+		add(titulo);
+	}
+	
+	public void crearPaneles() {
+		PanelAgregar = new PanelAgregarComuna();
+		
+		PanelConsultar = new PanelComunaConsulta();
+	}
+	
+	public void crearBotones() {
+		botonConsultar = new JButton("Consultar");
+		botonConsultar.setBounds(297, 264, 89, 23);
+		add(botonConsultar);
+		
+		
+		botonCargar = new JButton("Cargar");
+		botonCargar.setBounds(297, 140, 89, 23);
+		add(botonCargar);
+	}
+	
+	public void eventoBotones() {
+		botonCargar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				marco.setContentPane(PanelAgregar);
+			}
+		});
+		
+		botonConsultar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				marco.setContentPane(PanelConsultar);
+			}
+		});
+	}
 }

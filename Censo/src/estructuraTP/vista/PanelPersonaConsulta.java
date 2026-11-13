@@ -10,7 +10,7 @@ public class PanelPersonaConsulta extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelPersonaConsulta() {
-		setBounds(100, 100, 750, 500);
+		setBounds(0,0,750,500);
 	}
 
 }
