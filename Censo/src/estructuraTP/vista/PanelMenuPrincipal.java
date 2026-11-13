@@ -19,17 +19,12 @@ public class PanelMenuPrincipal extends JPanel {
 	private JButton botonBarrio;
 	private JLabel labelTitulo;
 	private JFrame marco;
-	private JPanel PanelMenuPersona = new PanelMenuPersona();
-	private JPanel PanelMenuBarrio = new PanelMenuBarrio();
-	private JPanel PanelMenuComuna = new PanelMenuComuna(marco);
-	/**
-	 * Launch the application.
-	 */
+	private JPanel PanelMenuPersona;
+	private JPanel PanelMenuBarrio; 
+	private JPanel PanelMenuComuna;
 	
-	/**
-	 * Create the frame.
-	 */
 	public PanelMenuPrincipal(JFrame marco) {
+		
 		this.marco = marco;
 		setBounds(0, 0, 750, 500);
 		setLayout(null);

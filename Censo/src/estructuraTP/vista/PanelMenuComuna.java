@@ -14,8 +14,10 @@ public class PanelMenuComuna extends JPanel {
 	private JLabel titulo;
 	private JButton botonCargar;
 	private JButton botonConsultar;
+	private JButton botonVolver;
 	private PanelAgregarComuna PanelAgregar;
 	private PanelComunaConsulta PanelConsultar;
+	private PanelMenuPrincipal PanelMenuPrincipal;
 	
 	public PanelMenuComuna(JFrame marco) {
 		this.marco = marco;
@@ -37,6 +39,8 @@ public class PanelMenuComuna extends JPanel {
 		PanelAgregar = new PanelAgregarComuna();
 		
 		PanelConsultar = new PanelComunaConsulta();
+		
+		PanelMenuPrincipal = new PanelMenuPrincipal(marco);
 	}
 	
 	public void crearBotones() {
@@ -48,6 +52,10 @@ public class PanelMenuComuna extends JPanel {
 		botonCargar = new JButton("Cargar");
 		botonCargar.setBounds(297, 140, 89, 23);
 		add(botonCargar);
+		
+		botonVolver = new JButton("VOLVER");
+		botonVolver.setBounds(60, 401, 133, 23);
+		add(botonVolver);
 	}
 	
 	public void eventoBotones() {
@@ -64,5 +72,13 @@ public class PanelMenuComuna extends JPanel {
 				marco.setContentPane(PanelConsultar);
 			}
 		});
+	
+		botonVolver.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				marco.setContentPane(PanelMenuPrincipal);
+			}
+		});
+		
 	}
 }
