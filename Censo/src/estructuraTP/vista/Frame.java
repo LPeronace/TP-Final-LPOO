@@ -14,7 +14,7 @@ import javax.swing.border.EmptyBorder;
 public class Frame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private JPanel PanelPrincipal = new JPanel();
 	private CardLayout cl = new CardLayout(0,0);
 	private JPanel PanelMenuPersona = new PanelMenuPersona();
 	private JPanel PanelMenuBarrio = new PanelMenuBarrio();
@@ -45,20 +45,23 @@ public class Frame extends JFrame {
 	 */
 	public Frame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 750, 500);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		setBounds(0, 0, 750, 500);
+		setContentPane(PanelPrincipal);
+		PanelPrincipal.setBounds(0,0,750,500);
+		
+		getContentPane().setLayout(cl);
+
+		
 		crearLabel();
 		crearBotones();
 		eventoBotones();
-		getContentPane().setLayout(cl);
-
+		
+		
 		getContentPane().add(PanelMenuPersona, "PanelMenuPersona");
 		getContentPane().add(PanelMenuBarrio, "PanelMenuBarrio");
 		getContentPane().add(PanelMenuComuna, "PanelMenuComuna");
 		
-
+		cl.show(getContentPane(),"PanelPrincipal");
 	}
 	
 
@@ -66,23 +69,23 @@ public class Frame extends JFrame {
 
 		labelTitulo = new JLabel("Bienvenido Al MENU");
 		labelTitulo.setBounds(294, 11, 95, 14);
-		add(labelTitulo);
+		getContentPane().add(labelTitulo);
 		
 	}
 	public void crearBotones() {
 
 		botonComuna = new JButton("Comuna");
 		botonComuna.setBounds(318, 263, 71, 23);
-		add(botonComuna);
+		getContentPane().add(botonComuna);
 		
 		botonBarrio = new JButton("Barrio");
 		botonBarrio.setBounds(318, 195, 71, 23);
-		add(botonBarrio);
+		getContentPane().add(botonBarrio);
 		
 
 		botonPersona = new JButton("Persona");
 		botonPersona.setBounds(318, 122, 71, 23);
-		add(botonPersona);
+		getContentPane().add(botonPersona);
 		
 	}
 	
