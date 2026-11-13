@@ -23,44 +23,9 @@ USE `Censo` ;
 CREATE TABLE IF NOT EXISTS `Censo`.`comuna` (
   `ID_comuna` INT NOT NULL,
   `Nombre_sede` VARCHAR(45) NOT NULL,
-  `Junta_Comunal` VARCHAR(67) NOT NULL,
-  PRIMARY KEY (`ID_comuna`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
-
-
--- -----------------------------------------------------
--- Table `Censo`.`complejos_habitacionales`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Censo`.`complejos_habitacionales` (
-  `ID_CH` INT NOT NULL,
-  `Cant_monoblock` INT NOT NULL,
-  `Macro_activo` BIT(1) NOT NULL,
-  PRIMARY KEY (`ID_CH`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
-
-
--- -----------------------------------------------------
--- Table `Censo`.`trazado_formal`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Censo`.`trazado_formal` (
-  `ID_TF` INT NOT NULL,
-  `Cant_edificios` INT NOT NULL,
-  `Porcentaje_asf` VARCHAR(67) NOT NULL,
-  PRIMARY KEY (`ID_TF`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
-
-
--- -----------------------------------------------------
--- Table `Censo`.`urbanizacion_planificada`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Censo`.`urbanizacion_planificada` (
-  `ID_UP` INT NOT NULL,
-  `Nro_ley` VARCHAR(20) NOT NULL,
-  `Conexion_agua` BIT(1) NOT NULL,
-  PRIMARY KEY (`ID_UP`))
+  `Numero_Comuna` VARCHAR(4) NOT NULL,
+  PRIMARY KEY (`ID_comuna`),
+  UNIQUE KEY `uk_comuna_numero` (`Numero_Comuna`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -72,22 +37,13 @@ CREATE TABLE IF NOT EXISTS `Censo`.`tipo_barrio` (
   `ID_tipo_barrio` INT NOT NULL,
   `Superficie_H` FLOAT NOT NULL,
   `nombre` VARCHAR(40) NOT NULL,
-  `Trazado_formal_ID_TF` INT NOT NULL,
-  `Complejos_habitacionales_ID_CH` INT NOT NULL,
-  `Urbanizacion_Planificada_ID_UP` INT NOT NULL,
-  PRIMARY KEY (`ID_tipo_barrio`),
-  INDEX `fk_Tipo_barrio_Trazado_formal1_idx` (`Trazado_formal_ID_TF` ASC) VISIBLE,
-  INDEX `fk_Tipo_barrio_Complejos_habitacionales1_idx` (`Complejos_habitacionales_ID_CH` ASC) VISIBLE,
-  INDEX `fk_Tipo_barrio_Urbanizacion_Planificada1_idx` (`Urbanizacion_Planificada_ID_UP` ASC) VISIBLE,
-  CONSTRAINT `fk_Tipo_barrio_Complejos_habitacionales1`
-    FOREIGN KEY (`Complejos_habitacionales_ID_CH`)
-    REFERENCES `Censo`.`complejos_habitacionales` (`ID_CH`),
-  CONSTRAINT `fk_Tipo_barrio_Trazado_formal1`
-    FOREIGN KEY (`Trazado_formal_ID_TF`)
-    REFERENCES `Censo`.`trazado_formal` (`ID_TF`),
-  CONSTRAINT `fk_Tipo_barrio_Urbanizacion_Planificada1`
-    FOREIGN KEY (`Urbanizacion_Planificada_ID_UP`)
-    REFERENCES `Censo`.`urbanizacion_planificada` (`ID_UP`))
+  `Cant_monoblock` INT NULL,
+  `Macro_activo` BIT(1) NULL,
+  `Cant_edificios` INT NULL,
+  `Porcentaje_asf` VARCHAR(67) NULL,
+  `Nro_ley` VARCHAR(20) NULL,
+  `Conexion_agua` BIT(1) NULL,
+  PRIMARY KEY (`ID_tipo_barrio`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -178,60 +134,28 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 #COMUNAS
 INSERT INTO comuna
-(ID_comuna, Nombre_sede, Junta_Comunal)
+(ID_comuna, Nombre_sede, Numero_Comuna)
 VALUES
-(1, 'Sede Comunal 9', 'Junta Comunal 9'),
-(2, 'Sede Comunal 10', 'Junta Comunal 10'),
-(3, 'Sede Comunal 11', 'Junta Comunal 11');
+(1, 'Sede Comunal 9', '9'),
+(2, 'Sede Comunal 10', '10'),
+(3, 'Sede Comunal 11', '11');
 
-
-
-##COMPLEJOS HABITACIONALES
-
-
-INSERT INTO complejos_habitacionales
-(ID_CH, Cant_monoblock, Macro_activo)
-VALUES
-(1, 5, b'1'),
-(2, 8, b'1'),
-(3, 3, b'0');
-
-
-##TRAZADO FORMAL
-
-
-INSERT INTO trazado_formal
-(ID_TF, Cant_edificios, Porcentaje_asf)
-VALUES
-(1, 12, '90%'),
-(2, 8, '75%'),
-(3, 15, '100%');
-
-
-
-##URBANIZACION PLANIFICADA
-
-
-INSERT INTO urbanizacion_planificada
-(ID_UP, Nro_ley, Conexion_agua)
-VALUES
-(1, '1450/1985', b'1'),
-(2, '2380/1992', b'1'),
-(3, '3100/2001', b'0');
 
 
 ##TIPOS DE BARRIO (3)
 
-
 INSERT INTO tipo_barrio
 (ID_tipo_barrio, Superficie_H, nombre,
- Trazado_formal_ID_TF,
- Complejos_habitacionales_ID_CH,
- Urbanizacion_Planificada_ID_UP)
+ Cant_monoblock, Macro_activo,
+ Cant_edificios, Porcentaje_asf,
+ Nro_ley, Conexion_agua)
 VALUES
-(1, 12.5, 'Trazado formal', 1, 1, 1),
-(2, 8.3, 'Complejo habitacional', 2, 2, 2),
-(3, 15.7, 'Urbanizacion planificada', 3, 3, 3);
+(1, 12.5, 'Trazado formal',
+ NULL, NULL, 12, '90%', NULL, NULL),
+(2, 8.3, 'Complejo habitacional',
+ 8, b'1', NULL, NULL, NULL, NULL),
+(3, 15.7, 'Urbanizacion planificada',
+ NULL, NULL, NULL, NULL, '3100/2001', b'0');
 
 
 ##BARRIOS (6)
