@@ -63,15 +63,18 @@ public class Conexion {
 		
 	}
 	
-	public void eliminarComunaSeleccionada(int indiceBorrado) {
+	public boolean eliminarComunaSeleccionada(String numeroSede) {
 		Connection conexion = conectar();
-		String sql = "DELETE FROM comuna where ID_comuna ="+indiceBorrado;
-		
+		String sql = "DELETE FROM comuna where Numero_Comuna = ?";
+		int filasAfectadas = 0;
 		try {
 		
 			PreparedStatement stmt = conexion.prepareStatement(sql);
-			
-			stmt.executeUpdate();
+
+	        stmt.setString(1, numeroSede);
+	        
+	        filasAfectadas = stmt.executeUpdate();
+
 		
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -86,7 +89,7 @@ public class Conexion {
 			
 		}
 		
-		
+		return filasAfectadas > 0;
 	}
 	
 	public ArrayList<Comuna> conseguirTodasLasComunas() {

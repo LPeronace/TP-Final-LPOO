@@ -115,7 +115,7 @@ public class PanelComunaConsulta extends JPanel {
 		add(botonVolver);
 		
 		botonVerDetalle = new JButton("Ver Detalle");
-		botonVerDetalle.setBounds(359, 247, 112, 23);
+		botonVerDetalle.setBounds(359, 247, 139, 23);
 		add(botonVerDetalle);
 		
 		botonAsignar = new JButton("Reasignar");
@@ -123,11 +123,11 @@ public class PanelComunaConsulta extends JPanel {
 		add(botonAsignar);
 		
 		botonEliminar = new JButton("Eliminar Seleccionado");
-		botonEliminar.setBounds(358, 164, 133, 23);
+		botonEliminar.setBounds(358, 164, 155, 23);
 		add(botonEliminar);
 		
 		botonActualizar = new JButton("Actualizar");
-		botonActualizar.setBounds(523, 164, 89, 23);
+		botonActualizar.setBounds(542, 164, 112, 23);
 		add(botonActualizar);
 		
 	}
@@ -151,14 +151,24 @@ public class PanelComunaConsulta extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 									//consigue el indice de la fila actual pero arranca por 0
-				int eleccionBorrado = tabla.getSelectedRow() + 1;
+				int eleccionBorrado = tabla.getSelectedRow();
 				
+				String numeroSede = (String) modelo.getValueAt(eleccionBorrado, 1);
+				
+				
+				System.out.println(eleccionBorrado);
+				System.out.println(numeroSede);
 				//Esto porque retorna -1 si no selecciono nada o no hay algo q nosotros carguemos como seleccionado//
 				if(eleccionBorrado != -1) {
-					c.eliminarComunaSeleccionada(eleccionBorrado);
-					System.out.println(eleccionBorrado);
-					JOptionPane.showMessageDialog(panelActual, "Personaje eliminado con exito!!!!!");
+					//devuelve booleano si se pudo borrar
+					if(c.eliminarComunaSeleccionada(numeroSede)) {
+						JOptionPane.showMessageDialog(panelActual, "Personaje eliminado con exito!!!!!");
+					}
+					else {
+						JOptionPane.showMessageDialog(panelActual, "El panel cuenta con barrios asignados, primero modifique eso");
+					}
 				}
+				
 				else {
 					JOptionPane.showMessageDialog(panelActual, "Hubo un error :( la comuna seleccionada no existe o no selecciono ninguna");
 				}
