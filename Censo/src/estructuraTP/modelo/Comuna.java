@@ -6,7 +6,7 @@ public class Comuna {
 	private String nombre;
 	private String numeroSede;
 	private ArrayList<Barrio> barrios = new ArrayList<>();
-	private int cantidadBarrio = barrios.size();
+	private int cantidadBarrio;
 	
 	public Comuna(String nombre, String numeroSede) {
 		this.nombre = nombre;
@@ -39,5 +39,9 @@ public class Comuna {
 	
 	public String getNumeroSede() {
 		return numeroSede;
+	}
+	
+	public int getCantidadBarrio() {
+		return barrios.size();
 	}
 }

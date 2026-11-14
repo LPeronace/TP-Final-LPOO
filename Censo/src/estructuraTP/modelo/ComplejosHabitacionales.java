@@ -13,7 +13,7 @@ public final class ComplejosHabitacionales extends Barrio{
 	
 	@Override
 	public float calcularDensidad() {
-		float densidad = getPersonas().size() / cantMonoblocks;
+		float densidad = getPersonas().size() /  cantMonoblocks;
 		
 		
 		

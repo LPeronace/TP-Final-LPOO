@@ -31,41 +31,24 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `censo`.`tipo_barrio`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `censo`.`tipo_barrio` (
-  `ID_tipo_barrio` INT NOT NULL,
-  `Superficie_H` FLOAT NOT NULL,
-  `nombre` VARCHAR(40) NOT NULL,
-  `Cant_monoblock` INT NULL DEFAULT NULL,
-  `Macro_activo` BIT(1) NULL DEFAULT NULL,
-  `Cant_edificios` INT NULL DEFAULT NULL,
-  `Porcentaje_asf` VARCHAR(67) NULL DEFAULT NULL,
-  `Nro_ley` VARCHAR(20) NULL DEFAULT NULL,
-  `Conexion_agua` BIT(1) NULL DEFAULT NULL,
-  PRIMARY KEY (`ID_tipo_barrio`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
-
-
--- -----------------------------------------------------
 -- Table `censo`.`barrio`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `censo`.`barrio` (
   `ID_barrio` INT NOT NULL,
   `Superficie_H` FLOAT NOT NULL,
   `nombre` VARCHAR(20) NOT NULL,
-  `ID_tipo_barrio` INT NOT NULL,
-  `ID_Comuna` INT NOT NULL,
+  `Comuna_ID_comuna` INT NOT NULL,
+  `Cant_monoblock` VARCHAR(4) NULL DEFAULT NULL,
+  `Macro_activo` BIT(1) NULL DEFAULT NULL,
+  `Cant_edificios` INT NULL DEFAULT NULL,
+  `Porcentaje_asf` VARCHAR(67) NULL DEFAULT NULL,
+  `Nro_ley` VARCHAR(20) NULL DEFAULT NULL,
+  `Conexion_agua` BIT(1) NULL DEFAULT NULL,
   PRIMARY KEY (`ID_barrio`),
-  INDEX `fk_Barrio_Tipo_barrio_idx` (`ID_tipo_barrio` ASC) VISIBLE,
-  INDEX `fk_Barrio_Comuna1_idx` (`ID_Comuna` ASC) VISIBLE,
+  INDEX `fk_Barrio_Comuna1_idx` (`Comuna_ID_comuna` ASC) VISIBLE,
   CONSTRAINT `fk_Barrio_Comuna1`
-    FOREIGN KEY (`ID_Comuna`)
-    REFERENCES `censo`.`comuna` (`ID_comuna`),
-  CONSTRAINT `fk_Barrio_Tipo_barrio`
-    FOREIGN KEY (`ID_tipo_barrio`)
-    REFERENCES `censo`.`tipo_barrio` (`ID_tipo_barrio`))
+    FOREIGN KEY (`Comuna_ID_comuna`)
+    REFERENCES `censo`.`comuna` (`ID_comuna`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -90,16 +73,16 @@ CREATE TABLE IF NOT EXISTS `censo`.`persona` (
   `Nombre` VARCHAR(45) NOT NULL,
   `Apellido` VARCHAR(45) NOT NULL,
   `Fecha_nacimiento` DATE NOT NULL,
-  `ID_Situacion_Laboral` INT NOT NULL,
-  `ID_Barrio` INT NOT NULL,
+  `Situacion_laboral_ID_Situacion_laboral` INT NOT NULL,
+  `Barrio_ID_barrio` INT NOT NULL,
   PRIMARY KEY (`ID_persona`),
-  INDEX `fk_Persona_Situacion_laboral1_idx` (`ID_Situacion_Laboral` ASC) VISIBLE,
-  INDEX `fk_Persona_Barrio1_idx` (`ID_Barrio` ASC) VISIBLE,
+  INDEX `fk_Persona_Situacion_laboral1_idx` (`Situacion_laboral_ID_Situacion_laboral` ASC) VISIBLE,
+  INDEX `fk_Persona_Barrio1_idx` (`Barrio_ID_barrio` ASC) VISIBLE,
   CONSTRAINT `fk_Persona_Barrio1`
-    FOREIGN KEY (`ID_Barrio`)
+    FOREIGN KEY (`Barrio_ID_barrio`)
     REFERENCES `censo`.`barrio` (`ID_barrio`),
   CONSTRAINT `fk_Persona_Situacion_laboral1`
-    FOREIGN KEY (`ID_Situacion_Laboral`)
+    FOREIGN KEY (`Situacion_laboral_ID_Situacion_laboral`)
     REFERENCES `censo`.`situacion_laboral` (`ID_Situacion_laboral`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
@@ -110,8 +93,8 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `censo`.`historial` (
   `ID_persona` INT NOT NULL,
-  `ID_historial` INT NOT NULL,
   `Fecha_traslado` DATE NOT NULL,
+  `ID_historial` INT NOT NULL,
   PRIMARY KEY (`ID_persona`, `ID_historial`),
   INDEX `fk_Historial_Persona_idx` (`ID_persona` ASC) VISIBLE,
   CONSTRAINT `fk_Historial_Persona`
