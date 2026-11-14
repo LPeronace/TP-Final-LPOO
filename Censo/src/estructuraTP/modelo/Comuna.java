@@ -32,4 +32,12 @@ public class Comuna {
 	public ArrayList<Barrio> getBarrios(){
 		return barrios;
 	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+	
+	public String getNumeroSede() {
+		return numeroSede;
+	}
 }

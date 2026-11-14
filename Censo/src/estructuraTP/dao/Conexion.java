@@ -2,7 +2,10 @@ package estructuraTP.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import estructuraTP.modelo.Comuna;
 
@@ -36,6 +39,36 @@ public class Conexion {
 		
 	}
 	
+	public ArrayList<Comuna> conseguirTodasLasComunas() {
+		Connection c = conectar();
+		
+	    ArrayList<Comuna> comunas = new ArrayList<>();
+
+	    String nombre;
+	    String numeroComuna;
+	    
+	    String sql = "SELECT * FROM comuna";
+
+	    try {
+	        PreparedStatement stmt = c.prepareStatement(sql);
+	        ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	        	
+	        	nombre = rs.getString("Nombre_sede");
+	        	numeroComuna = rs.getString("Numero_Comuna");
+	        	
+	            Comuna comuna = new Comuna(nombre,numeroComuna);
+	            
+	            comunas.add(comuna);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return comunas;
+	}
 	
 	
 	

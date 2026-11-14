@@ -184,7 +184,7 @@ public class PanelComunaConsulta extends JPanel {
 		tabla.setBounds(57, 122, 300, 112);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(39, 64, 309, 123);
+		scrollPane.setBounds(10, 64, 338, 123);
 		add(scrollPane);
 		
 		//Creo las columnas
@@ -198,7 +198,14 @@ public class PanelComunaConsulta extends JPanel {
 		scrollPane.setViewportView(tabla);
 		
 		
-		cargarTabla();
+		//cargo todas las comunas que encontre en la base de datos
+		for(Comuna com: c.conseguirTodasLasComunas()) {
+			
+			modelo.addRow(new Object[] {com.getNombre(),com.getNumeroSede(), com.getBarrios().size()});
+		
+		}
+		
+		
 		
 		/*Esto es para añadir filas como ejemplo
 		for(int i = 0; i<15;i++) {
@@ -206,7 +213,5 @@ public class PanelComunaConsulta extends JPanel {
 		}Y comprobar que funcione el scrollpane
 		*/
 	}
-	public void cargarTabla() {
-		
-	}
+
 }
