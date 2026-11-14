@@ -19,14 +19,17 @@ public class PanelMenuComuna extends JPanel {
 	private PanelComunaConsulta PanelConsultar;
 	private PanelMenuPrincipal PanelMenuPrincipal;
 	
-	public PanelMenuComuna(JFrame marco) {
-		this.marco = marco;
-		setLayout(null);
-		setBounds(0,0,750,500);
-		crearLabels();
-		crearBotones();
-		crearPaneles();
-		eventoBotones();
+	public PanelMenuComuna(JFrame marco, PanelMenuPrincipal menuPrincipal) {
+	    this.marco = marco;
+	    this.PanelMenuPrincipal = menuPrincipal;
+
+	    setLayout(null);
+	    setBounds(0,0,750,500);
+
+	    crearLabels();
+	    crearBotones();
+	    crearPaneles();
+	    eventoBotones();
 	}
 	
 	public void crearLabels() {
@@ -36,11 +39,9 @@ public class PanelMenuComuna extends JPanel {
 	}
 	
 	public void crearPaneles() {
-		PanelAgregar = new PanelAgregarComuna();
+		PanelAgregar = new PanelAgregarComuna(marco, this);
 		
 		PanelConsultar = new PanelComunaConsulta();
-		
-		PanelMenuPrincipal = new PanelMenuPrincipal(marco);
 	}
 	
 	public void crearBotones() {

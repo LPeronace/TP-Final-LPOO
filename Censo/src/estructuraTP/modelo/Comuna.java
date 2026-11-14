@@ -12,7 +12,9 @@ public class Comuna {
 		this.nombre = nombre;
 		this.numeroSede = numeroSede;
 	}
-	
+	public Comuna() {
+		
+	}
 	
 	public boolean esPrioritaria() {	
 		int contadorPrioritario = 0;
@@ -25,5 +27,9 @@ public class Comuna {
 		
 		
 		return (cantidadBarrio*0.5) <= contadorPrioritario;
+	}
+	
+	public ArrayList<Barrio> getBarrios(){
+		return barrios;
 	}
 }

@@ -41,7 +41,7 @@ public class PanelMenuPrincipal extends JPanel {
 	public void crearPaneles() {
 		PanelMenuPersona = new PanelMenuPersona();
 		PanelMenuBarrio = new PanelMenuBarrio();
-		PanelMenuComuna = new PanelMenuComuna(marco);
+		PanelMenuComuna = new PanelMenuComuna(marco, this);
 	}
 	public void crearLabel() {
 
