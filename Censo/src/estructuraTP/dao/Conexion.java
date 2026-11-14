@@ -32,6 +32,10 @@ public class Conexion {
 		
 	}
 	
+	public void eliminarComunaSeleccionada(int indiceBorrado) {
+		
+	}
+	
 	
 	
 	

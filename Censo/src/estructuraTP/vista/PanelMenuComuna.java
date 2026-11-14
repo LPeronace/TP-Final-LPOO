@@ -41,7 +41,7 @@ public class PanelMenuComuna extends JPanel {
 	public void crearPaneles() {
 		PanelAgregar = new PanelAgregarComuna(marco, this);
 		
-		PanelConsultar = new PanelComunaConsulta();
+		PanelConsultar = new PanelComunaConsulta(marco,this);
 	}
 	
 	public void crearBotones() {

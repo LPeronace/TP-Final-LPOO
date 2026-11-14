@@ -5,12 +5,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import estructuraTP.dao.Conexion;
+import estructuraTP.modelo.Barrio;
 import estructuraTP.modelo.Comuna;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelComunaConsulta extends JPanel {
 
@@ -30,24 +36,38 @@ public class PanelComunaConsulta extends JPanel {
 	private JButton botonVerDetalle;
 	private JButton botonEliminar;
 	
+	private JFrame marco;
+	private PanelMenuComuna menuComuna;
+	private JPanel panelActual = this;
+	private PanelDetalleComuna detalleComuna;
 	
-	private Comuna c = new Comuna();
+	private Comuna comuna = new Comuna();
+	
+	private Conexion c = new Conexion();
 	
 	private JTextField textFieldBusqueda;
 	
 	private JComboBox comboBoxBarrios;
 	
-	public PanelComunaConsulta() {
+	public PanelComunaConsulta(JFrame marco, PanelMenuComuna menuComuna) {
 		setBounds(0, 0, 750, 500);
 		setLayout(null);
 		
+		this.marco = marco;
+		this.menuComuna = menuComuna;
+		
 		crearLabels();
+		crearPaneles();
 		crearTablaCompleta();
 		crearBotones();
 		crearTextFields();
 		crearComboBox();
 		accionBotones();
 		
+	}
+	
+	public void crearPaneles() {
+		detalleComuna = new PanelDetalleComuna(marco);
 	}
 	
 	public void crearLabels() {
@@ -71,7 +91,10 @@ public class PanelComunaConsulta extends JPanel {
 		comboBoxBarrios.setBounds(152, 247, 89, 23);
 		add(comboBoxBarrios);
 		
-		comboBoxBarrios.
+		
+		for(Barrio b: comuna.getBarrios()) {
+			comboBoxBarrios.addItem(b);
+		}
 		
 	}
 	
@@ -94,7 +117,58 @@ public class PanelComunaConsulta extends JPanel {
 	}
 	
 	public void accionBotones() {
+		botonVerDetalle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				marco.setContentPane(detalleComuna);
+				//averiguar como pasarle que seleccion hizo en la tabla a la otra clase
+			}
+		});
 		
+		botonEliminar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+									//consigue el indice de la fila actual pero arranca por 0
+				int eleccionBorrado = tabla.getSelectedRow() + 1;
+				
+				//Esto porque retorna -1 si no selecciono nada o no hay algo q nosotros carguemos como seleccionado//
+				if(eleccionBorrado != -1) {
+					c.eliminarComunaSeleccionada(eleccionBorrado);
+					System.out.println(eleccionBorrado);
+					JOptionPane.showMessageDialog(panelActual, "Personaje eliminado con exito!!!!!");
+				}
+				else {
+					JOptionPane.showMessageDialog(panelActual, "Hubo un error :( la comuna seleccionada no existe o no selecciono ninguna");
+				}
+			}
+		});
+		
+		botonAsignar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int eleccionComboBox = comboBoxBarrios.getSelectedIndex() + 1;
+				//barrio seleccionado
+				
+				int eleccionTabla = tabla.getSelectedRow() + 1;
+				//comuna seleccionada
+				
+				if(eleccionComboBox != 1 && eleccionTabla != 1) {
+					//aca sería bajarle la cantidad de barrios de la comuna anterior por -1 y subirle 1 a la comuna seleccionada
+					//mas asociarla al arraylist nuevo y sacarlo del anterior
+				}
+				else {
+					JOptionPane.showMessageDialog(panelActual, "Hubo un error :( la comuna o el barrio no se seleccionaron correctamente!");
+				}
+				
+			}
+		});
+		
+		botonVolver.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				marco.setContentPane(menuComuna);
+			}
+		});
 	}
 	
 	public void crearTextFields() {
