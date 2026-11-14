@@ -2,6 +2,7 @@ package estructuraTP.vista;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import estructuraTP.dao.Conexion;
@@ -27,6 +28,7 @@ public class PanelAgregarComuna extends JPanel {
 	private JButton botonVolver;
 	
 	private PanelMenuComuna panelMenuComuna;
+	private JPanel panelActual = this;
 	private JFrame marco;
 	
 	private Conexion c = new Conexion();
@@ -53,22 +55,22 @@ public class PanelAgregarComuna extends JPanel {
 		
 		
 		labelNombre = new JLabel("Nombre");
-		labelNombre.setBounds(52, 82, 46, 14);
+		labelNombre.setBounds(206, 82, 46, 14);
 		add(labelNombre);
 		
 		labelNumeroSede = new JLabel("Numero de Sede");
-		labelNumeroSede.setBounds(48, 255, 86, 14);
+		labelNumeroSede.setBounds(474, 82, 86, 14);
 		add(labelNumeroSede);
 	}
 	
 	public void crearTextField() {
 		textFieldNombre = new JTextField();
-		textFieldNombre.setBounds(178, 79, 86, 20);
+		textFieldNombre.setBounds(102, 156, 162, 20);
 		add(textFieldNombre);
 		textFieldNombre.setColumns(10);
 		
 		textFieldNumeroSede = new JTextField();
-		textFieldNumeroSede.setBounds(178, 252, 86, 20);
+		textFieldNumeroSede.setBounds(474, 156, 141, 20);
 		add(textFieldNumeroSede);
 		textFieldNumeroSede.setColumns(10);
 		
@@ -76,11 +78,11 @@ public class PanelAgregarComuna extends JPanel {
 	}
 	public void crearBoton() {
 		botonCargar = new JButton("Cargar");
-		botonCargar.setBounds(321, 369, 89, 23);
+		botonCargar.setBounds(323, 228, 89, 23);
 		add(botonCargar);
 		
 		botonVolver = new JButton("VOLVER");
-		botonVolver.setBounds(52, 422, 89, 23);
+		botonVolver.setBounds(53, 422, 89, 23);
 		add(botonVolver);
 		
 	}
@@ -88,6 +90,8 @@ public class PanelAgregarComuna extends JPanel {
 		botonCargar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
+				
 				c.cargarComuna(conseguirDatos());
 			}
 		});

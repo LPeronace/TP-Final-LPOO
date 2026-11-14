@@ -36,10 +36,56 @@ public class Conexion {
 	}
 	
 	public void cargarComuna(Comuna c) {
+		Connection conexion = conectar();
+		
+		String sql = "INSERT INTO comuna(Nombre_Sede,Numero_Comuna)VALUES(?,?)";
+		
+		try {
+			PreparedStatement stmt = conexion.prepareStatement(sql);
+			
+			stmt.setString(1, c.getNombre());
+			stmt.setString(2, c.getNumeroSede());
+			
+			stmt.executeUpdate();
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+			
+		}finally {
+			try {
+				conexion.close();
+
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			
+		}
 		
 	}
 	
 	public void eliminarComunaSeleccionada(int indiceBorrado) {
+		Connection conexion = conectar();
+		String sql = "DELETE FROM comuna where ID_comuna ="+indiceBorrado;
+		
+		try {
+		
+			PreparedStatement stmt = conexion.prepareStatement(sql);
+			
+			stmt.executeUpdate();
+		
+		}catch(SQLException e){
+			e.printStackTrace();
+			
+		}finally {
+			try {
+				conexion.close();
+
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			
+		}
+		
 		
 	}
 	
@@ -162,9 +208,51 @@ public class Conexion {
 		ArrayList<Barrio> barrios = conseguirTodosLosBarrios();
 	
 			
-		
+		Connection c = conectar();
+		String numeroSedeComuna;
+	    String nombreBarrio;
+	    
+	    
+	    String sql = "SELECT c.Numero_Comuna, b.nombre "
+	    		+ "FROM comuna c "
+	    		+ "INNER JOIN barrio b "
+	    		+ "    ON c.ID_comuna = b.Comuna_ID_comuna;";
+
+	    try {
+	        PreparedStatement stmt = c.prepareStatement(sql);
+	        ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	        	numeroSedeComuna = rs.getString("Numero_Comuna");
+	        	nombreBarrio = rs.getString("nombre");
+	        	for (Comuna com : comunas) {
+	        		//hace un ciclo dentro de las comunas, para luego ver si la fila de la base de datos, que tiene un barrio asociado,
+	        		//es el mismo que el del ciclo
+	                if (com.getNumeroSede().equals(numeroSedeComuna)) {
+	                	//si es, hace otro ciclo de todos los barrios
+	                    for (Barrio b : barrios) {
+	                    		//y luego comprueba de solamente añadir el barrio el cual corresponda con la fila del inner join
+	                        if (b.getNombre().equals(nombreBarrio)) {
+
+	                            com.getBarrios().add(b);
+	                            break;//corta el for de busqueda de barrios si ya lo encontró
+
+	                        }
+
+	                    }
+
+	                    break;//si ya añadió el barrio, corta el for de las comunas tambien para pasar a la siguiente fila
+
+	                }
+
+	            }
+
+	        }
+
+	    }catch(SQLException e) {
+	        e.printStackTrace();
+	    }
 		
 		return comunas;
 	}
-	
 }

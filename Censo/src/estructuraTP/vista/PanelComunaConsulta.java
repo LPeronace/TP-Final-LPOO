@@ -17,6 +17,8 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PanelComunaConsulta extends JPanel {
 
@@ -35,6 +37,7 @@ public class PanelComunaConsulta extends JPanel {
 	private JButton botonAsignar;
 	private JButton botonVerDetalle;
 	private JButton botonEliminar;
+	private JButton botonActualizar;
 	
 	private JFrame marco;
 	private PanelMenuComuna menuComuna;
@@ -48,6 +51,10 @@ public class PanelComunaConsulta extends JPanel {
 	private JTextField textFieldBusqueda;
 	
 	private JComboBox comboBoxBarrios;
+	
+	private Object[] columnas;
+	private JButton botonModificar;
+	
 	
 	public PanelComunaConsulta(JFrame marco, PanelMenuComuna menuComuna) {
 		setBounds(0, 0, 750, 500);
@@ -91,6 +98,10 @@ public class PanelComunaConsulta extends JPanel {
 		comboBoxBarrios.setBounds(152, 247, 89, 23);
 		add(comboBoxBarrios);
 		
+		botonModificar = new JButton("Modificar");
+		botonModificar.setBounds(523, 247, 89, 23);
+		add(botonModificar);
+		
 		
 		for(Barrio b: comuna.getBarrios()) {
 			comboBoxBarrios.addItem(b);
@@ -114,6 +125,11 @@ public class PanelComunaConsulta extends JPanel {
 		botonEliminar = new JButton("Eliminar Seleccionado");
 		botonEliminar.setBounds(358, 164, 133, 23);
 		add(botonEliminar);
+		
+		botonActualizar = new JButton("Actualizar");
+		botonActualizar.setBounds(523, 164, 89, 23);
+		add(botonActualizar);
+		
 	}
 	
 	public void accionBotones() {
@@ -122,6 +138,12 @@ public class PanelComunaConsulta extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				marco.setContentPane(detalleComuna);
 				//averiguar como pasarle que seleccion hizo en la tabla a la otra clase
+			}
+		});
+		
+		botonActualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actualizarTabla();
 			}
 		});
 		
@@ -188,7 +210,7 @@ public class PanelComunaConsulta extends JPanel {
 		add(scrollPane);
 		
 		//Creo las columnas
-		Object[] columnas = new Object[] {"Nombre" , "Numero", "Cantidad Barrios"};
+		columnas = new Object[] {"Nombre" , "Numero", "Cantidad Barrios"};
 		
 		//creo el modelo y con cuantas filas
 		modelo = new DefaultTableModel(columnas, 0);
@@ -197,21 +219,15 @@ public class PanelComunaConsulta extends JPanel {
 		tabla.setModel(modelo);
 		scrollPane.setViewportView(tabla);
 		
-		
 		//cargo todas las comunas que encontre en la base de datos
-		for(Comuna com: c.conseguirTodasLasComunas()) {
+		actualizarTabla();	
+	}
+	public void actualizarTabla() {
+		modelo.setRowCount(0); 
+		for(Comuna com: c.asociarComunasConBarrios()) {
 			
-			modelo.addRow(new Object[] {com.getNombre(),com.getNumeroSede(), com.getBarrios().size()});
+			modelo.addRow(new Object[] {com.getNombre(),com.getNumeroSede(), com.getCantidadBarrio()});
 		
 		}
-		
-		
-		
-		/*Esto es para añadir filas como ejemplo
-		for(int i = 0; i<15;i++) {
-			modelo.addRow(new Object[] {"Raul", "12","23"});
-		}Y comprobar que funcione el scrollpane
-		*/
 	}
-
 }

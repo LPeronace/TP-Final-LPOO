@@ -14,6 +14,7 @@ public class PanelDetalleComuna extends JPanel {
 	 */
 	public PanelDetalleComuna(JFrame marco) {
 		this.marco = marco;
+		setBounds(0,0,750,500);
 	}
 
 }

@@ -23,7 +23,9 @@ public abstract class Barrio {
 		return superficie;
 	}
 	
-	
+	public String getNombre() {
+		return nombre;
+	}
 	public abstract float calcularDensidad();
 	
 	public abstract boolean tieneCriticidad();
