@@ -12,6 +12,9 @@ import estructuraTP.modelo.ComplejosHabitacionales;
 import estructuraTP.modelo.Comuna;
 import estructuraTP.modelo.TrazadoFormal;
 import estructuraTP.modelo.UrbanizacionPlanificada;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelDetalleComuna extends JPanel {
 
@@ -30,24 +33,31 @@ public class PanelDetalleComuna extends JPanel {
 	private Conexion c = new Conexion();
 	
 	private String numeroSedeSeleccionada;
+	
+	private JButton botonVolver;
+	
+	private PanelComunaConsulta consulta;
 	/**
 	 * Create the panel.
 	 */
-	public PanelDetalleComuna(JFrame marco, String numeroSedeSeleccionada) {
+	public PanelDetalleComuna(JFrame marco, String numeroSedeSeleccionada, PanelComunaConsulta consulta) {
 		this.marco = marco;
 		this.numeroSedeSeleccionada = numeroSedeSeleccionada;
+		this.consulta = consulta;
 		setBounds(0,0,750,500);
 		
 		crearTablaCompleta();
-		
+		crearBoton();
+		accionBoton();
 	}
 
 	public void crearTablaCompleta() {
+		setLayout(null);
 		tabla =  new JTable();
 		tabla.setBounds(57, 122, 300, 112);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 64, 338, 123);
+		scrollPane.setBounds(149, 5, 452, 427);
 		add(scrollPane);
 		
 		//Creo las columnas
@@ -63,6 +73,21 @@ public class PanelDetalleComuna extends JPanel {
 		//cargo todas las comunas que encontre en la base de datos
 		actualizarTabla();	
 	}
+	public void crearBoton() {
+		botonVolver = new JButton("VOLVER");
+		botonVolver.setBounds(10, 409, 89, 23);
+		add(botonVolver);
+	}
+	
+	public void accionBoton() {
+		botonVolver.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				marco.setContentPane(consulta);
+			}
+		});
+	}
+	
 	
 	public void actualizarTabla() {
 		modelo.setRowCount(0); 

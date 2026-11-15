@@ -31,13 +31,29 @@ public class PanelAgregarComuna extends JPanel {
 	private JPanel panelActual = this;
 	private JFrame marco;
 	
+	private String numeroSedeAntiguo;
+	private boolean modoModificar;
 	private Conexion c = new Conexion();
 	
+	public PanelAgregarComuna(JFrame marco, PanelMenuComuna panelMenuComuna,String numeroSedeAntiguo) {
+		this.marco = marco;
+		this.panelMenuComuna = panelMenuComuna;
+		this.numeroSedeAntiguo = numeroSedeAntiguo;
+		modoModificar = true;
+		setBounds(0,0,750,500);
+		setLayout(null);
+		
+		crearLabels();
+		crearBoton();
+		crearTextField();
+		eventoBoton();
+		rellenarCampos();
+	}
 	
 	public PanelAgregarComuna(JFrame marco, PanelMenuComuna panelMenuComuna) {
 		this.marco = marco;
 		this.panelMenuComuna = panelMenuComuna;
-		
+		modoModificar = false;
 		setBounds(0,0,750,500);
 		setLayout(null);
 		
@@ -86,13 +102,24 @@ public class PanelAgregarComuna extends JPanel {
 		add(botonVolver);
 		
 	}
+	
 	public void eventoBoton() {
 		botonCargar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
 				
-				c.cargarComuna(conseguirDatos());
+				if(modoModificar) {
+					
+					JOptionPane.showMessageDialog(panelActual, "Modificado con exito!!!");
+					
+					c.modificarComuna(conseguirDatos(),numeroSedeAntiguo);
+				}
+				else {
+					JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
+					
+					c.cargarComuna(conseguirDatos());
+				}
+				
 			}
 		});
 		
@@ -103,6 +130,17 @@ public class PanelAgregarComuna extends JPanel {
 			}
 		});
 	}
+	
+	public void rellenarCampos() {
+		Comuna comuna = c.buscarComunaEspecifica(numeroSedeAntiguo);
+		
+		textFieldNombre.setText(comuna.getNombre());
+		
+		textFieldNumeroSede.setText(comuna.getNumeroSede());
+	}
+	
+	
+	
 	//Constructor comuna: String nombre y String numeroSede
 	public Comuna conseguirDatos() {
 		Comuna c;

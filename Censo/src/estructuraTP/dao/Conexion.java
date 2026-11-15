@@ -63,6 +63,35 @@ public class Conexion {
 		
 	}
 	
+	public void modificarComuna(Comuna comuna, String numeroSedeAntiguo) {
+		Connection c = conectar();
+		
+	   
+
+	    String nombre = comuna.getNombre();
+	    String numeroSede = comuna.getNumeroSede();
+	    
+	    String sql = "UPDATE comuna "
+	    		+ "SET Nombre_Sede = ?, "
+	    		+ "    Numero_Comuna = ? "
+	    		+ "WHERE Numero_Comuna = ?;";
+
+	    try {
+	        PreparedStatement stmt = c.prepareStatement(sql);
+	        
+	        stmt.setString(1,nombre);
+	        stmt.setString(2,numeroSede);
+	        stmt.setString(3,numeroSedeAntiguo);
+	        
+	        stmt.executeUpdate();
+	        
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	}
+	
 	public boolean eliminarComunaSeleccionada(String numeroSede) {
 		Connection conexion = conectar();
 		String sql = "DELETE FROM comuna where Numero_Comuna = ?";
@@ -257,5 +286,39 @@ public class Conexion {
 	    }
 		
 		return comunas;
+	}
+	
+	public Comuna buscarComunaEspecifica(String numeroSede) {
+		Connection c = conectar();
+		Comuna comuna = null;
+		
+	    String nombre;
+	    String numeroComuna;
+	    
+	    String sql = "SELECT * FROM comuna WHERE Numero_Comuna = ?";
+
+	    try {
+	        PreparedStatement stmt = c.prepareStatement(sql);
+	        
+	        stmt.setString(1, numeroSede);
+	        
+	        ResultSet rs = stmt.executeQuery();
+	        
+	        
+	        while(rs.next()) {
+	        	
+	        	nombre = rs.getString("Nombre_sede");
+	        	numeroComuna = rs.getString("Numero_Comuna");
+	        	
+	        	comuna = new Comuna(nombre,numeroComuna);
+	            
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        
+	    }		
+	    
+		return comuna;
 	}
 }

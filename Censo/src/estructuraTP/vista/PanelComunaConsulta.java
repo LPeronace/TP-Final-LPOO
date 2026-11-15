@@ -41,7 +41,8 @@ public class PanelComunaConsulta extends JPanel {
 	private PanelMenuComuna menuComuna;
 	private JPanel panelActual = this;
 	private PanelDetalleComuna detalleComuna;
-	
+	private PanelComunaConsulta consulta;
+	private PanelAgregarComuna agregar;
 	private Comuna comuna = new Comuna();
 	
 	private Conexion c = new Conexion();
@@ -52,8 +53,8 @@ public class PanelComunaConsulta extends JPanel {
 	/*
 	 *CRITERIOS
 	 *	
-	 *Como no dice el tema de busqueda
-	 *
+	 *Como no dice si una comuna se puede borrar con barrios asignados, y que hacer con esos barrios, decidimos que solamente se puede borrar una comuna
+	 *cuando no tenga ningun barrio asignado
 	*/
 	public PanelComunaConsulta(JFrame marco, PanelMenuComuna menuComuna) {
 		setBounds(0, 0, 750, 500);
@@ -61,14 +62,16 @@ public class PanelComunaConsulta extends JPanel {
 		
 		this.marco = marco;
 		this.menuComuna = menuComuna;
-		
+		crearPaneles();
 		crearLabels();
 		crearTablaCompleta();
 		crearBotones();
 		accionBotones();
 		
 	}
-	
+	public void crearPaneles() {
+		consulta = this;
+	}
 	
 	public void crearLabels() {
 		labelTitulo = new JLabel("Consultas Comuna");
@@ -112,7 +115,7 @@ public class PanelComunaConsulta extends JPanel {
 				String numeroSede = (String) modelo.getValueAt(eleccion, 1);
 				
 				if(eleccion != -1) {
-					detalleComuna = new PanelDetalleComuna(marco,numeroSede);
+					detalleComuna = new PanelDetalleComuna(marco,numeroSede, consulta);
 					
 					marco.setContentPane(detalleComuna);
 				}
@@ -141,11 +144,11 @@ public class PanelComunaConsulta extends JPanel {
 				//Esto porque retorna -1 si no selecciono nada o no hay algo q nosotros carguemos como seleccionado//
 				if(eleccionBorrado != -1) {
 					//devuelve booleano si se pudo borrar
-					if(c.eliminarComunaSeleccionada(numeroSede)) {
-						JOptionPane.showMessageDialog(panelActual, "Personaje eliminado con exito!!!!!");
+					if(!c.eliminarComunaSeleccionada(numeroSede)) {
+						JOptionPane.showMessageDialog(panelActual, "El panel cuenta con barrios asignados, primero modifique eso");
 					}
 					else {
-						JOptionPane.showMessageDialog(panelActual, "El panel cuenta con barrios asignados, primero modifique eso");
+						JOptionPane.showMessageDialog(panelActual, "Personaje eliminado con exito!!!!!");
 					}
 				}
 				
@@ -159,6 +162,21 @@ public class PanelComunaConsulta extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				marco.setContentPane(menuComuna);
+			}
+		});
+		
+		botonModificar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int eleccionBorrado = tabla.getSelectedRow();
+				
+				String numeroSede = (String) modelo.getValueAt(eleccionBorrado, 1);
+				
+				
+				agregar = new PanelAgregarComuna(marco,menuComuna,numeroSede);
+				
+				
+				marco.setContentPane(agregar);
 			}
 		});
 	}
