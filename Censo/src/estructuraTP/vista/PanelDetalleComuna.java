@@ -7,7 +7,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import estructuraTP.dao.Conexion;
+import estructuraTP.modelo.Barrio;
+import estructuraTP.modelo.ComplejosHabitacionales;
 import estructuraTP.modelo.Comuna;
+import estructuraTP.modelo.TrazadoFormal;
+import estructuraTP.modelo.UrbanizacionPlanificada;
 
 public class PanelDetalleComuna extends JPanel {
 
@@ -24,11 +28,14 @@ public class PanelDetalleComuna extends JPanel {
 	private Object[] columnas;
 	
 	private Conexion c = new Conexion();
+	
+	private String numeroSedeSeleccionada;
 	/**
 	 * Create the panel.
 	 */
-	public PanelDetalleComuna(JFrame marco) {
+	public PanelDetalleComuna(JFrame marco, String numeroSedeSeleccionada) {
 		this.marco = marco;
+		this.numeroSedeSeleccionada = numeroSedeSeleccionada;
 		setBounds(0,0,750,500);
 		
 		crearTablaCompleta();
@@ -59,11 +66,32 @@ public class PanelDetalleComuna extends JPanel {
 	
 	public void actualizarTabla() {
 		modelo.setRowCount(0); 
-		for() {
+		String nombre;
+		for(Comuna com: c.asociarComunasConBarrios()) {
 			
-			modelo.addRow(new Object[] {});
-		
+			if(com.getNumeroSede().equals(numeroSedeSeleccionada)) {
+				
+				for(Barrio b : com.getBarrios()) {
+					
+					nombre = b.getNombre();
+					
+					if(b instanceof TrazadoFormal) {
+						modelo.addRow(new Object[] {nombre, "Trazado Formal"});
+					}
+					if(b instanceof UrbanizacionPlanificada) {
+						modelo.addRow(new Object[] {nombre, "Urbanizacion Planificada"});
+					}
+					if(b instanceof ComplejosHabitacionales){
+						modelo.addRow(new Object[] {nombre, "Complejos Habitacionales"});
+					}
+					
+				}
+				break;
+			}
+			
 		}
+		
 	}
-	
 }
+	
+

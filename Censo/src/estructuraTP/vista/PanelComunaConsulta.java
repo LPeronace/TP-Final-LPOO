@@ -63,16 +63,12 @@ public class PanelComunaConsulta extends JPanel {
 		this.menuComuna = menuComuna;
 		
 		crearLabels();
-		crearPaneles();
 		crearTablaCompleta();
 		crearBotones();
 		accionBotones();
 		
 	}
 	
-	public void crearPaneles() {
-		detalleComuna = new PanelDetalleComuna(marco);
-	}
 	
 	public void crearLabels() {
 		labelTitulo = new JLabel("Consultas Comuna");
@@ -111,7 +107,20 @@ public class PanelComunaConsulta extends JPanel {
 		botonVerDetalle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				marco.setContentPane(detalleComuna);
+				int eleccion = tabla.getSelectedRow();
+				
+				String numeroSede = (String) modelo.getValueAt(eleccion, 1);
+				
+				if(eleccion != -1) {
+					detalleComuna = new PanelDetalleComuna(marco,numeroSede);
+					
+					marco.setContentPane(detalleComuna);
+				}
+				else {
+					JOptionPane.showMessageDialog(panelActual, "Hubo un error :( Selecciono mal en la tabla ");
+				}
+				
+				
 				//averiguar como pasarle que seleccion hizo en la tabla a la otra clase
 			}
 		});
