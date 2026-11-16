@@ -340,6 +340,92 @@ public class Conexion {
 		return barrios;
 	}
 		
+	public void cargarBarrio(Barrio b, String numeroSedeComuna) {
+		Connection conexion = conectar();
+		
+		
+		
+		String sql = "INSERT INTO barrio(Superficie_H,nombre,Comuna_ID_comuna,Cant_monoblock,Macro_activo,"
+				+ "Cant_edificios,Porcentaje_asf,Nro_ley,Conexion_agua) "
+				+ "VALUES(?,?,?,?,?,?,?,?,?);";
+		
+		try {
+			PreparedStatement stmt = conexion.prepareStatement(sql);
+			
+			stmt.setFloat(1, b.getSuperficie());
+			stmt.setString(2, b.getNombre());
+			stmt.setInt(3, conseguirIdComuna(numeroSedeComuna));
+			
+			for(int i = 4;i<10;i++) {
+				stmt.setObject(i, null);
+			}
+			
+			
+			if(b instanceof ComplejosHabitacionales) {
+				ComplejosHabitacionales barrioCH = (ComplejosHabitacionales) b; 
+				
+				stmt.setInt(4, barrioCH.getCantMonoblocks());
+				stmt.setBoolean(5,barrioCH.getTieneConsorcio());
+				
+			}
+			else if(b instanceof TrazadoFormal) {
+				
+				TrazadoFormal barrioTF = (TrazadoFormal) b;
+				
+				stmt.setInt(6, barrioTF.getCantEdificios());
+				stmt.setInt(7, barrioTF.getPorcentajeAsfalto());
+			}
+			else if(b instanceof UrbanizacionPlanificada) {
+				UrbanizacionPlanificada barrioUP = (UrbanizacionPlanificada) b;
+				
+				stmt.setString(8, barrioUP.getNumLey());
+				stmt.setBoolean(9, barrioUP.getConexionAgua());
+				
+			}
+			
+		
+			
+			stmt.executeUpdate();
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+			
+		}finally {
+			try {
+				conexion.close();
+
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
+	}
+	
+	public int conseguirIdComuna(String numeroSedeComuna) {
+		int id = 0;
+		
+		Connection c = conectar();
+		
+		String sql = "SELECT ID_Comuna FROM Comuna WHERE Numero_Comuna = ?";
+
+	    try {
+	        PreparedStatement stmt = c.prepareStatement(sql);
+	        stmt.setString(1, numeroSedeComuna);
+	        ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	        	id = rs.getInt("ID_comuna");
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+		return id;
+	}
+
 	/*	
 	*
 	*									PERSONAS

@@ -29,4 +29,11 @@ public final class UrbanizacionPlanificada extends Barrio{
 		return conexionAgua;
 	}	
 	
+	public String getNumLey() {
+		return numLey;
+	}
+	public boolean getConexionAgua() {
+		return conexionAgua;
+	}
+	
 }

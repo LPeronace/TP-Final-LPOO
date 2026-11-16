@@ -3,6 +3,7 @@ package estructuraTP.vista;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
@@ -35,27 +36,33 @@ public class PanelAgregarBarrio extends JPanel {
 	private JLabel labelSuperficie;
 	private JLabel labelTipo;
 	private JLabel labelDatosEspecificos;
+	private JLabel labelAsignarComuna;
+	private JLabel labelEspecifico1;
+	private JLabel labelEspecifico2;
 	
 	private JButton botonCargar;
+	private JButton botonVolver;
 	
 	private JTextField textFieldNombre;
+	private JTextField textFieldLey;
+
 	
 	private JComboBox comboBoxTipoBarrio;
 	private JComboBox comboBoxComuna;
-	private JLabel labelAsignarComuna;
 	
 	private Conexion c = new Conexion();
-	private JLabel labelEspecifico1;
-	private JLabel labelEspecifico2;
 
+	private JPanel panelActual = this;
+	
 	private JSpinner spinnerPorcentajeAsfalto;
 	private JSpinner spinnerCantEdificios;
+	private JSpinner spinnerSuperficie;
+	private JSpinner spinnerMonoBlocks;
 	
 	private JCheckBox checkBoxConsorcio;
-	private JSpinner spinnerMonoBlocks;
 	private JCheckBox checkBoxAgua;
-	private JTextField textFieldLey;
-	private JSpinner spinnerSuperficie;
+
+
 	
 	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio) {
 		this.marco = marco;
@@ -79,7 +86,7 @@ public class PanelAgregarBarrio extends JPanel {
 	}
 	public void crearSpinner() {
 		spinnerSuperficie = new JSpinner();
-		spinnerSuperficie.setModel(new SpinnerNumberModel(Float.valueOf(0), Float.valueOf(0), Float.valueOf(100000), Float.valueOf(1)));
+		spinnerSuperficie.setModel(new SpinnerNumberModel(Float.valueOf(0), Float.valueOf(0), Float.valueOf(99903), Float.valueOf(1)));
 		spinnerSuperficie.setBounds(163, 183, 107, 20);
 		add(spinnerSuperficie);
 	}
@@ -124,6 +131,10 @@ public class PanelAgregarBarrio extends JPanel {
 		botonCargar.setBounds(319, 368, 107, 23);
 		add(botonCargar);
 		
+		botonVolver = new JButton("Volver");
+		botonVolver.setBounds(10, 425, 89, 23);
+		add(botonVolver);
+		
 	}
 	
 	public void eventos() {
@@ -136,10 +147,22 @@ public class PanelAgregarBarrio extends JPanel {
 		botonCargar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				cargarBarrio();
+				Barrio b = cargarBarrio();
+				
+				String nombreSedeComuna = (String) comboBoxComuna.getSelectedItem(); 
+				
+				JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
+				
+				c.cargarBarrio(b, nombreSedeComuna);
+				
 			}
 		});
-		
+		botonVolver.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				marco.setContentPane(menuBarrio);
+			}
+		});
 		
 	}
 	

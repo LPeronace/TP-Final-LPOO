@@ -26,4 +26,11 @@ public final class TrazadoFormal extends Barrio{
 	public boolean tieneCriticidad() {
 		return porcentajeAsfalto > 95;
 	}	
+	
+	public int getCantEdificios() {
+		return cantEdificios;
+	}
+	public int getPorcentajeAsfalto() {
+		return porcentajeAsfalto;
+	}
 }

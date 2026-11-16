@@ -25,5 +25,11 @@ public final class ComplejosHabitacionales extends Barrio{
 		return tieneConsorcio;
 	}	
 	
+	public int getCantMonoblocks() {
+		return cantMonoblocks;
+	}
+	public boolean getTieneConsorcio() {
+		return tieneConsorcio;
+	}
 	
 }
