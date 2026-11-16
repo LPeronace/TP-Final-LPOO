@@ -37,7 +37,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 CREATE TABLE IF NOT EXISTS `censo`.`barrio` (
   `ID_barrio` INT NOT NULL AUTO_INCREMENT,
   `Superficie_H` FLOAT NOT NULL,
-  `nombre` VARCHAR(20) NOT NULL,
+  `nombre` VARCHAR(20) NOT NULL UNIQUE,
   `Comuna_ID_comuna` INT NOT NULL,
   `Cant_monoblock` VARCHAR(4) NULL DEFAULT NULL,
   `Macro_activo` BIT(1) NULL DEFAULT NULL,

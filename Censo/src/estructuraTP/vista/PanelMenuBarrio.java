@@ -8,6 +8,13 @@ import javax.swing.JFrame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+
+/*
+ *Como no hay algun atributo identificador de cada barrio y no se pueden usar IDs,
+ *pusimos que el nombre sea único para poder identificarlos de esa manera.
+ *
+ *
+*/
 public class PanelMenuBarrio extends JPanel {
 
 	private static final long serialVersionUID = 1L;

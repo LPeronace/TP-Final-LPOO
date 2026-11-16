@@ -1,6 +1,7 @@
 package estructuraTP.vista;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,6 +24,7 @@ public class PanelBarrioConsulta extends JPanel {
 	private JFrame marco;
 	private PanelMenuBarrio menuBarrio;
 	private PanelDetalleBarrio detalleBarrio;
+	private JPanel panelActual;
 	
 	private JButton botonVolver;
 	
@@ -57,6 +59,7 @@ public class PanelBarrioConsulta extends JPanel {
 
 	public void crearPaneles() {
 		detalleBarrio = new PanelDetalleBarrio(marco,this);
+		panelActual = this;
 	}
 	
 	public void crearBotones() {
@@ -92,6 +95,7 @@ public class PanelBarrioConsulta extends JPanel {
 		botonModificar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
 			}
 		});
 		
@@ -105,6 +109,16 @@ public class PanelBarrioConsulta extends JPanel {
 		botonEliminar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				int eleccion = tabla.getSelectedRow();
+				
+				String nombreBarrio = (String) modelo.getValueAt(eleccion, 0);
+				
+				if(c.eliminarBarrioSeleccionado(nombreBarrio)) {
+					JOptionPane.showMessageDialog(panelActual, "Barrio borrado con éxito :)");
+				}
+				else {
+					JOptionPane.showMessageDialog(panelActual, "Hubo un error y no se pudo eliminar correctamente el registro :(");
+				}
 			}
 		});
 		

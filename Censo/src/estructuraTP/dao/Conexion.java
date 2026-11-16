@@ -187,6 +187,28 @@ public class Conexion {
 	    
 		return comuna;
 	}
+	public int conseguirIdComuna(String numeroSedeComuna) {
+		int id = 0;
+		
+		Connection c = conectar();
+		
+		String sql = "SELECT ID_Comuna FROM Comuna WHERE Numero_Comuna = ?";
+
+	    try {
+	        PreparedStatement stmt = c.prepareStatement(sql);
+	        stmt.setString(1, numeroSedeComuna);
+	        ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	        	id = rs.getInt("ID_comuna");
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+		return id;
+	}
 	
 	/*
 	*		
@@ -403,27 +425,34 @@ public class Conexion {
 		
 	}
 	
-	public int conseguirIdComuna(String numeroSedeComuna) {
-		int id = 0;
+	public boolean eliminarBarrioSeleccionado(String nombreBarrio) {
+		Connection conexion = conectar();
 		
-		Connection c = conectar();
+		String sql = "DELETE FROM barrio WHERE nombre = ?";
+		int filasAfectadas = 0;
+		try {
 		
-		String sql = "SELECT ID_Comuna FROM Comuna WHERE Numero_Comuna = ?";
+			PreparedStatement stmt = conexion.prepareStatement(sql);
 
-	    try {
-	        PreparedStatement stmt = c.prepareStatement(sql);
-	        stmt.setString(1, numeroSedeComuna);
-	        ResultSet rs = stmt.executeQuery();
+	        stmt.setString(1, nombreBarrio);
+	        
+	        filasAfectadas = stmt.executeUpdate();
 
-	        while (rs.next()) {
-	        	id = rs.getInt("ID_comuna");
-	        }
+		
+		}catch(SQLException e){
+			e.printStackTrace();
+			
+		}finally {
+			try {
+				conexion.close();
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-
-		return id;
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return filasAfectadas > 0;
 	}
 
 	/*	
