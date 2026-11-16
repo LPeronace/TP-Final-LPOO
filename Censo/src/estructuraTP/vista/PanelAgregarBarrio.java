@@ -64,12 +64,39 @@ public class PanelAgregarBarrio extends JPanel {
 	private JCheckBox checkBoxConsorcio;
 	private JCheckBox checkBoxAgua;
 
-
+	private String nombreBarrioAntiguo;
+	private boolean modoModificar = false;
+	
+	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio, String nombreBarrioAntiguo) {
+		this.marco = marco;
+		this.menuBarrio = menuBarrio;
+		this.nombreBarrioAntiguo = nombreBarrioAntiguo;
+		modoModificar = true;
+		
+		setBounds(0, 0, 750, 500);
+		setLayout(null);
+	
+		crearComboBox();
+		crearLabels();
+		crearBotones();
+		crearSpinner();
+		crearTextFields();
+		eventos();
+		
+		crearDiseñoTrazadoFormal();
+		crearDiseñoComplejos();
+		crearDiseñoUrbanizacion();
+		
+		cambiarDiseño();
+	}
+	
+	
+	
 	
 	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio) {
 		this.marco = marco;
 		this.menuBarrio = menuBarrio;
-		
+		modoModificar = false;
 		setBounds(0, 0, 750, 500);
 		setLayout(null);
 	
@@ -161,10 +188,15 @@ public class PanelAgregarBarrio extends JPanel {
 				
 				String numeroSedeComuna = (String) comboBoxComuna.getSelectedItem(); 
 				
+				
+				if(modoModificar) {
+					c.modificarBarrioElegido(b,nombreBarrioAntiguo,numeroSedeComuna);
+				}
+				else {
+					c.cargarBarrio(b, numeroSedeComuna);
+				}
+				
 				JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
-				
-				c.cargarBarrio(b, numeroSedeComuna);
-				
 			}
 		});
 		

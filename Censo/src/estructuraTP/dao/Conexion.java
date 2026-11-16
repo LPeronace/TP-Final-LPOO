@@ -65,8 +65,6 @@ public class Conexion {
 	
 	public void modificarComuna(Comuna comuna, String numeroSedeAntiguo) {
 		Connection c = conectar();
-		
-	   
 
 	    String nombre = comuna.getNombre();
 	    String numeroSede = comuna.getNumeroSede();
@@ -453,6 +451,132 @@ public class Conexion {
 		}
 		
 		return filasAfectadas > 0;
+	}
+	
+	public Barrio buscarBarrioPorNombre(String nombreBarrioAntiguo){
+		Connection c = conectar();
+		Barrio b = null;
+		
+		String nombre;
+	    float superficie;
+	    
+	    int cantMonoblock;
+	    boolean tieneConsorcio;
+	    
+	    int cantEdificios;
+	    int porcentajeAsfalto;
+	    
+	    String numLey;
+	    boolean conexionAgua;
+	    
+	    String sql = "SELECT * FROM barrio WHERE nombre = ?";
+
+	    try {
+	        PreparedStatement stmt = c.prepareStatement(sql);
+	        
+	        stmt.setString(1, nombreBarrioAntiguo);
+	        
+	        ResultSet rs = stmt.executeQuery();
+	        
+	        
+	        while(rs.next()) {
+	        	
+	        	nombre = rs.getString("nombre");
+	        	superficie = rs.getFloat("superficie");
+	        	
+	        	if(b instanceof ComplejosHabitacionales) {
+					cantMonoblock = rs.getInt("Cant_monoblock");
+					tieneConsorcio = rs.getBoolean("Macro_activo");
+					
+					ComplejosHabitacionales barrioCH = new ComplejosHabitacionales(nombre,superficie,cantMonoblock,tieneConsorcio);
+					
+					b = (Barrio) barrioCH;
+					
+				}
+				else if(b instanceof TrazadoFormal) {
+					
+					
+					cantEdificios = rs.getInt("Cant_edificios");
+					porcentajeAsfalto = rs.getInt("Porcentaje_asf");
+					
+					TrazadoFormal barrioTF = new TrazadoFormal(nombre,superficie,cantEdificios,porcentajeAsfalto);
+					
+					b = (Barrio) barrioTF;
+				}
+				else if(b instanceof UrbanizacionPlanificada) {
+					UrbanizacionPlanificada barrioUP = (UrbanizacionPlanificada) b;
+					
+					numLey = rs.getString("Nro_ley");
+					conexionAgua = rs.getBoolean("Conexion_agua");
+					
+					UrbanizacionPlanificada barrioUp = new UrbanizacionPlanificada(nombre,superficie,numLey,conexionAgua);
+					
+					
+					b = (Barrio) barrioUP;
+					
+				}
+	            
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        
+	    }		
+	    
+		return b;
+	}
+	
+	
+	public void modificarBarrioElegido(Barrio b, String nombreBarrioAntiguo, String numeroSedeComuna) {
+		Connection c = conectar();
+
+	    String nombre = b.getNombre();
+	    float superficie = b.getSuperficie();
+	    
+	    String sql = "UPDATE barrio SET Superficie_H = ?,nombre = ?,Comuna_ID_comuna = ?,"
+	    		+"Cant_monoblock = ?,Macro_activo = ?,Cant_edificios = ?,Porcentaje_asf = ?,Nro_ley = ?, Conexion_agua = ? WHERE nombre = ?;";
+
+	    try {
+	        PreparedStatement stmt = c.prepareStatement(sql);
+	        
+	        stmt.setFloat(1,superficie);
+	        stmt.setString(2,nombre);
+	        stmt.setInt(3,conseguirIdComuna(numeroSedeComuna));
+	        stmt.setString(10,nombreBarrioAntiguo);
+	        
+	        for(int i = 4;i<10;i++) {
+				stmt.setObject(i, null);
+			}
+			
+			
+			if(b instanceof ComplejosHabitacionales) {
+				ComplejosHabitacionales barrioCH = (ComplejosHabitacionales) b; 
+				
+				stmt.setInt(4, barrioCH.getCantMonoblocks());
+				stmt.setBoolean(5,barrioCH.getTieneConsorcio());
+				
+			}
+			else if(b instanceof TrazadoFormal) {
+				
+				TrazadoFormal barrioTF = (TrazadoFormal) b;
+				
+				stmt.setInt(6, barrioTF.getCantEdificios());
+				stmt.setInt(7, barrioTF.getPorcentajeAsfalto());
+			}
+			else if(b instanceof UrbanizacionPlanificada) {
+				UrbanizacionPlanificada barrioUP = (UrbanizacionPlanificada) b;
+				
+				stmt.setString(8, barrioUP.getNumLey());
+				stmt.setBoolean(9, barrioUP.getConexionAgua());
+				
+			}
+
+	        stmt.executeUpdate();
+	        
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	/*	
