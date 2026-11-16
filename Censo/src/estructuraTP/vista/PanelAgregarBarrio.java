@@ -39,6 +39,8 @@ public class PanelAgregarBarrio extends JPanel {
 	private JLabel labelAsignarComuna;
 	private JLabel labelEspecifico1;
 	private JLabel labelEspecifico2;
+	private JLabel labelNombreComuna;
+	private JLabel labelTextoNombreComuna;
 	
 	private JButton botonCargar;
 	private JButton botonVolver;
@@ -70,11 +72,11 @@ public class PanelAgregarBarrio extends JPanel {
 		
 		setBounds(0, 0, 750, 500);
 		setLayout(null);
-		
+	
+		crearComboBox();
 		crearLabels();
 		crearBotones();
 		crearSpinner();
-		crearComboBox();
 		crearTextFields();
 		eventos();
 		
@@ -87,7 +89,7 @@ public class PanelAgregarBarrio extends JPanel {
 	public void crearSpinner() {
 		spinnerSuperficie = new JSpinner();
 		spinnerSuperficie.setModel(new SpinnerNumberModel(Float.valueOf(0), Float.valueOf(0), Float.valueOf(99903), Float.valueOf(1)));
-		spinnerSuperficie.setBounds(163, 183, 107, 20);
+		spinnerSuperficie.setBounds(119, 184, 107, 17);
 		add(spinnerSuperficie);
 	}
 	
@@ -97,15 +99,15 @@ public class PanelAgregarBarrio extends JPanel {
 		add(labelTitulo);
 		
 		labelNombre = new JLabel("Nombre");
-		labelNombre.setBounds(60, 110, 83, 14);
+		labelNombre.setBounds(10, 110, 83, 14);
 		add(labelNombre);
 		
 		labelSuperficie = new JLabel("Superficie");
-		labelSuperficie.setBounds(60, 186, 93, 14);
+		labelSuperficie.setBounds(10, 186, 93, 14);
 		add(labelSuperficie);
 		
 		labelTipo = new JLabel("Tipo de Barrio");
-		labelTipo.setBounds(60, 252, 83, 14);
+		labelTipo.setBounds(10, 252, 83, 14);
 		add(labelTipo);
 		
 		labelDatosEspecificos = new JLabel("Datos Especificos");
@@ -113,7 +115,7 @@ public class PanelAgregarBarrio extends JPanel {
 		add(labelDatosEspecificos);
 	
 		labelAsignarComuna = new JLabel("Asignar Comuna");
-		labelAsignarComuna.setBounds(60, 317, 83, 14);
+		labelAsignarComuna.setBounds(10, 317, 83, 14);
 		add(labelAsignarComuna);
 		
 		labelEspecifico1 = new JLabel("Cantidad de Edificios");
@@ -123,6 +125,14 @@ public class PanelAgregarBarrio extends JPanel {
 		labelEspecifico2 = new JLabel("Porcentaje de Asfalto");
 		labelEspecifico2.setBounds(348, 186, 181, 14);
 		add(labelEspecifico2);
+		
+		labelNombreComuna = new JLabel("Nombre Comuna");
+		labelNombreComuna.setBounds(10, 356, 107, 14);
+		add(labelNombreComuna);
+
+		labelTextoNombreComuna = new JLabel(conseguirNombreComunaComboBox());
+		labelTextoNombreComuna.setBounds(119, 356, 146, 14);
+		add(labelTextoNombreComuna);
 	}
 	
 	
@@ -149,14 +159,15 @@ public class PanelAgregarBarrio extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				Barrio b = cargarBarrio();
 				
-				String nombreSedeComuna = (String) comboBoxComuna.getSelectedItem(); 
+				String numeroSedeComuna = (String) comboBoxComuna.getSelectedItem(); 
 				
 				JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
 				
-				c.cargarBarrio(b, nombreSedeComuna);
+				c.cargarBarrio(b, numeroSedeComuna);
 				
 			}
 		});
+		
 		botonVolver.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -164,7 +175,26 @@ public class PanelAgregarBarrio extends JPanel {
 			}
 		});
 		
+		comboBoxComuna.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String nombreComuna = conseguirNombreComunaComboBox();
+				
+				labelTextoNombreComuna.setText(nombreComuna);
+			}
+		});
 	}
+	
+	public String conseguirNombreComunaComboBox() {
+		String numeroSedeComuna = (String) comboBoxComuna.getSelectedItem(); 
+		
+		Comuna comunaEspecifica = c.buscarComunaEspecifica(numeroSedeComuna);
+		
+		String nombreComuna = comunaEspecifica.getNombre();
+		
+		
+		return nombreComuna;
+	}
+	
 	
 	public void cambiarTextoSpinnerEspecifico(String nombre1,String nombre2) {
 		labelEspecifico1.setText(nombre1);
@@ -174,11 +204,11 @@ public class PanelAgregarBarrio extends JPanel {
 	
 	public void crearComboBox() {
 		comboBoxTipoBarrio = new JComboBox();
-		comboBoxTipoBarrio.setBounds(163, 248, 145, 22);
+		comboBoxTipoBarrio.setBounds(119, 248, 145, 22);
 		add(comboBoxTipoBarrio);
 		
 		comboBoxComuna = new JComboBox();
-		comboBoxComuna.setBounds(163, 313, 145, 22);
+		comboBoxComuna.setBounds(119, 313, 145, 22);
 		add(comboBoxComuna);
 		
 		cargarComboBox();
@@ -186,7 +216,7 @@ public class PanelAgregarBarrio extends JPanel {
 	
 	public void crearTextFields() {
 		textFieldNombre = new JTextField();
-		textFieldNombre.setBounds(160, 107, 148, 20);
+		textFieldNombre.setBounds(119, 107, 148, 20);
 		add(textFieldNombre);
 		textFieldNombre.setColumns(10);
 		
@@ -227,7 +257,6 @@ public class PanelAgregarBarrio extends JPanel {
 		checkBoxAgua = new JCheckBox("");
 		checkBoxAgua.setBounds(555, 182, 97, 23);
 		add(checkBoxAgua);
-		
 	}
 	
 	/**
@@ -299,7 +328,7 @@ public class PanelAgregarBarrio extends JPanel {
 		comboBoxTipoBarrio.addItem("Urbanizacion Planificada");
 		
 		for(Comuna comuna: c.conseguirTodasLasComunas()) {
-			comboBoxComuna.addItem(comuna.getNombre());
+			comboBoxComuna.addItem(comuna.getNumeroSede());
 		}
 		
 	}
@@ -349,8 +378,4 @@ public class PanelAgregarBarrio extends JPanel {
 		
 		return b;
 	}
-	
-	
-	
-	
 }
