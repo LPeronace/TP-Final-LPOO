@@ -19,6 +19,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JCheckBox;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelAgregarBarrio extends JPanel {
 
@@ -37,7 +39,6 @@ public class PanelAgregarBarrio extends JPanel {
 	private JButton botonCargar;
 	
 	private JTextField textFieldNombre;
-	private JTextField textFieldSuperficie;
 	
 	private JComboBox comboBoxTipoBarrio;
 	private JComboBox comboBoxComuna;
@@ -54,6 +55,7 @@ public class PanelAgregarBarrio extends JPanel {
 	private JSpinner spinnerMonoBlocks;
 	private JCheckBox checkBoxAgua;
 	private JTextField textFieldLey;
+	private JSpinner spinnerSuperficie;
 	
 	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio) {
 		this.marco = marco;
@@ -64,6 +66,7 @@ public class PanelAgregarBarrio extends JPanel {
 		
 		crearLabels();
 		crearBotones();
+		crearSpinner();
 		crearComboBox();
 		crearTextFields();
 		eventos();
@@ -73,6 +76,12 @@ public class PanelAgregarBarrio extends JPanel {
 		crearDiseñoUrbanizacion();
 		
 		cambiarDiseño();
+	}
+	public void crearSpinner() {
+		spinnerSuperficie = new JSpinner();
+		spinnerSuperficie.setModel(new SpinnerNumberModel(Float.valueOf(0), Float.valueOf(0), Float.valueOf(100000), Float.valueOf(1)));
+		spinnerSuperficie.setBounds(163, 183, 107, 20);
+		add(spinnerSuperficie);
 	}
 	
 	public void crearLabels() {
@@ -121,9 +130,17 @@ public class PanelAgregarBarrio extends JPanel {
 		comboBoxTipoBarrio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cambiarDiseño();
-
 			}
 		});
+		
+		botonCargar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cargarBarrio();
+			}
+		});
+		
+		
 	}
 	
 	public void cambiarTextoSpinnerEspecifico(String nombre1,String nombre2) {
@@ -149,11 +166,6 @@ public class PanelAgregarBarrio extends JPanel {
 		textFieldNombre.setBounds(160, 107, 148, 20);
 		add(textFieldNombre);
 		textFieldNombre.setColumns(10);
-		
-		textFieldSuperficie = new JTextField();
-		textFieldSuperficie.setBounds(160, 183, 148, 20);
-		add(textFieldSuperficie);
-		textFieldSuperficie.setColumns(10);
 		
 	}
 	
@@ -192,9 +204,6 @@ public class PanelAgregarBarrio extends JPanel {
 		checkBoxAgua = new JCheckBox("");
 		checkBoxAgua.setBounds(555, 182, 97, 23);
 		add(checkBoxAgua);
-		
-		
-		
 		
 	}
 	
@@ -272,14 +281,53 @@ public class PanelAgregarBarrio extends JPanel {
 		
 	}
 	
-	public Barrio cargarDatos() {
-		Barrio b;
+	public Barrio cargarBarrio() {
+		Barrio b = null;
 		
-		String nombre;
-		float Superficie;
-
+		String nombre = textFieldNombre.getText();
+		float superficie = (float) spinnerSuperficie.getValue();
 		
+		int cantMonoblocks;
+		boolean tieneConsorcio;
+		
+		int cantEdificios;
+		int porcentajeAsfalto;
+		
+		String numLey; 
+		boolean conexionAgua;
+		
+		String tipo = (String) comboBoxTipoBarrio.getSelectedItem();
+		
+		switch(tipo) {
+		case "Trazado Formal":
+			
+			cantEdificios = (int) spinnerCantEdificios.getValue();
+			porcentajeAsfalto = (int) spinnerPorcentajeAsfalto.getValue();
+			
+			b = (Barrio) new TrazadoFormal(nombre,superficie,cantEdificios,porcentajeAsfalto);
+			
+			break;
+		case "Complejos Habitacionales":
+			
+			cantMonoblocks = (int) spinnerMonoBlocks.getValue();
+			tieneConsorcio = checkBoxConsorcio.isSelected();
+			
+			b = (Barrio) new ComplejosHabitacionales(nombre,superficie,cantMonoblocks,tieneConsorcio);
+			break;
+		case "Urbanizacion Planificada":
+			
+			numLey = textFieldLey.getText();
+			conexionAgua = checkBoxAgua.isSelected();
+			
+			
+			b = (Barrio) new UrbanizacionPlanificada(nombre,superficie,numLey,conexionAgua);
+			break;
+		}
 		
 		return b;
 	}
+	
+	
+	
+	
 }
