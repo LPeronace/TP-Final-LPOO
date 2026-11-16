@@ -57,7 +57,7 @@ public class PanelDetalleComuna extends JPanel {
 		tabla.setBounds(57, 122, 300, 112);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(149, 5, 452, 427);
+		scrollPane.setBounds(10, 64, 338, 123);
 		add(scrollPane);
 		
 		//Creo las columnas
