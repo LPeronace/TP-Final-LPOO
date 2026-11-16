@@ -153,88 +153,50 @@ public class Conexion {
 	}
 	
 	
-	//constructor Barrio = String nombre, float superficie
-	//complejo = String nombre, float superficie,String cantMonoblocks, boolean tieneConsorcio
-	//trazado = String nombre, float superficie,int cantEdificios, int porcentajeAsfalto
-	//urbanizacion = String nombre, float superficie,String numLey, boolean conexionAgua
-	public ArrayList<Barrio> conseguirTodosLosBarrios(){
-		ArrayList<Barrio> barrios = new ArrayList<>();
+	
+	public Comuna buscarComunaEspecifica(String numeroSede) {
 		Connection c = conectar();
-		Barrio b;
+		Comuna comuna = null;
 		
-		
-		//creo todas las variables que se van a repetir si o si
 	    String nombre;
-	    float superficie;
+	    String numeroComuna;
 	    
-	    //complejo
-	    int cantMonoblock;
-	    boolean tieneConsorcio;
-	    
-	    //trazado
-	    int porcentajeAsf;
-	    int cantEdificios;
-	    
-	    //urbanizacion
-	    String numLey;
-	    boolean conexionAgua;
-	    
-	    //booleanos para comprobar si es nulo o no el itpo de barrio
-	    boolean esComplejo;
-	    boolean esTrazadoFormal;
-	    
-	    String sql = "SELECT * FROM barrio";
-	    
+	    String sql = "SELECT * FROM comuna WHERE Numero_Comuna = ?";
+
 	    try {
 	        PreparedStatement stmt = c.prepareStatement(sql);
+	        
+	        stmt.setString(1, numeroSede);
+	        
 	        ResultSet rs = stmt.executeQuery();
-
-	        while (rs.next()) {
-	        	
-	        	//consigo las variables que si o si se repiten
-	        	nombre = rs.getString("nombre");
-	        	superficie = rs.getFloat("Superficie_H");
-	        	
-	        	cantMonoblock = rs.getInt("Cant_monoblock");
-	        	tieneConsorcio = rs.getBoolean("Macro_activo");
-	        	
-	        	//Comprueba si el último campo leido es nulo o no
-	        	esComplejo = !rs.wasNull();
 	        
 	        
-	        	porcentajeAsf = rs.getInt("Porcentaje_asf");
-	        	cantEdificios = rs.getInt("Cant_edificios");
+	        while(rs.next()) {
 	        	
-	        	//ve si es trazado formal o no
-	        	esTrazadoFormal = !rs.wasNull();
+	        	nombre = rs.getString("Nombre_sede");
+	        	numeroComuna = rs.getString("Numero_Comuna");
 	        	
-	        	//directamente agarra los datos de urbanización
-	        	numLey = rs.getString("Nro_ley"); 
-	        	conexionAgua = rs.getBoolean("Conexion_agua");
-	        	
-	        	
-	        	if(esComplejo) {
-	        		b = (Barrio) new ComplejosHabitacionales(nombre,superficie, cantMonoblock,tieneConsorcio);
-	        	}
-	        	else if(esTrazadoFormal) {
-	        		b = (Barrio) new TrazadoFormal(nombre,superficie,cantEdificios, porcentajeAsf);
-	        	}
-	        	else {
-	        		b = (Barrio) new UrbanizacionPlanificada(nombre,superficie,numLey,conexionAgua);
-	        	}
-	        	
-	        	barrios.add(b);
+	        	comuna = new Comuna(nombre,numeroComuna);
+	            
 	        }
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    }
-
-		
-		
-		return barrios;
+	        
+	    }		
+	    
+		return comuna;
 	}
 	
+	/*
+	*		
+	*			ASOCIAR COMUNA CON BARRIOS
+	*
+	*
+	*
+	*/
+	
+
 	public ArrayList<Comuna> asociarComunasConBarrios(){
 		ArrayList<Comuna> comunas = conseguirTodasLasComunas();
 		ArrayList<Barrio> barrios = conseguirTodosLosBarrios();
@@ -288,37 +250,107 @@ public class Conexion {
 		return comunas;
 	}
 	
-	public Comuna buscarComunaEspecifica(String numeroSede) {
+	/*
+	*
+	*										BARRIOS
+	*
+	*
+	*/
+	
+	//constructor Barrio = String nombre, float superficie
+		//complejo = String nombre, float superficie,String cantMonoblocks, boolean tieneConsorcio
+		//trazado = String nombre, float superficie,int cantEdificios, int porcentajeAsfalto
+		//urbanizacion = String nombre, float superficie,String numLey, boolean conexionAgua
+	public ArrayList<Barrio> conseguirTodosLosBarrios(){
+		ArrayList<Barrio> barrios = new ArrayList<>();
 		Connection c = conectar();
-		Comuna comuna = null;
+		Barrio b;
+			
+			
+		//creo todas las variables que se van a repetir si o si
+		String nombre;
+		float superficie;
+		    
+		//complejo
+		int cantMonoblock;
+		boolean tieneConsorcio;
+		    
+		//trazado
+		int porcentajeAsf;
+		int cantEdificios;
+		    
+		//urbanizacion
+		String numLey;
+		boolean conexionAgua;
 		
-	    String nombre;
-	    String numeroComuna;
-	    
-	    String sql = "SELECT * FROM comuna WHERE Numero_Comuna = ?";
+		//booleanos para comprobar si es nulo o no el itpo de barrio
+		boolean esComplejo;
+		boolean esTrazadoFormal;
+		
+		String sql = "SELECT * FROM barrio";
+		
+		try {
+			PreparedStatement stmt = c.prepareStatement(sql);		 ResultSet rs = stmt.executeQuery();
+			
+		 while (rs.next()) 
+		 {
+			   	 	
+		   //consigo las variables que si o si se repiten
+		   nombre = rs.getString("nombre");
+		   superficie = rs.getFloat("Superficie_H");
+		   	
+		   cantMonoblock = rs.getInt("Cant_monoblock");
+		   tieneConsorcio = rs.getBoolean("Macro_activo");
+		   		 	
+		   //Comprueba si el último campo leido es nulo o no
+		   esComplejo = !rs.wasNull();
+		        
+		        
+		   porcentajeAsf = rs.getInt("Porcentaje_asf");
+		   cantEdificios = rs.getInt("Cant_edificios");
+		        	
+		   //ve si es trazado formal o no
+		   esTrazadoFormal = !rs.wasNull();
+		        	
+		   //directamente agarra los datos de urbanización
+		   numLey = rs.getString("Nro_ley"); 
+		   conexionAgua = rs.getBoolean("Conexion_agua");
+		        	
+		        	
+		   if(esComplejo) 
+		   {
+			   b = (Barrio) new ComplejosHabitacionales(nombre,superficie, cantMonoblock,tieneConsorcio);
+		   }
+		   else if(esTrazadoFormal) {
+			   b = (Barrio) new TrazadoFormal(nombre,superficie,cantEdificios, porcentajeAsf);
+		   }
+		   else {
+			   b = (Barrio) new UrbanizacionPlanificada(nombre,superficie,numLey,conexionAgua);
+		   }
+		        	
+		   barrios.add(b);
+		  }
 
-	    try {
-	        PreparedStatement stmt = c.prepareStatement(sql);
-	        
-	        stmt.setString(1, numeroSede);
-	        
-	        ResultSet rs = stmt.executeQuery();
-	        
-	        
-	        while(rs.next()) {
-	        	
-	        	nombre = rs.getString("Nombre_sede");
-	        	numeroComuna = rs.getString("Numero_Comuna");
-	        	
-	        	comuna = new Comuna(nombre,numeroComuna);
-	            
-	        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        
-	    }		
-	    
-		return comuna;
+			
+			
+		return barrios;
 	}
+		
+	/*	
+	*
+	*									PERSONAS
+	*
+	*
+	*
+	*/
+		
+		
+		
+		
+		
+		
 }
