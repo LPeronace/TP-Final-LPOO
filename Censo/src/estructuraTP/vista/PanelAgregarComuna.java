@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import estructuraTP.dao.Conexion;
+import estructuraTP.dao.DaoComuna;
 import estructuraTP.modelo.Comuna;
 
 import javax.swing.JButton;
@@ -20,6 +21,9 @@ public class PanelAgregarComuna extends JPanel {
 	private JTextField textFieldNombre;
 	private JTextField textFieldNumeroSede;
 	
+	private Conexion c = new Conexion();
+	private DaoComuna conexionComuna = new DaoComuna(c);
+	
 	private JLabel labelTitulo;
 	private JLabel labelNombre;
 	private JLabel labelNumeroSede;
@@ -33,7 +37,7 @@ public class PanelAgregarComuna extends JPanel {
 	
 	private String numeroSedeAntiguo;
 	private boolean modoModificar;
-	private Conexion c = new Conexion();
+
 	
 	public PanelAgregarComuna(JFrame marco, PanelMenuComuna panelMenuComuna,String numeroSedeAntiguo) {
 		this.marco = marco;
@@ -112,12 +116,12 @@ public class PanelAgregarComuna extends JPanel {
 					
 					JOptionPane.showMessageDialog(panelActual, "Modificado con exito!!!");
 					
-					c.modificarComuna(conseguirDatos(),numeroSedeAntiguo);
+					conexionComuna.modificarComuna(conseguirDatos(),numeroSedeAntiguo);
 				}
 				else {
 					JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
 					
-					c.cargarComuna(conseguirDatos());
+					conexionComuna.cargarComuna(conseguirDatos());
 				}
 				
 			}
@@ -132,7 +136,7 @@ public class PanelAgregarComuna extends JPanel {
 	}
 	
 	public void rellenarCampos() {
-		Comuna comuna = c.buscarComunaEspecifica(numeroSedeAntiguo);
+		Comuna comuna = conexionComuna.buscarComunaEspecifica(numeroSedeAntiguo);
 		
 		textFieldNombre.setText(comuna.getNombre());
 		

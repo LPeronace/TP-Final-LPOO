@@ -8,6 +8,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import estructuraTP.dao.Conexion;
+import estructuraTP.dao.DaoBarrio;
 import estructuraTP.modelo.Barrio;
 import estructuraTP.modelo.ComplejosHabitacionales;
 import estructuraTP.modelo.Comuna;
@@ -28,6 +29,9 @@ public class PanelBarrioConsulta extends JPanel {
 	private PanelAgregarBarrio agregar; 
 	private PanelBarrioConsulta consulta;
 	
+	private Conexion c = new Conexion();
+	private DaoBarrio conexionBarrio = new DaoBarrio(c);
+	
 	private JButton botonVolver;
 	
 	private JScrollPane scrollPane;
@@ -38,7 +42,6 @@ public class PanelBarrioConsulta extends JPanel {
 	
 	private Object[] columnas;
 	
-	private Conexion c = new Conexion();
 	
 	private JButton botonEliminar;
 	private JButton botonModificar;
@@ -116,7 +119,7 @@ public class PanelBarrioConsulta extends JPanel {
 				
 				String nombreBarrio = (String) modelo.getValueAt(eleccion,0);
 				
-				Barrio barrioEspecifico = c.buscarBarrioPorNombre(nombreBarrio);
+				Barrio barrioEspecifico = conexionBarrio.buscarBarrioPorNombre(nombreBarrio);
 				
 				
 				detalleBarrio = new PanelDetalleBarrio(marco,consulta,barrioEspecifico);
@@ -131,7 +134,7 @@ public class PanelBarrioConsulta extends JPanel {
 				
 				String nombreBarrio = (String) modelo.getValueAt(eleccion, 0);
 				
-				if(c.eliminarBarrioSeleccionado(nombreBarrio)) {
+				if(conexionBarrio.eliminarBarrioSeleccionado(nombreBarrio)) {
 					JOptionPane.showMessageDialog(panelActual, "Barrio borrado con éxito :)");
 				}
 				else {
@@ -176,7 +179,7 @@ public class PanelBarrioConsulta extends JPanel {
 		String nombre;
 		float superficie;
 		
-		for(Barrio b: c.conseguirTodosLosBarrios()) {
+		for(Barrio b: conexionBarrio.conseguirTodosLosBarrios()) {
 			nombre = b.getNombre();
 			superficie = b.getSuperficie();
 			

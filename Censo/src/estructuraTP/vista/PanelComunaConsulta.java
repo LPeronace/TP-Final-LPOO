@@ -6,6 +6,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import estructuraTP.dao.Conexion;
+import estructuraTP.dao.DaoComuna;
+import estructuraTP.dao.Sentencia;
 import estructuraTP.modelo.Barrio;
 import estructuraTP.modelo.Comuna;
 
@@ -29,6 +31,9 @@ public class PanelComunaConsulta extends JPanel {
 	
 	private JTable tabla;
 	
+	private Sentencia sentencia = new Sentencia();
+
+	
 	private DefaultTableModel modelo;
 	
 	private JButton botonVolver;
@@ -44,8 +49,7 @@ public class PanelComunaConsulta extends JPanel {
 	private PanelComunaConsulta consulta;
 	private PanelAgregarComuna agregar;
 	private Comuna comuna = new Comuna();
-	
-	private Conexion c = new Conexion();
+
 	
 	private Object[] columnas;
 	
@@ -144,7 +148,7 @@ public class PanelComunaConsulta extends JPanel {
 				//Esto porque retorna -1 si no selecciono nada o no hay algo q nosotros carguemos como seleccionado//
 				if(eleccionBorrado != -1) {
 					//devuelve booleano si se pudo borrar
-					if(!c.eliminarComunaSeleccionada(numeroSede)) {
+					if(!sentencia.conexionComuna.eliminarComunaSeleccionada(numeroSede)) {
 						JOptionPane.showMessageDialog(panelActual, "El panel cuenta con barrios asignados, primero modifique eso");
 					}
 					else {
@@ -204,7 +208,7 @@ public class PanelComunaConsulta extends JPanel {
 	}
 	public void actualizarTabla() {
 		modelo.setRowCount(0); 
-		for(Comuna com: c.asociarComunasConBarrios()) {
+		for(Comuna com: sentencia.conexionComuna.asociarComunasConBarrios()) {
 			
 			modelo.addRow(new Object[] {com.getNombre(),com.getNumeroSede(), com.getCantidadBarrio()});
 		

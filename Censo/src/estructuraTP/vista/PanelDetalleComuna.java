@@ -7,6 +7,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import estructuraTP.dao.Conexion;
+import estructuraTP.dao.Sentencia;
 import estructuraTP.modelo.Barrio;
 import estructuraTP.modelo.ComplejosHabitacionales;
 import estructuraTP.modelo.Comuna;
@@ -30,7 +31,7 @@ public class PanelDetalleComuna extends JPanel {
 	
 	private Object[] columnas;
 	
-	private Conexion c = new Conexion();
+	private Sentencia sentencia = new Sentencia();
 	
 	private String numeroSedeSeleccionada;
 	
@@ -92,7 +93,7 @@ public class PanelDetalleComuna extends JPanel {
 	public void actualizarTabla() {
 		modelo.setRowCount(0); 
 		String nombre;
-		for(Comuna com: c.asociarComunasConBarrios()) {
+		for(Comuna com: sentencia.conexionComuna.asociarComunasConBarrios()) {
 			
 			if(com.getNumeroSede().equals(numeroSedeSeleccionada)) {
 				

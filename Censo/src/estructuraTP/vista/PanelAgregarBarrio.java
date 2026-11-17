@@ -8,6 +8,9 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 import estructuraTP.dao.Conexion;
+import estructuraTP.dao.DaoBarrio;
+import estructuraTP.dao.DaoComuna;
+import estructuraTP.dao.Sentencia;
 import estructuraTP.modelo.Barrio;
 import estructuraTP.modelo.ComplejosHabitacionales;
 import estructuraTP.modelo.Comuna;
@@ -29,6 +32,7 @@ public class PanelAgregarBarrio extends JPanel {
 	
 	private JFrame marco;
 	
+	private Sentencia sentencia = new Sentencia();
 	private PanelMenuBarrio menuBarrio;
 	
 	private JLabel labelTitulo;
@@ -52,7 +56,6 @@ public class PanelAgregarBarrio extends JPanel {
 	private JComboBox comboBoxTipoBarrio;
 	private JComboBox comboBoxComuna;
 	
-	private Conexion c = new Conexion();
 
 	private JPanel panelActual = this;
 	
@@ -190,10 +193,10 @@ public class PanelAgregarBarrio extends JPanel {
 				
 				
 				if(modoModificar) {
-					c.modificarBarrioElegido(b,nombreBarrioAntiguo,numeroSedeComuna);
+					sentencia.conexionBarrio.modificarBarrioElegido(b,nombreBarrioAntiguo,numeroSedeComuna);
 				}
 				else {
-					c.cargarBarrio(b, numeroSedeComuna);
+					sentencia.conexionBarrio.cargarBarrio(b, numeroSedeComuna);
 				}
 				
 				JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
@@ -219,7 +222,7 @@ public class PanelAgregarBarrio extends JPanel {
 	public String conseguirNombreComunaComboBox() {
 		String numeroSedeComuna = (String) comboBoxComuna.getSelectedItem(); 
 		
-		Comuna comunaEspecifica = c.buscarComunaEspecifica(numeroSedeComuna);
+		Comuna comunaEspecifica = sentencia.conexionComuna.buscarComunaEspecifica(numeroSedeComuna);
 		
 		String nombreComuna = comunaEspecifica.getNombre();
 		
@@ -359,7 +362,7 @@ public class PanelAgregarBarrio extends JPanel {
 		comboBoxTipoBarrio.addItem("Complejos Habitacionales");
 		comboBoxTipoBarrio.addItem("Urbanizacion Planificada");
 		
-		for(Comuna comuna: c.conseguirTodasLasComunas()) {
+		for(Comuna comuna: sentencia.conexionComuna.conseguirTodasLasComunas()) {
 			comboBoxComuna.addItem(comuna.getNumeroSede());
 		}
 		
