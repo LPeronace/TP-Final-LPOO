@@ -26,6 +26,7 @@ public class PanelBarrioConsulta extends JPanel {
 	private PanelDetalleBarrio detalleBarrio;
 	private JPanel panelActual;
 	private PanelAgregarBarrio agregar; 
+	private PanelBarrioConsulta consulta;
 	
 	private JButton botonVolver;
 	
@@ -59,8 +60,8 @@ public class PanelBarrioConsulta extends JPanel {
 	}
 
 	public void crearPaneles() {
-		detalleBarrio = new PanelDetalleBarrio(marco,this);
 		panelActual = this;
+		consulta = this;
 	}
 	
 	public void crearBotones() {
@@ -110,6 +111,15 @@ public class PanelBarrioConsulta extends JPanel {
 		botonVerDetalle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
+				int eleccion = tabla.getSelectedRow();
+				
+				String nombreBarrio = (String) modelo.getValueAt(eleccion,0);
+				
+				Barrio barrioEspecifico = c.buscarBarrioPorNombre(nombreBarrio);
+				
+				
+				detalleBarrio = new PanelDetalleBarrio(marco,consulta,barrioEspecifico);
 				marco.setContentPane(detalleBarrio);
 			}
 		});

@@ -310,7 +310,7 @@ public class Conexion {
 		String sql = "SELECT * FROM barrio";
 		
 		try {
-			PreparedStatement stmt = c.prepareStatement(sql);		 ResultSet rs = stmt.executeQuery();
+		 PreparedStatement stmt = c.prepareStatement(sql);		 ResultSet rs = stmt.executeQuery();
 			
 		 while (rs.next()) 
 		 {
@@ -355,8 +355,6 @@ public class Conexion {
 			e.printStackTrace();
 		}
 
-			
-			
 		return barrios;
 	}
 		
@@ -464,11 +462,13 @@ public class Conexion {
 	    boolean tieneConsorcio;
 	    
 	    int cantEdificios;
-	    int porcentajeAsfalto;
+	    int porcentajeAsf;
 	    
 	    String numLey;
 	    boolean conexionAgua;
 	    
+	    boolean esComplejo;
+	    boolean esTrazadoFormal;
 	    String sql = "SELECT * FROM barrio WHERE nombre = ?";
 
 	    try {
@@ -480,41 +480,40 @@ public class Conexion {
 	        
 	        
 	        while(rs.next()) {
-	        	
-	        	nombre = rs.getString("nombre");
-	        	superficie = rs.getFloat("superficie");
-	        	
-	        	if(b instanceof ComplejosHabitacionales) {
-					cantMonoblock = rs.getInt("Cant_monoblock");
-					tieneConsorcio = rs.getBoolean("Macro_activo");
-					
-					ComplejosHabitacionales barrioCH = new ComplejosHabitacionales(nombre,superficie,cantMonoblock,tieneConsorcio);
-					
-					b = (Barrio) barrioCH;
-					
-				}
-				else if(b instanceof TrazadoFormal) {
-					
-					
-					cantEdificios = rs.getInt("Cant_edificios");
-					porcentajeAsfalto = rs.getInt("Porcentaje_asf");
-					
-					TrazadoFormal barrioTF = new TrazadoFormal(nombre,superficie,cantEdificios,porcentajeAsfalto);
-					
-					b = (Barrio) barrioTF;
-				}
-				else if(b instanceof UrbanizacionPlanificada) {
-					UrbanizacionPlanificada barrioUP = (UrbanizacionPlanificada) b;
-					
-					numLey = rs.getString("Nro_ley");
-					conexionAgua = rs.getBoolean("Conexion_agua");
-					
-					UrbanizacionPlanificada barrioUp = new UrbanizacionPlanificada(nombre,superficie,numLey,conexionAgua);
-					
-					
-					b = (Barrio) barrioUP;
-					
-				}
+	       	 	
+	 		   //consigo las variables que si o si se repiten
+	 		   nombre = rs.getString("nombre");
+	 		   superficie = rs.getFloat("Superficie_H");
+	 		   	
+	 		   cantMonoblock = rs.getInt("Cant_monoblock");
+	 		   tieneConsorcio = rs.getBoolean("Macro_activo");
+	 		   		 	
+	 		   //Comprueba si el último campo leido es nulo o no
+	 		   esComplejo = !rs.wasNull();
+	 		        
+	 		        
+	 		   porcentajeAsf = rs.getInt("Porcentaje_asf");
+	 		   cantEdificios = rs.getInt("Cant_edificios");
+	 		        	
+	 		   //ve si es trazado formal o no
+	 		   esTrazadoFormal = !rs.wasNull();
+	 		        	
+	 		   //directamente agarra los datos de urbanización
+	 		   numLey = rs.getString("Nro_ley"); 
+	 		   conexionAgua = rs.getBoolean("Conexion_agua");
+	 		        	
+	 		        	
+	 		   if(esComplejo) 
+	 		   {
+	 			   b = (Barrio) new ComplejosHabitacionales(nombre,superficie, cantMonoblock,tieneConsorcio);
+	 		   }
+	 		   else if(esTrazadoFormal) {
+	 			   b = (Barrio) new TrazadoFormal(nombre,superficie,cantEdificios, porcentajeAsf);
+	 		   }
+	 		   else {
+	 			   b = (Barrio) new UrbanizacionPlanificada(nombre,superficie,numLey,conexionAgua);
+	 		   }
+
 	            
 	        }
 
@@ -586,10 +585,6 @@ public class Conexion {
 	*
 	*
 	*/
-		
-		
-		
-		
-		
+
 		
 }
