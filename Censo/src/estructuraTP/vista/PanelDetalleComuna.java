@@ -50,6 +50,7 @@ public class PanelDetalleComuna extends JPanel {
 		crearTablaCompleta();
 		crearBoton();
 		accionBoton();
+		actualizarTabla();
 	}
 
 	public void crearTablaCompleta() {

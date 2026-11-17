@@ -71,7 +71,7 @@ public class PanelComunaConsulta extends JPanel {
 		crearTablaCompleta();
 		crearBotones();
 		accionBotones();
-		
+		actualizarTabla();
 	}
 	public void crearPaneles() {
 		consulta = this;
@@ -121,6 +121,7 @@ public class PanelComunaConsulta extends JPanel {
 				if(eleccion != -1) {
 					detalleComuna = new PanelDetalleComuna(marco,numeroSede, consulta);
 					
+					detalleComuna.actualizarTabla();
 					marco.setContentPane(detalleComuna);
 				}
 				else {
@@ -204,7 +205,6 @@ public class PanelComunaConsulta extends JPanel {
 		scrollPane.setViewportView(tabla);
 		
 		//cargo todas las comunas que encontre en la base de datos
-		actualizarTabla();	
 	}
 	public void actualizarTabla() {
 		modelo.setRowCount(0); 

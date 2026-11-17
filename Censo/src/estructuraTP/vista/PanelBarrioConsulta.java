@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 
 import estructuraTP.dao.Conexion;
 import estructuraTP.dao.DaoBarrio;
+import estructuraTP.dao.Sentencia;
 import estructuraTP.modelo.Barrio;
 import estructuraTP.modelo.ComplejosHabitacionales;
 import estructuraTP.modelo.Comuna;
@@ -29,8 +30,7 @@ public class PanelBarrioConsulta extends JPanel {
 	private PanelAgregarBarrio agregar; 
 	private PanelBarrioConsulta consulta;
 	
-	private Conexion c = new Conexion();
-	private DaoBarrio conexionBarrio = new DaoBarrio(c);
+	private Sentencia sentencia = new Sentencia();
 	
 	private JButton botonVolver;
 	
@@ -59,7 +59,7 @@ public class PanelBarrioConsulta extends JPanel {
 		accionBotones();
 		crearTabla();
 		crearPaneles();
-	
+		actualizarTabla();
 	}
 
 	public void crearPaneles() {
@@ -119,10 +119,11 @@ public class PanelBarrioConsulta extends JPanel {
 				
 				String nombreBarrio = (String) modelo.getValueAt(eleccion,0);
 				
-				Barrio barrioEspecifico = conexionBarrio.buscarBarrioPorNombre(nombreBarrio);
-				
+				Barrio barrioEspecifico = sentencia.conexionBarrio.buscarBarrioPorNombre(nombreBarrio);
 				
 				detalleBarrio = new PanelDetalleBarrio(marco,consulta,barrioEspecifico);
+				
+				detalleBarrio.actualizarTabla(nombreBarrio);
 				marco.setContentPane(detalleBarrio);
 			}
 		});
@@ -134,7 +135,7 @@ public class PanelBarrioConsulta extends JPanel {
 				
 				String nombreBarrio = (String) modelo.getValueAt(eleccion, 0);
 				
-				if(conexionBarrio.eliminarBarrioSeleccionado(nombreBarrio)) {
+				if(sentencia.conexionBarrio.eliminarBarrioSeleccionado(nombreBarrio)) {
 					JOptionPane.showMessageDialog(panelActual, "Barrio borrado con éxito :)");
 				}
 				else {
@@ -171,7 +172,6 @@ public class PanelBarrioConsulta extends JPanel {
 		scrollPane.setViewportView(tabla);
 		
 		//cargo todos los datos que encontre en la base de datos
-		actualizarTabla();
 	}
 	
 	public void actualizarTabla() {
@@ -179,7 +179,7 @@ public class PanelBarrioConsulta extends JPanel {
 		String nombre;
 		float superficie;
 		
-		for(Barrio b: conexionBarrio.conseguirTodosLosBarrios()) {
+		for(Barrio b: sentencia.conexionBarrio.conseguirTodosLosBarrios()) {
 			nombre = b.getNombre();
 			superficie = b.getSuperficie();
 			

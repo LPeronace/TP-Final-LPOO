@@ -11,14 +11,17 @@ import estructuraTP.modelo.Comuna;
 
 public class DaoComuna {
 	private Conexion conex;
-	private Sentencia sentencia = new Sentencia();
+	private DaoBarrio conexionBarrio;
+	
 	public DaoComuna(Conexion conex) {
 		this.conex = conex;
+		conexionBarrio = new DaoBarrio(conex,this);
 	}
 	
 	public void cargarComuna(Comuna c) {
 		Connection conexion = conex.conectar();
 		
+		System.out.println();
 		String sql = "INSERT INTO comuna(Nombre_Sede,Numero_Comuna)VALUES(?,?)";
 		
 		try {
@@ -28,6 +31,8 @@ public class DaoComuna {
 			stmt.setString(2, c.getNumeroSede());
 			
 			stmt.executeUpdate();
+			
+			
 			
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -64,7 +69,8 @@ public class DaoComuna {
 	        
 	        stmt.executeUpdate();
 	        
-
+	        stmt.close();
+	        c.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -75,13 +81,14 @@ public class DaoComuna {
 		Connection conexion = conex.conectar();
 		String sql = "DELETE FROM comuna where Numero_Comuna = ?";
 		int filasAfectadas = 0;
-		try {
+		try{
 		
 			PreparedStatement stmt = conexion.prepareStatement(sql);
 
 	        stmt.setString(1, numeroSede);
 	        
 	        filasAfectadas = stmt.executeUpdate();
+	        
 
 		
 		}catch(SQLException e){
@@ -122,8 +129,12 @@ public class DaoComuna {
 	            Comuna comuna = new Comuna(nombre,numeroComuna);
 	            
 	            comunas.add(comuna);
+	            
+	            
 	        }
-
+	        stmt.close();
+	        c.close();
+	        rs.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -190,8 +201,8 @@ public class DaoComuna {
 	}
 	
 	public ArrayList<Comuna> asociarComunasConBarrios(){
-		ArrayList<Comuna> comunas = sentencia.conexionComuna.conseguirTodasLasComunas();
-		ArrayList<Barrio> barrios = sentencia.conexionBarrio.conseguirTodosLosBarrios();
+		ArrayList<Comuna> comunas = conseguirTodasLasComunas();
+		ArrayList<Barrio> barrios = conexionBarrio.conseguirTodosLosBarrios();
 	
 			
 		Connection c = conex.conectar();

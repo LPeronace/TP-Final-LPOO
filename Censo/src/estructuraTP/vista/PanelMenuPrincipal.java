@@ -17,8 +17,11 @@ public class PanelMenuPrincipal extends JPanel {
 	private JButton botonComuna;
 	private JButton botonPersona;
 	private JButton botonBarrio;
+	
 	private JLabel labelTitulo;
+	
 	private JFrame marco;
+	
 	private JPanel PanelMenuPersona;
 	private JPanel PanelMenuBarrio; 
 	private JPanel PanelMenuComuna;
@@ -32,8 +35,6 @@ public class PanelMenuPrincipal extends JPanel {
 		crearLabel();
 		crearBotones();
 		eventoBotones();
-		
-
 		
 	}
 	

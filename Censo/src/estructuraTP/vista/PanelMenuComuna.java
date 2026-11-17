@@ -70,6 +70,7 @@ public class PanelMenuComuna extends JPanel {
 		botonConsultar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				PanelConsultar.actualizarTabla();
 				marco.setContentPane(PanelConsultar);
 			}
 		});

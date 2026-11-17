@@ -7,6 +7,7 @@ import javax.swing.JTextField;
 
 import estructuraTP.dao.Conexion;
 import estructuraTP.dao.DaoComuna;
+import estructuraTP.dao.Sentencia;
 import estructuraTP.modelo.Comuna;
 
 import javax.swing.JButton;
@@ -21,8 +22,8 @@ public class PanelAgregarComuna extends JPanel {
 	private JTextField textFieldNombre;
 	private JTextField textFieldNumeroSede;
 	
-	private Conexion c = new Conexion();
-	private DaoComuna conexionComuna = new DaoComuna(c);
+	private Sentencia sentencia = new Sentencia();
+
 	
 	private JLabel labelTitulo;
 	private JLabel labelNombre;
@@ -116,12 +117,12 @@ public class PanelAgregarComuna extends JPanel {
 					
 					JOptionPane.showMessageDialog(panelActual, "Modificado con exito!!!");
 					
-					conexionComuna.modificarComuna(conseguirDatos(),numeroSedeAntiguo);
+					sentencia.conexionComuna.modificarComuna(conseguirDatos(),numeroSedeAntiguo);
 				}
 				else {
 					JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
 					
-					conexionComuna.cargarComuna(conseguirDatos());
+					sentencia.conexionComuna.cargarComuna(conseguirDatos());
 				}
 				
 			}
@@ -136,7 +137,7 @@ public class PanelAgregarComuna extends JPanel {
 	}
 	
 	public void rellenarCampos() {
-		Comuna comuna = conexionComuna.buscarComunaEspecifica(numeroSedeAntiguo);
+		Comuna comuna = sentencia.conexionComuna.buscarComunaEspecifica(numeroSedeAntiguo);
 		
 		textFieldNombre.setText(comuna.getNombre());
 		

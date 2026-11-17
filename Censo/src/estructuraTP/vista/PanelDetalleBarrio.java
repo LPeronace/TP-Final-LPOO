@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 
 import estructuraTP.dao.Conexion;
 import estructuraTP.dao.DaoBarrio;
+import estructuraTP.dao.Sentencia;
 import estructuraTP.modelo.Barrio;
 import estructuraTP.modelo.ComplejosHabitacionales;
 import estructuraTP.modelo.TrazadoFormal;
@@ -24,8 +25,7 @@ public class PanelDetalleBarrio extends JPanel {
 	private JFrame marco;
 	private PanelBarrioConsulta barrioConsulta;
 	
-	private Conexion c = new Conexion();
-	private DaoBarrio conexionBarrio = new DaoBarrio(c);
+	private Sentencia sentencia = new Sentencia();
 	
 	private JButton botonVolver;
 	
@@ -128,7 +128,7 @@ public class PanelDetalleBarrio extends JPanel {
 	    boolean conexionAgua;
 	    
 		
-		for(Barrio b: conexionBarrio.conseguirTodosLosBarrios()) {
+		for(Barrio b: sentencia.conexionBarrio.conseguirTodosLosBarrios()) {
 			if(b.getNombre().equals(nombreBarrioActualizar)) {
 				nombre = b.getNombre();
 				superficie = b.getSuperficie();

@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
+import javax.swing.JTextField;
 
 public class PanelAgregarPersona extends JPanel {
 
@@ -35,6 +36,8 @@ public class PanelAgregarPersona extends JPanel {
 	
 	private JSpinner spinnerDia;
 	private JSpinner spinnerAño;
+	private JTextField textField;
+	private JTextField textField_1;
 	
 	public PanelAgregarPersona(JFrame marco, PanelMenuPersona menuPersona) {
 		this.marco = marco;
@@ -53,7 +56,7 @@ public class PanelAgregarPersona extends JPanel {
 	
 	public void crearLabels() {
 		labelTitulo = new JLabel("Agregar Personas");
-		labelTitulo.setBounds(314, 11, 151, 14);
+		labelTitulo.setBounds(270, 11, 195, 14);
 		add(labelTitulo);
 	}
 	
@@ -79,8 +82,26 @@ public class PanelAgregarPersona extends JPanel {
 	}
 	public void crearComboBox() {
 		comboBoxMes = new JComboBox();
-		comboBoxMes.setBounds(294, 135, 74, 20);
+		comboBoxMes.setBounds(222, 310, 74, 20);
 		add(comboBoxMes);
+		
+		JLabel lblNewLabel = new JLabel("Ingrese DNI");
+		lblNewLabel.setBounds(22, 81, 74, 14);
+		add(lblNewLabel);
+		
+		textField = new JTextField();
+		textField.setBounds(22, 106, 86, 20);
+		add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblIngreseNombre = new JLabel("Ingrese Nombre");
+		lblIngreseNombre.setBounds(22, 141, 89, 14);
+		add(lblIngreseNombre);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(22, 166, 86, 20);
+		add(textField_1);
 		
 		for(Meses m:m.values()) {
 			comboBoxMes.addItem(m);
@@ -92,12 +113,12 @@ public class PanelAgregarPersona extends JPanel {
 	public void crearSpinner() {
 		spinnerDia = new JSpinner();
 		spinnerDia.setModel(new SpinnerNumberModel(1, 1, 31, 1));
-		spinnerDia.setBounds(209, 135, 52, 20);
+		spinnerDia.setBounds(222, 260, 52, 20);
 		add(spinnerDia);
 		
 		spinnerAño = new JSpinner();
 		spinnerAño.setModel(new SpinnerNumberModel(1915, 1915, 2026, 1));
-		spinnerAño.setBounds(401, 135, 58, 20);
+		spinnerAño.setBounds(222, 361, 58, 20);
 		add(spinnerAño);
 		
 	}
@@ -119,5 +140,4 @@ public class PanelAgregarPersona extends JPanel {
 		
 		return p;
 	}
-	
 }

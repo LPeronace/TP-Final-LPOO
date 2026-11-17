@@ -10,12 +10,9 @@ public final class ComplejosHabitacionales extends Barrio{
 		this.tieneConsorcio = tieneConsorcio;
 	}
 	
-	
 	@Override
 	public float calcularDensidad() {
 		float densidad = getPersonas().size() /  cantMonoblocks;
-		
-		
 		
 		return densidad;
 	}

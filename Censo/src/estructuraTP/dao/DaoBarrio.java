@@ -12,14 +12,12 @@ import estructuraTP.modelo.TrazadoFormal;
 import estructuraTP.modelo.UrbanizacionPlanificada;
 
 public class DaoBarrio {
-	private Sentencia sentencia = new Sentencia();
 	private Conexion conex;
-	private DaoComuna conexionComuna = new DaoComuna(conex);
+	private DaoComuna conexionComuna;
 	
-	
-	
-	public DaoBarrio(Conexion conex) {
+	public DaoBarrio(Conexion conex, DaoComuna conexionComuna) {
 		this.conex = conex;
+		this.conexionComuna = conexionComuna;
 	}
 	
 	

@@ -88,6 +88,7 @@ public class PanelMenuBarrio extends JPanel {
 		botonConsultar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				consultar.actualizarTabla();
 				marco.setContentPane(consultar);
 			}
 		});
