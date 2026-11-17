@@ -28,17 +28,24 @@ public class PanelAgregarPersona extends JPanel {
 	private PanelMenuPersona menuPersona;
 	
 	private JLabel labelTitulo;
-	
+	private JLabel labelNombre;
+	private JLabel labelDNI;
+	private JLabel labelApellido;
+	private JLabel labelNacimiento;
+	private JLabel labelSituacionLaboral;
 	private JButton botonVolver;
 	
 	private JComboBox comboBoxMes;
-	
+	private JComboBox comboBoxEstado;
+	private Estado e;
 	private Meses m;
 	
 	private JSpinner spinnerDia;
 	private JSpinner spinnerAño;
 	private JTextField textField;
 	private JTextField textField_1;
+	private JTextField textField_2;
+	
 	
 	public PanelAgregarPersona(JFrame marco, PanelMenuPersona menuPersona) {
 		this.marco = marco;
@@ -46,13 +53,12 @@ public class PanelAgregarPersona extends JPanel {
 		
 		setBounds(0,0,750,500);
 		setLayout(null);
-
-		
 		
 		crearLabels();
 		crearBotones();
 		crearSpinner();
 		crearComboBox();
+		crearTextfields();
 		eventos();
 		
 	}
@@ -61,11 +67,49 @@ public class PanelAgregarPersona extends JPanel {
 		labelTitulo = new JLabel("Agregar Personas");
 		labelTitulo.setBounds(270, 11, 195, 14);
 		add(labelTitulo);
+		
+		labelNombre = new JLabel("Ingrese Nombre");
+		labelNombre.setBounds(22, 141, 115, 14);
+		add(labelNombre);
+		
+		labelDNI = new JLabel("Ingrese DNI");
+		labelDNI.setBounds(22, 81, 74, 14);
+		add(labelDNI);
+		
+		labelApellido = new JLabel("Ingrese Apellido");
+		labelApellido.setBounds(22, 198, 115, 14);
+		add(labelApellido);
+		
+		labelNacimiento = new JLabel("Ingrese Fecha Nacimiento");
+		labelNacimiento.setBounds(22, 260, 182, 42);
+		add(labelNacimiento);
+		
+		labelSituacionLaboral = new JLabel("Situacion Laboral");
+		labelSituacionLaboral.setBounds(43, 352, 138, 42);
+		add(labelSituacionLaboral);
+	}
+	
+	public void crearTextfields() {
+		
+		textField = new JTextField();
+		textField.setBounds(22, 106, 86, 20);
+		add(textField);
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(22, 166, 86, 20);
+		add(textField_1);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(22, 225, 86, 20);
+		add(textField_2);
 	}
 	
 	public void crearBotones() {
 		botonVolver = new JButton("volvo");
-		botonVolver.setBounds(22, 422, 89, 23);
+		botonVolver.setBounds(649, 465, 89, 23);
 		add(botonVolver);
 	}
 	
@@ -85,43 +129,35 @@ public class PanelAgregarPersona extends JPanel {
 	}
 	public void crearComboBox() {
 		comboBoxMes = new JComboBox();
-		comboBoxMes.setBounds(222, 310, 74, 20);
+		comboBoxMes.setBounds(86, 310, 74, 20);
 		add(comboBoxMes);
 		
-		JLabel lblNewLabel = new JLabel("Ingrese DNI");
-		lblNewLabel.setBounds(22, 81, 74, 14);
-		add(lblNewLabel);
+		comboBoxEstado = new JComboBox();
+		comboBoxEstado.setBounds(43, 396, 126, 26);
+		add(comboBoxEstado);
 		
-		textField = new JTextField();
-		textField.setBounds(22, 106, 86, 20);
-		add(textField);
-		textField.setColumns(10);
 		
-		JLabel lblIngreseNombre = new JLabel("Ingrese Nombre");
-		lblIngreseNombre.setBounds(22, 141, 89, 14);
-		add(lblIngreseNombre);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(22, 166, 86, 20);
-		add(textField_1);
 		
 		for(Meses m:m.values()) {
 			comboBoxMes.addItem(m);
 		}
-		
+		for(Estado e:Estado.values()){
+			comboBoxEstado.addItem(e);
+		}
+			
 		
 	}
 	
 	public void crearSpinner() {
 		spinnerDia = new JSpinner();
 		spinnerDia.setModel(new SpinnerNumberModel(1, 1, 31, 1));
-		spinnerDia.setBounds(222, 260, 52, 20);
+		spinnerDia.setBounds(22, 310, 52, 20);
 		add(spinnerDia);
 		
 		spinnerAño = new JSpinner();
 		spinnerAño.setModel(new SpinnerNumberModel(1915, 1915, 2026, 1));
-		spinnerAño.setBounds(222, 361, 58, 20);
+		spinnerAño.setBounds(172, 310, 58, 20);
 		add(spinnerAño);
 		
 	}
