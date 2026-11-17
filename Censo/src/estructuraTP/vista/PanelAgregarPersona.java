@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import estructuraTP.modelo.Estado;
 import estructuraTP.modelo.Meses;
 import estructuraTP.modelo.Persona;
 
@@ -45,6 +46,8 @@ public class PanelAgregarPersona extends JPanel {
 		
 		setBounds(0,0,750,500);
 		setLayout(null);
+
+		
 		
 		crearLabels();
 		crearBotones();

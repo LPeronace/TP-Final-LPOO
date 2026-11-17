@@ -19,12 +19,11 @@ public class DaoComuna {
 	}
 	
 	public void cargarComuna(Comuna c) {
-		Connection conexion = conex.conectar();
 		
 		System.out.println();
 		String sql = "INSERT INTO comuna(Nombre_Sede,Numero_Comuna)VALUES(?,?)";
 		
-		try {
+		try(Connection conexion = conex.conectar()) {
 			PreparedStatement stmt = conexion.prepareStatement(sql);
 			
 			stmt.setString(1, c.getNombre());
@@ -36,22 +35,10 @@ public class DaoComuna {
 			
 		}catch(SQLException e){
 			e.printStackTrace();
-			
-		}finally {
-			try {
-				conexion.close();
-
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-			
 		}
-		
 	}
 	
 	public void modificarComuna(Comuna comuna, String numeroSedeAntiguo) {
-		Connection c = conex.conectar();
-
 	    String nombre = comuna.getNombre();
 	    String numeroSede = comuna.getNumeroSede();
 	    
@@ -60,8 +47,8 @@ public class DaoComuna {
 	    		+ "    Numero_Comuna = ? "
 	    		+ "WHERE Numero_Comuna = ?;";
 
-	    try {
-	        PreparedStatement stmt = c.prepareStatement(sql);
+	    try(Connection conexion = conex.conectar()){
+	        PreparedStatement stmt = conexion.prepareStatement(sql);
 	        
 	        stmt.setString(1,nombre);
 	        stmt.setString(2,numeroSede);
@@ -69,8 +56,6 @@ public class DaoComuna {
 	        
 	        stmt.executeUpdate();
 	        
-	        stmt.close();
-	        c.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -78,10 +63,9 @@ public class DaoComuna {
 	}
 	
 	public boolean eliminarComunaSeleccionada(String numeroSede) {
-		Connection conexion = conex.conectar();
 		String sql = "DELETE FROM comuna where Numero_Comuna = ?";
 		int filasAfectadas = 0;
-		try{
+		try(Connection conexion = conex.conectar()){
 		
 			PreparedStatement stmt = conexion.prepareStatement(sql);
 
@@ -93,23 +77,12 @@ public class DaoComuna {
 		
 		}catch(SQLException e){
 			e.printStackTrace();
-			
-		}finally {
-			try {
-				conexion.close();
-
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-			
 		}
 		
 		return filasAfectadas > 0;
 	}
 	
-	public ArrayList<Comuna> conseguirTodasLasComunas() {
-		Connection c = conex.conectar();
-		
+	public ArrayList<Comuna> conseguirTodasLasComunas() {	
 	    ArrayList<Comuna> comunas = new ArrayList<>();
 
 	    String nombre;
@@ -117,8 +90,8 @@ public class DaoComuna {
 	    
 	    String sql = "SELECT * FROM comuna";
 
-	    try {
-	        PreparedStatement stmt = c.prepareStatement(sql);
+	    try(Connection conexion = conex.conectar()){
+	        PreparedStatement stmt = conexion.prepareStatement(sql);
 	        ResultSet rs = stmt.executeQuery();
 
 	        while (rs.next()) {
@@ -132,9 +105,6 @@ public class DaoComuna {
 	            
 	            
 	        }
-	        stmt.close();
-	        c.close();
-	        rs.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -145,7 +115,6 @@ public class DaoComuna {
 	
 	
 	public Comuna buscarComunaEspecifica(String numeroSede) {
-		Connection c = conex.conectar();
 		Comuna comuna = null;
 		
 	    String nombre;
@@ -153,8 +122,8 @@ public class DaoComuna {
 	    
 	    String sql = "SELECT * FROM comuna WHERE Numero_Comuna = ?";
 
-	    try {
-	        PreparedStatement stmt = c.prepareStatement(sql);
+	    try(Connection conexion = conex.conectar()){
+	        PreparedStatement stmt = conexion.prepareStatement(sql);
 	        
 	        stmt.setString(1, numeroSede);
 	        
@@ -180,12 +149,10 @@ public class DaoComuna {
 	public int conseguirIdComuna(String numeroSedeComuna) {
 		int id = 0;
 		
-		Connection c = conex.conectar();
-		
 		String sql = "SELECT ID_Comuna FROM Comuna WHERE Numero_Comuna = ?";
 
-	    try {
-	        PreparedStatement stmt = c.prepareStatement(sql);
+		try(Connection conexion = conex.conectar()){
+	        PreparedStatement stmt = conexion.prepareStatement(sql);
 	        stmt.setString(1, numeroSedeComuna);
 	        ResultSet rs = stmt.executeQuery();
 
@@ -203,9 +170,7 @@ public class DaoComuna {
 	public ArrayList<Comuna> asociarComunasConBarrios(){
 		ArrayList<Comuna> comunas = conseguirTodasLasComunas();
 		ArrayList<Barrio> barrios = conexionBarrio.conseguirTodosLosBarrios();
-	
-			
-		Connection c = conex.conectar();
+
 		String numeroSedeComuna;
 	    String nombreBarrio;
 	    
@@ -215,8 +180,8 @@ public class DaoComuna {
 	    		+ "INNER JOIN barrio b "
 	    		+ "    ON c.ID_comuna = b.Comuna_ID_comuna;";
 
-	    try {
-	        PreparedStatement stmt = c.prepareStatement(sql);
+	    try(Connection conexion = conex.conectar()){
+	        PreparedStatement stmt = conexion.prepareStatement(sql);
 	        ResultSet rs = stmt.executeQuery();
 
 	        while (rs.next()) {
