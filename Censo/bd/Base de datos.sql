@@ -96,18 +96,28 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- Table `censo`.`historial`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `censo`.`historial` (
-  `ID_persona` INT NOT NULL,
-  `Fecha_traslado` DATE NOT NULL,
-  `ID_historial` INT NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`ID_historial`),
-  INDEX `fk_Historial_Persona_idx` (`ID_persona` ASC) VISIBLE,
-  CONSTRAINT `fk_Historial_Persona`
-    FOREIGN KEY (`ID_persona`)
-    REFERENCES `censo`.`persona` (`ID_persona`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 16
-DEFAULT CHARACTER SET = utf8mb3;
+    `ID_historial` INT AUTO_INCREMENT NOT NULL,
+    `ID_persona` INT NOT NULL,
+    `ID_barrio` INT NOT NULL,
+    `Fecha_traslado` DATE NOT NULL,
 
+    PRIMARY KEY (`ID_historial`),
+
+    INDEX `fk_Historial_Persona_idx` (`ID_persona`),
+    INDEX `fk_Historial_Barrio_idx` (`ID_barrio`),
+
+    CONSTRAINT `fk_Historial_Persona`
+        FOREIGN KEY (`ID_persona`)
+        REFERENCES `censo`.`persona` (`ID_persona`)
+        ON DELETE CASCADE,
+
+    CONSTRAINT `fk_Historial_Barrio`
+        FOREIGN KEY (`ID_barrio`)
+        REFERENCES `censo`.`barrio` (`ID_barrio`)
+
+)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -168,25 +178,3 @@ VALUES
 ('41123456', 'Ines', 'Medina', '1997-07-25', 2, 5),
 ('38555111', 'Juan', 'Castro', '1991-03-08', 1, 6);
 
-
-
-INSERT INTO historial (
-    ID_persona,
-    Fecha_traslado
-)
-VALUES
-(1, '2018-03-12'),
-(1, '2021-06-20'),
-(2, '2019-05-15'),
-(3, '2020-01-10'),
-(3, '2022-08-14'),
-(4, '2017-11-22'),
-(5, '2021-04-03'),
-(6, '2016-09-18'),
-(6, '2023-02-11'),
-(7, '2019-12-05'),
-(8, '2015-07-21'),
-(8, '2020-10-30'),
-(9, '2022-03-16'),
-(10, '2018-08-09'),
-(10, '2024-01-25');

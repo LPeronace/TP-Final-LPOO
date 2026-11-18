@@ -59,6 +59,26 @@ public class PanelAgregarPersona extends JPanel {
 	private JTextField textFieldApellido;
 	
 	private boolean modoModificar;
+	private String dniAntiguo;
+	
+	public PanelAgregarPersona(JFrame marco, PanelMenuPersona menuPersona, String dniAntiguo) {
+		this.marco = marco;
+		this.menuPersona = menuPersona;
+		this.dniAntiguo = dniAntiguo;
+		modoModificar = true;
+		
+		setBounds(0,0,750,500);
+		setLayout(null);
+		
+		crearLabels();
+		crearBotones();
+		crearSpinner();
+		crearComboBox();
+		crearTextfields();
+		eventos();
+
+	}
+	
 	
 	public PanelAgregarPersona(JFrame marco, PanelMenuPersona menuPersona) {
 		this.marco = marco;
@@ -165,13 +185,11 @@ public class PanelAgregarPersona extends JPanel {
 				
 				String dniParaVerSiExiste = personaCargada.getDNI();
 				
-				String dniAntiguo = "";
-				
 				if(!sentencia.conexionPersona.verSiExisteDni(dniParaVerSiExiste) && !personaCargada.getDNI().equals(dniAntiguo) ) {
 					if(modoModificar) {
 						
 						sentencia.conexionPersona.modificarPersona(personaCargada,nombreBarrioAsociado,dniAntiguo);
-						
+						JOptionPane.showMessageDialog(panelActual, "Modificado con exito!!!!!!!!!!!!");
 						
 						marco.setContentPane(menuPersona);
 						

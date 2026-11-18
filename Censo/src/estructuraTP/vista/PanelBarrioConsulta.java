@@ -102,12 +102,15 @@ public class PanelBarrioConsulta extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				int eleccion = tabla.getSelectedRow();
 				
-				String nombreBarrio = (String) modelo.getValueAt(eleccion,0);
-				
-				
-				agregar = new PanelAgregarBarrio(marco,menuBarrio,nombreBarrio);	
-				
-				marco.setContentPane(agregar);
+				if(eleccion != -1) {
+					String nombreBarrio = (String) modelo.getValueAt(eleccion,0);
+					agregar = new PanelAgregarBarrio(marco,menuBarrio,nombreBarrio);	
+					
+					marco.setContentPane(agregar);
+				}
+				else {
+					JOptionPane.showMessageDialog(panelActual, "No elegiste nada de la tabla :(");
+				}
 			}
 		});
 		
@@ -117,14 +120,21 @@ public class PanelBarrioConsulta extends JPanel {
 				
 				int eleccion = tabla.getSelectedRow();
 				
-				String nombreBarrio = (String) modelo.getValueAt(eleccion,0);
+				if(eleccion != -1) {
+					String nombreBarrio = (String) modelo.getValueAt(eleccion,0);
+					
+					Barrio barrioEspecifico = sentencia.conexionBarrio.buscarBarrioPorNombre(nombreBarrio);
+					
+					detalleBarrio = new PanelDetalleBarrio(marco,consulta,barrioEspecifico);
+					
+					detalleBarrio.actualizarTabla(nombreBarrio);
+					marco.setContentPane(detalleBarrio);
+				}
+				else {
+					JOptionPane.showMessageDialog(panelActual, "No elegiste nada de la tabla :(");
+				}
 				
-				Barrio barrioEspecifico = sentencia.conexionBarrio.buscarBarrioPorNombre(nombreBarrio);
 				
-				detalleBarrio = new PanelDetalleBarrio(marco,consulta,barrioEspecifico);
-				
-				detalleBarrio.actualizarTabla(nombreBarrio);
-				marco.setContentPane(detalleBarrio);
 			}
 		});
 		
@@ -133,15 +143,22 @@ public class PanelBarrioConsulta extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				int eleccion = tabla.getSelectedRow();
 				
-				String nombreBarrio = (String) modelo.getValueAt(eleccion, 0);
 				
-				if(sentencia.conexionBarrio.eliminarBarrioSeleccionado(nombreBarrio)) {
-					JOptionPane.showMessageDialog(panelActual, "Barrio borrado con éxito :)");
+				if(eleccion != -1) {
+					String nombreBarrio = (String) modelo.getValueAt(eleccion, 0);
+					
+					if(sentencia.conexionBarrio.eliminarBarrioSeleccionado(nombreBarrio)) {
+						JOptionPane.showMessageDialog(panelActual, "Barrio borrado con éxito :)");
+					}
+					else {
+						JOptionPane.showMessageDialog(panelActual, "Hubo un error y no se pudo eliminar correctamente el registro :(");
+					}
+					actualizarTabla();
 				}
 				else {
-					JOptionPane.showMessageDialog(panelActual, "Hubo un error y no se pudo eliminar correctamente el registro :(");
+					JOptionPane.showMessageDialog(panelActual, "No elegiste nada de la tabla :(");
 				}
-			}
+			}		
 		});
 		
 		botonActualizar.addMouseListener(new MouseAdapter() {

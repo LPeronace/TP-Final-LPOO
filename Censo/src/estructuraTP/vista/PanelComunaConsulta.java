@@ -43,11 +43,13 @@ public class PanelComunaConsulta extends JPanel {
 	private JButton botonModificar;
 	
 	private JFrame marco;
+	
 	private PanelMenuComuna menuComuna;
 	private JPanel panelActual = this;
 	private PanelDetalleComuna detalleComuna;
 	private PanelComunaConsulta consulta;
 	private PanelAgregarComuna agregar;
+	
 	private Comuna comuna = new Comuna();
 
 	
@@ -71,6 +73,7 @@ public class PanelComunaConsulta extends JPanel {
 		crearTablaCompleta();
 		crearBotones();
 		accionBotones();
+		
 		actualizarTabla();
 	}
 	public void crearPaneles() {
@@ -142,12 +145,12 @@ public class PanelComunaConsulta extends JPanel {
 		botonEliminar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int eleccionBorrado = tabla.getSelectedRow();
+				int eleccion = tabla.getSelectedRow();
 				
-				String numeroSede = (String) modelo.getValueAt(eleccionBorrado, 1);
 
 				//Esto porque retorna -1 si no selecciono nada o no hay algo q nosotros carguemos como seleccionado//
-				if(eleccionBorrado != -1) {
+				if(eleccion != -1) {
+					String numeroSede = (String) modelo.getValueAt(eleccion, 1);
 					//devuelve booleano si se pudo borrar
 					if(!sentencia.conexionComuna.eliminarComunaSeleccionada(numeroSede)) {
 						JOptionPane.showMessageDialog(panelActual, "El panel cuenta con barrios asignados, primero modifique eso");
@@ -160,6 +163,7 @@ public class PanelComunaConsulta extends JPanel {
 				else {
 					JOptionPane.showMessageDialog(panelActual, "Hubo un error :( la comuna seleccionada no existe o no selecciono ninguna");
 				}
+				actualizarTabla();
 			}
 		});
 		
@@ -173,15 +177,18 @@ public class PanelComunaConsulta extends JPanel {
 		botonModificar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int eleccionBorrado = tabla.getSelectedRow();
+				int eleccion = tabla.getSelectedRow();
 				
-				String numeroSede = (String) modelo.getValueAt(eleccionBorrado, 1);
-				
-				
-				agregar = new PanelAgregarComuna(marco,menuComuna,numeroSede);
-				
-				
-				marco.setContentPane(agregar);
+				if(eleccion != -1) {
+					String numeroSede = (String) modelo.getValueAt(eleccion, 1);
+					
+					agregar = new PanelAgregarComuna(marco,menuComuna,numeroSede);
+					
+					marco.setContentPane(agregar);
+				}
+				else {
+					JOptionPane.showMessageDialog(panelActual, "Hubo un error :( la comuna seleccionada no existe o no selecciono ninguna");
+				}
 			}
 		});
 	}

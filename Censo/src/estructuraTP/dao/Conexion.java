@@ -24,19 +24,19 @@ public class Conexion {
 	public Connection conectar() {
 		Connection c = null;
 		
-		System.out.println("1-"+c);
+		//System.out.println("1-"+c);
 		try {
-			System.out.println("2-"+c);
+			//System.out.println("2-"+c);
 			//establece la conexion
 			c = DriverManager.getConnection(path, user, psw);
 			
 		}catch(SQLException e){
-			System.out.println("3-"+c);
+			//System.out.println("3-"+c);
 			e.printStackTrace();
 			
 		}
 		
-		System.out.println("4-"+c);
+		//System.out.println("4-"+c);
 		return c;
 	}
 

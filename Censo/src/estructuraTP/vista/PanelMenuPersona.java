@@ -64,6 +64,7 @@ public class PanelMenuPersona extends JPanel {
 		botonConsulta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				consulta.actualizarTabla();
 				marco.setContentPane(consulta);
 			}
 		});

@@ -27,7 +27,7 @@ public class Persona {
 	public Estado getSituacionLaboral() {
 		return situacionLaboral;
 	}
-	public LocalDate getFechaNacimeinto() {
+	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 	

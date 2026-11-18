@@ -376,4 +376,55 @@ public class DaoBarrio {
 		
 		return numeroSede;
 	}
+	
+	public String conseguirNombreDelBarrioAsociado(String dni) {
+		String nombreBarrio = null;
+		
+		String sql = "SELECT b.nombre FROM Barrio b "
+		+"INNER JOIN persona p "
+		+"ON b.ID_barrio = p.Barrio_ID_barrio "
+		+"WHERE p.DNI = ?";
+		
+		try(Connection c = conex.conectar()){
+			PreparedStatement stmt = c.prepareStatement(sql);
+			
+			stmt.setString(1, dni);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				nombreBarrio = rs.getString("nombre");
+			}
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return nombreBarrio;
+	}
+	public String conseguirNombreBarrio(int idBarrio) {
+
+	    String nombre = "";
+
+	    String sql = "SELECT nombre FROM barrio WHERE ID_barrio = ?";
+
+	    try (Connection c = conex.conectar()) {
+
+	        PreparedStatement stmt = c.prepareStatement(sql);
+	        stmt.setInt(1, idBarrio);
+
+	        ResultSet rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            nombre = rs.getString("nombre");
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return nombre;
+	}
 }
