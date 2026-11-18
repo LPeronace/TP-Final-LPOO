@@ -12,6 +12,7 @@ import estructuraTP.modelo.Meses;
 import estructuraTP.modelo.Persona;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
@@ -28,6 +29,7 @@ public class PanelAgregarPersona extends JPanel {
 	
 	private JFrame marco;
 	private PanelMenuPersona menuPersona;
+	private JPanel panelActual;
 	
 	private JLabel labelTitulo;
 	private JLabel labelNombre;
@@ -56,10 +58,13 @@ public class PanelAgregarPersona extends JPanel {
 	private JTextField textFieldNombre;
 	private JTextField textFieldApellido;
 	
+	private boolean modoModificar;
 	
 	public PanelAgregarPersona(JFrame marco, PanelMenuPersona menuPersona) {
 		this.marco = marco;
 		this.menuPersona = menuPersona;
+		
+		modoModificar = false;
 		
 		setBounds(0,0,750,500);
 		setLayout(null);
@@ -71,6 +76,10 @@ public class PanelAgregarPersona extends JPanel {
 		crearTextfields();
 		eventos();
 		
+	}
+	
+	public void crearPaneles() {
+		panelActual = this;
 	}
 	
 	public void crearLabels() {
@@ -154,10 +163,48 @@ public class PanelAgregarPersona extends JPanel {
 				
 				String nombreBarrioAsociado = (String) comboBoxBarrioAsociado.getSelectedItem();
 				
-				sentencia.conexionPersona.crearPersona(personaCargada, nombreBarrioAsociado);
+				String dniParaVerSiExiste = personaCargada.getDNI();
+				
+				String dniAntiguo = "";
+				
+				if(!sentencia.conexionPersona.verSiExisteDni(dniParaVerSiExiste) && !personaCargada.getDNI().equals(dniAntiguo) ) {
+					if(modoModificar) {
+						
+						sentencia.conexionPersona.modificarPersona(personaCargada,nombreBarrioAsociado,dniAntiguo);
+						
+						
+						marco.setContentPane(menuPersona);
+						
+					}else {
+						JOptionPane.showMessageDialog(panelActual,"Cargado/a con exito!");
+						sentencia.conexionPersona.crearPersona(personaCargada, nombreBarrioAsociado);
+						reiniciarCarga();
+				}
+					
+					
+				}else {
+					JOptionPane.showMessageDialog(panelActual, "Ese dni ya esta cargado, intentelo devuelta con otro dni");
+				}
+				
 			}
 		});
 	}
+	
+	public void reiniciarCarga() {
+		textFieldDNI.setText("");
+		textFieldNombre.setText("");
+		textFieldApellido.setText("");
+		
+		comboBoxEstado.setSelectedIndex(0);
+		
+		
+		spinnerDia.setValue(0);
+		comboBoxMes.setSelectedIndex(0);
+		spinnerAño.setValue(0);
+		
+		comboBoxBarrioAsociado.setSelectedIndex(0);
+	}
+	
 	public void crearComboBox() {
 		comboBoxMes = new JComboBox();
 		comboBoxMes.setBounds(86, 310, 74, 20);

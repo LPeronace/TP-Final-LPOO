@@ -75,7 +75,6 @@ public class PanelAgregarBarrio extends JPanel {
 		this.menuBarrio = menuBarrio;
 		this.nombreBarrioAntiguo = nombreBarrioAntiguo;
 		modoModificar = true;
-		
 		setBounds(0, 0, 750, 500);
 		setLayout(null);
 	
@@ -91,9 +90,10 @@ public class PanelAgregarBarrio extends JPanel {
 		crearDiseñoUrbanizacion();
 		
 		cambiarDiseño();
+		cargarDatosParaModificar();
 	}
 	
-	
+
 	
 	
 	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio) {
@@ -121,6 +121,71 @@ public class PanelAgregarBarrio extends JPanel {
 		spinnerSuperficie.setModel(new SpinnerNumberModel(Float.valueOf(0), Float.valueOf(0), Float.valueOf(99903), Float.valueOf(1)));
 		spinnerSuperficie.setBounds(119, 184, 107, 17);
 		add(spinnerSuperficie);
+	}
+	
+	public void cargarDatosParaModificar() {
+		Barrio b = sentencia.conexionBarrio.buscarBarrioPorNombre(nombreBarrioAntiguo);
+		
+		textFieldNombre.setText(b.getNombre());
+		
+		spinnerSuperficie.setValue(b.getSuperficie());
+		if(b instanceof TrazadoFormal) {
+			TrazadoFormal bTF = (TrazadoFormal) b;
+			
+			comboBoxTipoBarrio.setSelectedItem("Trazado Formal");
+			cambiarDiseño();
+			
+			spinnerCantEdificios.setValue(bTF.getCantEdificios());
+			spinnerPorcentajeAsfalto.setValue(bTF.getPorcentajeAsfalto());
+		}
+		else if(b instanceof ComplejosHabitacionales) {
+			ComplejosHabitacionales bCH = (ComplejosHabitacionales) b;
+			
+			comboBoxTipoBarrio.setSelectedItem("Complejos Habitacionales");
+			cambiarDiseño();
+			
+			spinnerMonoBlocks.setValue(bCH.getCantMonoblocks());
+			checkBoxConsorcio.setSelected(bCH.getTieneConsorcio());
+			
+		}
+		else if(b instanceof UrbanizacionPlanificada){
+			UrbanizacionPlanificada bUP = (UrbanizacionPlanificada) b;
+			
+			comboBoxTipoBarrio.setSelectedItem("Urbanizacion Planificada");
+			cambiarDiseño();
+			
+			textFieldLey.setText(bUP.getNumLey());
+			checkBoxAgua.setSelected(bUP.getConexionAgua());
+		}
+		
+		comboBoxComuna.setSelectedItem(sentencia.conexionBarrio.conseguirNumeroSedeBarrioAsociado(nombreBarrioAntiguo));
+		labelNombreComuna.setText(conseguirNombreComunaComboBox());
+
+		
+	}
+	
+	public void reiniciarCarga() {
+		
+		textFieldNombre.setText("");
+		
+		spinnerSuperficie.setValue(0);
+		
+
+		comboBoxTipoBarrio.setSelectedItem("Trazado Formal");
+			
+		spinnerCantEdificios.setValue(0);
+		spinnerPorcentajeAsfalto.setValue(0);
+		
+		spinnerMonoBlocks.setValue(0);
+		checkBoxConsorcio.setSelected(false);
+			
+		textFieldLey.setText("");
+		checkBoxAgua.setSelected(false);
+		
+		comboBoxComuna.setSelectedIndex(0);
+		labelNombreComuna.setText(conseguirNombreComunaComboBox());
+
+		
 	}
 	
 	public void crearLabels() {
@@ -192,7 +257,7 @@ public class PanelAgregarBarrio extends JPanel {
 				String numeroSedeComuna = (String) comboBoxComuna.getSelectedItem(); 
 				
 				
-				if(!sentencia.conexionBarrio.existeBarrioConEsteNombre(b.getNombre())) {
+				if(!sentencia.conexionBarrio.existeBarrioConEsteNombre(b.getNombre()) && !b.getNombre().equals(nombreBarrioAntiguo)) {
 					
 					if(modoModificar) {
 						JOptionPane.showMessageDialog(panelActual, "Modificado con exito!");
@@ -204,6 +269,7 @@ public class PanelAgregarBarrio extends JPanel {
 					else {
 						sentencia.conexionBarrio.cargarBarrio(b, numeroSedeComuna);
 						JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
+						reiniciarCarga();
 					}
 				}
 				else {

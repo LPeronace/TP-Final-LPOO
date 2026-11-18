@@ -119,7 +119,6 @@ public class PanelAgregarComuna extends JPanel {
 				
 				if(!sentencia.conexionComuna.existeComunaConEsteNumero(numeroSede)) {
 					if(modoModificar) {
-						
 						JOptionPane.showMessageDialog(panelActual, "Modificado con exito!!!");
 						
 						sentencia.conexionComuna.modificarComuna(comuna,numeroSedeAntiguo);
