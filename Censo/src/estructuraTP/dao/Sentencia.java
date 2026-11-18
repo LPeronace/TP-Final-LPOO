@@ -6,6 +6,6 @@ public class Sentencia {
 	
 	public DaoComuna conexionComuna = new DaoComuna(conex);
 	public DaoBarrio conexionBarrio = new DaoBarrio(conex,conexionComuna);
-	public DaoPersona conexionPersona = new DaoPersona(conex);
+	public DaoPersona conexionPersona = new DaoPersona(conex,conexionBarrio);
 
 }

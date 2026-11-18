@@ -27,7 +27,6 @@ public class DaoBarrio {
 		//urbanizacion = String nombre, float superficie,String numLey, boolean conexionAgua
 	public ArrayList<Barrio> conseguirTodosLosBarrios(){
 		ArrayList<Barrio> barrios = new ArrayList<>();
-		Connection c = conex.conectar();
 		Barrio b;
 			
 			
@@ -53,7 +52,7 @@ public class DaoBarrio {
 		
 		String sql = "SELECT * FROM barrio";
 		
-		try {
+		try(Connection c = conex.conectar()) {
 		 PreparedStatement stmt = c.prepareStatement(sql);
 		 ResultSet rs = stmt.executeQuery();
 			
@@ -104,16 +103,14 @@ public class DaoBarrio {
 	}
 		
 	public void cargarBarrio(Barrio b, String numeroSedeComuna) {
-		Connection conexion = conex.conectar();
-		
-		
+
 		
 		String sql = "INSERT INTO barrio(Superficie_H,nombre,Comuna_ID_comuna,Cant_monoblock,Macro_activo,"
 				+ "Cant_edificios,Porcentaje_asf,Nro_ley,Conexion_agua) "
 				+ "VALUES(?,?,?,?,?,?,?,?,?);";
 		
-		try {
-			PreparedStatement stmt = conexion.prepareStatement(sql);
+		try(Connection c = conex.conectar()) {
+			PreparedStatement stmt = c.prepareStatement(sql);
 			
 			stmt.setFloat(1, b.getSuperficie());
 			stmt.setString(2, b.getNombre());
@@ -153,27 +150,17 @@ public class DaoBarrio {
 		}catch(SQLException e){
 			e.printStackTrace();
 			
-		}finally {
-			try {
-				conexion.close();
-
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-			
-		}
-		
+		}		
 		
 	}
 	
 	public boolean eliminarBarrioSeleccionado(String nombreBarrio) {
-		Connection conexion = conex.conectar();
-		
+
 		String sql = "DELETE FROM barrio WHERE nombre = ?";
 		int filasAfectadas = 0;
-		try {
+		try(Connection c = conex.conectar()) {
 		
-			PreparedStatement stmt = conexion.prepareStatement(sql);
+			PreparedStatement stmt = c.prepareStatement(sql);
 
 	        stmt.setString(1, nombreBarrio);
 	        
@@ -183,21 +170,12 @@ public class DaoBarrio {
 		}catch(SQLException e){
 			e.printStackTrace();
 			
-		}finally {
-			try {
-				conexion.close();
-
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-			
 		}
 		
 		return filasAfectadas > 0;
 	}
 	
 	public Barrio buscarBarrioPorNombre(String nombreBarrioAntiguo){
-		Connection c = conex.conectar();
 		Barrio b = null;
 		
 		String nombre;
@@ -216,7 +194,7 @@ public class DaoBarrio {
 	    boolean esTrazadoFormal;
 	    String sql = "SELECT * FROM barrio WHERE nombre = ?";
 
-	    try {
+	    try(Connection c = conex.conectar()) {
 	        PreparedStatement stmt = c.prepareStatement(sql);
 	        
 	        stmt.setString(1, nombreBarrioAntiguo);
@@ -272,15 +250,13 @@ public class DaoBarrio {
 	
 	
 	public void modificarBarrioElegido(Barrio b, String nombreBarrioAntiguo, String numeroSedeComuna) {
-		Connection c = conex.conectar();
-
-	    String nombre = b.getNombre();
+		String nombre = b.getNombre();
 	    float superficie = b.getSuperficie();
 	    
 	    String sql = "UPDATE barrio SET Superficie_H = ?,nombre = ?,Comuna_ID_comuna = ?,"
 	    		+"Cant_monoblock = ?,Macro_activo = ?,Cant_edificios = ?,Porcentaje_asf = ?,Nro_ley = ?, Conexion_agua = ? WHERE nombre = ?;";
 
-	    try {
+	    try(Connection c = conex.conectar()){
 	        PreparedStatement stmt = c.prepareStatement(sql);
 	        
 	        stmt.setFloat(1,superficie);
@@ -321,5 +297,29 @@ public class DaoBarrio {
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
+	}
+	
+	public int conseguirIdBarrioAsociado(String nombreBarrioAsociado) {
+		int id = 0;
+		
+		String sql = "SELECT ID_Barrio FROM barrio WHERE nombre = ?";
+		
+		try(Connection c = conex.conectar()){
+			PreparedStatement stmt = c.prepareStatement(sql);
+			
+			stmt.setString(1, nombreBarrioAsociado);
+			ResultSet rs = stmt.executeQuery();
+	        
+	        
+	        while(rs.next()) {
+	        	id = rs.getInt("ID_Barrio");
+	        }
+			
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return id;
 	}
 }
