@@ -192,14 +192,24 @@ public class PanelAgregarBarrio extends JPanel {
 				String numeroSedeComuna = (String) comboBoxComuna.getSelectedItem(); 
 				
 				
-				if(modoModificar) {
-					sentencia.conexionBarrio.modificarBarrioElegido(b,nombreBarrioAntiguo,numeroSedeComuna);
+				if(!sentencia.conexionBarrio.existeBarrioConEsteNombre(b.getNombre())) {
+					
+					if(modoModificar) {
+						JOptionPane.showMessageDialog(panelActual, "Modificado con exito!");
+						
+						sentencia.conexionBarrio.modificarBarrioElegido(b,nombreBarrioAntiguo,numeroSedeComuna);
+						marco.setContentPane(menuBarrio);
+					}
+					
+					else {
+						sentencia.conexionBarrio.cargarBarrio(b, numeroSedeComuna);
+						JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
+					}
 				}
 				else {
-					sentencia.conexionBarrio.cargarBarrio(b, numeroSedeComuna);
+					JOptionPane.showMessageDialog(panelActual, "Ya existe un barrio con ese nombre, cambielo");
+					textFieldNombre.setText("");
 				}
-				
-				JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
 			}
 		});
 		

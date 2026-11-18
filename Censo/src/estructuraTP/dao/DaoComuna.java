@@ -167,6 +167,33 @@ public class DaoComuna {
 		return id;
 	}
 	
+	public boolean existeComunaConEsteNumero(String numeroComunaACheckear) {
+		boolean existe = false;
+		
+		String sql = "SELECT * FROM comuna WHERE Numero_Comuna = ?";
+		
+		try(Connection c = conex.conectar()){
+			PreparedStatement stmt = c.prepareStatement(sql);
+		
+			stmt.setString(1, numeroComunaACheckear);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				existe = true;
+			}
+			
+			
+		}catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return existe;
+	}
+	
+	
+	
 	public ArrayList<Comuna> asociarComunasConBarrios(){
 		ArrayList<Comuna> comunas = conseguirTodasLasComunas();
 		ArrayList<Barrio> barrios = conexionBarrio.conseguirTodosLosBarrios();
@@ -217,5 +244,7 @@ public class DaoComuna {
 		
 		return comunas;
 	}
-
+	
+	
+	
 }

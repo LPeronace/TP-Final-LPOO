@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import estructuraTP.dao.Sentencia;
+import estructuraTP.modelo.Barrio;
 import estructuraTP.modelo.Estado;
 import estructuraTP.modelo.Meses;
 import estructuraTP.modelo.Persona;
@@ -33,18 +35,26 @@ public class PanelAgregarPersona extends JPanel {
 	private JLabel labelApellido;
 	private JLabel labelNacimiento;
 	private JLabel labelSituacionLaboral;
+	private JLabel labelAsociarBarrio;
+	
+	private Sentencia sentencia = new Sentencia();
+	
 	private JButton botonVolver;
+	private JButton botonCargar;
 	
 	private JComboBox comboBoxMes;
 	private JComboBox comboBoxEstado;
+	private JComboBox comboBoxBarrioAsociado;
+	
 	private Estado e;
 	private Meses m;
 	
 	private JSpinner spinnerDia;
 	private JSpinner spinnerAño;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	
+	private JTextField textFieldDNI;
+	private JTextField textFieldNombre;
+	private JTextField textFieldApellido;
 	
 	
 	public PanelAgregarPersona(JFrame marco, PanelMenuPersona menuPersona) {
@@ -85,32 +95,42 @@ public class PanelAgregarPersona extends JPanel {
 		add(labelNacimiento);
 		
 		labelSituacionLaboral = new JLabel("Situacion Laboral");
-		labelSituacionLaboral.setBounds(43, 352, 138, 42);
+		labelSituacionLaboral.setBounds(22, 352, 138, 42);
 		add(labelSituacionLaboral);
+		
+		labelAsociarBarrio = new JLabel("Barrio en el que reside");
+		labelAsociarBarrio.setBounds(381, 81, 144, 14);
+		add(labelAsociarBarrio);
 	}
 	
 	public void crearTextfields() {
 		
-		textField = new JTextField();
-		textField.setBounds(22, 106, 86, 20);
-		add(textField);
-		textField.setColumns(10);
+		textFieldDNI = new JTextField();
+		textFieldDNI.setBounds(22, 106, 86, 20);
+		add(textFieldDNI);
+		textFieldDNI.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(22, 166, 86, 20);
-		add(textField_1);
+		textFieldNombre = new JTextField();
+		textFieldNombre.setColumns(10);
+		textFieldNombre.setBounds(22, 166, 86, 20);
+		add(textFieldNombre);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(22, 225, 86, 20);
-		add(textField_2);
+		textFieldApellido = new JTextField();
+		textFieldApellido.setColumns(10);
+		textFieldApellido.setBounds(22, 225, 86, 20);
+		add(textFieldApellido);
+
+		
 	}
 	
 	public void crearBotones() {
 		botonVolver = new JButton("volvo");
-		botonVolver.setBounds(649, 465, 89, 23);
+		botonVolver.setBounds(612, 398, 89, 23);
 		add(botonVolver);
+		
+		botonCargar = new JButton("Cargar");
+		botonCargar.setBounds(312, 398, 115, 23);
+		add(botonCargar);
 	}
 	
 	public void eventos() {
@@ -126,6 +146,17 @@ public class PanelAgregarPersona extends JPanel {
 				actualizarModeloSpinner();
 			}
 		});
+		
+		botonCargar.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Persona personaCargada = cargar();
+				
+				String nombreBarrioAsociado = (String) comboBoxBarrioAsociado.getSelectedItem();
+				
+				sentencia.conexionPersona.crearPersona(personaCargada, nombreBarrioAsociado);
+			}
+		});
 	}
 	public void crearComboBox() {
 		comboBoxMes = new JComboBox();
@@ -133,20 +164,24 @@ public class PanelAgregarPersona extends JPanel {
 		add(comboBoxMes);
 		
 		comboBoxEstado = new JComboBox();
-		comboBoxEstado.setBounds(43, 396, 126, 26);
+		comboBoxEstado.setBounds(22, 396, 126, 26);
 		add(comboBoxEstado);
 		
-		
+		comboBoxBarrioAsociado = new JComboBox();
+		comboBoxBarrioAsociado.setBounds(381, 105, 144, 22);
+		add(comboBoxBarrioAsociado);
 		
 		
 		for(Meses m:m.values()) {
 			comboBoxMes.addItem(m);
 		}
-		for(Estado e:Estado.values()){
+		for(Estado e:e.values()){
 			comboBoxEstado.addItem(e);
 		}
 			
-		
+		for(Barrio b: sentencia.conexionBarrio.conseguirTodosLosBarrios()) {
+			comboBoxBarrioAsociado.addItem(b.getNombre());
+		}
 	}
 	
 	public void crearSpinner() {
@@ -169,13 +204,27 @@ public class PanelAgregarPersona extends JPanel {
 		
 	}
 	
+	
+	
+	//Constructor = String dni, String nombre,String apellido, Estado situacionLaboral, LocalDate fechaNacimiento
 	public Persona cargar() {
 		Persona p = null;
+		
+		String dni = textFieldDNI.getText();
+		String nombre = textFieldNombre.getText();
+		String apellido = textFieldApellido.getText();
+		
+		Estado situacionLaboral = (Estado) comboBoxEstado.getSelectedItem();
+		
 		
 		int dia =(int) spinnerDia.getValue();
 		int mes = (int) comboBoxMes.getSelectedIndex() + 1;
 		int año = (int) spinnerAño.getValue();
+		
 		LocalDate fechaCompleta = LocalDate.of(año, mes, dia);
+		
+		
+		p = new Persona(dni, nombre, apellido, situacionLaboral, fechaCompleta);
 		
 		return p;
 	}

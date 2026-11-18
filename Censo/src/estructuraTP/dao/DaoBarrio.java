@@ -299,6 +299,32 @@ public class DaoBarrio {
 	    }
 	}
 	
+	public boolean existeBarrioConEsteNombre(String nombreBarrioACheckear) {
+		boolean existe = false;
+		
+		String sql = "SELECT * FROM barrio WHERE nombre = ?";
+		
+		try(Connection c = conex.conectar()){
+			PreparedStatement stmt = c.prepareStatement(sql);
+			
+			stmt.setString(1, nombreBarrioACheckear);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				existe = true;
+			}
+			
+			
+		}catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return existe;
+	}
+	
+	
 	public int conseguirIdBarrioAsociado(String nombreBarrioAsociado) {
 		int id = 0;
 		

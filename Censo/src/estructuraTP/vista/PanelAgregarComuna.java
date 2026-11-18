@@ -113,18 +113,28 @@ public class PanelAgregarComuna extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				if(modoModificar) {
-					
-					JOptionPane.showMessageDialog(panelActual, "Modificado con exito!!!");
-					
-					sentencia.conexionComuna.modificarComuna(conseguirDatos(),numeroSedeAntiguo);
+				Comuna comuna = conseguirDatos();
+				
+				String numeroSede = comuna.getNumeroSede();
+				
+				if(!sentencia.conexionComuna.existeComunaConEsteNumero(numeroSede)) {
+					if(modoModificar) {
+						
+						JOptionPane.showMessageDialog(panelActual, "Modificado con exito!!!");
+						
+						sentencia.conexionComuna.modificarComuna(comuna,numeroSedeAntiguo);
+						marco.setContentPane(panelMenuComuna);
+					}
+					else {
+						JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
+						
+						sentencia.conexionComuna.cargarComuna(comuna);
+					}
 				}
 				else {
-					JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
-					
-					sentencia.conexionComuna.cargarComuna(conseguirDatos());
+					JOptionPane.showMessageDialog(panelActual, "Ya existe un panel con ese número de sede, intentelo devuelta");
+					textFieldNumeroSede.setText("");
 				}
-				
 			}
 		});
 		
