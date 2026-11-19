@@ -82,7 +82,7 @@ public class PanelComunaConsulta extends JPanel {
 	
 	public void crearLabels() {
 		labelTitulo = new JLabel("Consultas Comuna");
-		labelTitulo.setBounds(300, 25, 102, 14);
+		labelTitulo.setBounds(300, 25, 139, 14);
 		add(labelTitulo);
 		
 	
@@ -95,11 +95,11 @@ public class PanelComunaConsulta extends JPanel {
 		add(botonVolver);
 		
 		botonVerDetalle = new JButton("Ver Detalle");
-		botonVerDetalle.setBounds(508, 118, 139, 23);
+		botonVerDetalle.setBounds(389, 284, 139, 23);
 		add(botonVerDetalle);
 		
 		botonEliminar = new JButton("Eliminar Seleccionado");
-		botonEliminar.setBounds(437, 216, 155, 23);
+		botonEliminar.setBounds(557, 284, 155, 23);
 		add(botonEliminar);
 		
 		botonActualizar = new JButton("Actualizar");
@@ -198,11 +198,11 @@ public class PanelComunaConsulta extends JPanel {
 		tabla.setBounds(57, 122, 300, 112);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 64, 338, 123);
+		scrollPane.setBounds(10, 64, 505, 123);
 		add(scrollPane);
 		
 		//Creo las columnas
-		columnas = new Object[] {"Nombre" , "Numero", "Cantidad Barrios"};
+		columnas = new Object[] {"Nombre" , "Numero", "Cantidad Barrios","Barrios Criticos","Atencion Prioritaria"};
 		
 		//creo el modelo y con cuantas filas
 		modelo = new DefaultTableModel(columnas, 0);
@@ -215,9 +215,21 @@ public class PanelComunaConsulta extends JPanel {
 	}
 	public void actualizarTabla() {
 		modelo.setRowCount(0); 
+		String nombre;
+		String numeroSede;
+		int cantidadBarrio;
+		int cantidadCriticos;
+		boolean atencionPrioritaria;
+		
 		for(Comuna com: sentencia.conexionComuna.asociarComunasConBarrios()) {
 			
-			modelo.addRow(new Object[] {com.getNombre(),com.getNumeroSede(), com.getCantidadBarrio()});
+			nombre = com.getNombre();
+			numeroSede = com.getNumeroSede();
+			cantidadBarrio = com.getCantidadBarrio();
+			cantidadCriticos = com.getCantidadBarriosCriticos();
+			atencionPrioritaria = (cantidadBarrio*0.5) <= cantidadCriticos;
+			
+			modelo.addRow(new Object[] {nombre, numeroSede, cantidadBarrio, cantidadCriticos, atencionPrioritaria ? "Si":"No"});
 		
 		}
 	}

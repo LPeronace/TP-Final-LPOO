@@ -44,4 +44,17 @@ public class Comuna {
 	public int getCantidadBarrio() {
 		return barrios.size();
 	}
+	
+	public int getCantidadBarriosCriticos() {
+		int cantidad = 0;
+		
+		for(Barrio b : barrios) {
+			
+			if(b.tieneCriticidad()) {
+				cantidad++;
+			}
+		}
+		
+		return cantidad;
+	}
 }

@@ -42,7 +42,7 @@ public class PanelMenuPersona extends JPanel {
 	
 	public void crearLabels() {
 		labelTitulo = new JLabel("Persona");
-		labelTitulo.setBounds(342, 23, 46, 14);
+		labelTitulo.setBounds(342, 23, 83, 14);
 		add(labelTitulo);
 	}
 	

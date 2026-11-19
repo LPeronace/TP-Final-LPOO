@@ -182,7 +182,7 @@ public class PanelAgregarPersona extends JPanel {
 	}
 	
 	public void crearBotones() {
-		botonVolver = new JButton("volvo");
+		botonVolver = new JButton("Volver");
 		botonVolver.setBounds(612, 398, 89, 23);
 		add(botonVolver);
 		

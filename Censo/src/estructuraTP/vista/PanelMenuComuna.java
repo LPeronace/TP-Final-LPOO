@@ -34,7 +34,7 @@ public class PanelMenuComuna extends JPanel {
 	
 	public void crearLabels() {
 		titulo = new JLabel("Comuna");
-		titulo.setBounds(318, 28, 46, 14);
+		titulo.setBounds(318, 28, 100, 14);
 		add(titulo);
 	}
 	
