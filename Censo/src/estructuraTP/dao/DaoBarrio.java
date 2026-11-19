@@ -8,12 +8,14 @@ import java.util.ArrayList;
 
 import estructuraTP.modelo.Barrio;
 import estructuraTP.modelo.ComplejosHabitacionales;
+import estructuraTP.modelo.Persona;
 import estructuraTP.modelo.TrazadoFormal;
 import estructuraTP.modelo.UrbanizacionPlanificada;
 
 public class DaoBarrio {
 	private Conexion conex;
 	private DaoComuna conexionComuna;
+
 	
 	public DaoBarrio(Conexion conex, DaoComuna conexionComuna) {
 		this.conex = conex;
@@ -427,4 +429,8 @@ public class DaoBarrio {
 
 	    return nombre;
 	}
+	
+	
+	
+	
 }

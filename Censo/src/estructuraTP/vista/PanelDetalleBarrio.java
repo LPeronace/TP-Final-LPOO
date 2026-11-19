@@ -17,6 +17,7 @@ import estructuraTP.modelo.UrbanizacionPlanificada;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
 
 public class PanelDetalleBarrio extends JPanel {
 
@@ -37,21 +38,82 @@ public class PanelDetalleBarrio extends JPanel {
 	
 	private Object[] columnas;
 	
-
-	
 	private Barrio barrioSeleccionado;
+	
+	private JLabel lblCriticidad;
+	private JLabel labelTieneCriticidad;
+	private JLabel lblDensidadPoblacional;
+	private JLabel labelNumeroDensidad;
 	
 	public PanelDetalleBarrio(JFrame marco, PanelBarrioConsulta barrioConsulta,Barrio barrioSeleccionado) {
 		this.marco = marco;
 		this.barrioConsulta = barrioConsulta;
 		this.barrioSeleccionado = barrioSeleccionado;
+		asociarPersonitas();
 		
 		setBounds(0,0,750,500);
 		setLayout(null);
 		
+		
 		crearBotones();
+		crearLabels();
 		accionBotones();
+		rellenarLabel();
 		crearTabla(barrioSeleccionado);
+	}
+	
+	public void asociarPersonitas() {
+		String nombre = barrioSeleccionado.getNombre();
+		
+		barrioSeleccionado.setPersonas(sentencia.conexionPersona.conseguirPersonasAsociadasABarrio(nombre));
+	}
+	
+	public void crearLabels() {
+		lblCriticidad = new JLabel("Tiene criticidad?");
+		lblCriticidad.setBounds(25, 251, 138, 14);
+		add(lblCriticidad);
+		
+		labelTieneCriticidad = new JLabel("");
+		labelTieneCriticidad.setBounds(149, 251, 46, 14);
+		add(labelTieneCriticidad);
+		
+		lblDensidadPoblacional = new JLabel("Densidad Poblacional:");
+		lblDensidadPoblacional.setBounds(343, 251, 138, 14);
+		add(lblDensidadPoblacional);
+		
+		labelNumeroDensidad = new JLabel("");
+		labelNumeroDensidad.setBounds(491, 251, 46, 14);
+		add(labelNumeroDensidad);
+	}
+	
+	public void rellenarLabel() {
+		float densidad = 0f;
+		boolean criticidad = false;
+		
+		if(barrioSeleccionado instanceof TrazadoFormal) {
+			TrazadoFormal bTF = (TrazadoFormal) barrioSeleccionado;
+			
+			densidad = bTF.calcularDensidad();
+			criticidad = bTF.tieneCriticidad();
+		}
+		else if(barrioSeleccionado instanceof UrbanizacionPlanificada) {
+			UrbanizacionPlanificada bUP = (UrbanizacionPlanificada) barrioSeleccionado;
+			
+			densidad = bUP.calcularDensidad();
+			criticidad = bUP.tieneCriticidad();
+			
+		}
+		else if(barrioSeleccionado instanceof ComplejosHabitacionales) {
+			ComplejosHabitacionales bCH = (ComplejosHabitacionales) barrioSeleccionado;
+			
+			densidad = bCH.calcularDensidad();
+			criticidad = bCH.tieneCriticidad();
+		}
+		
+
+		labelNumeroDensidad.setText(String.valueOf(densidad));
+		labelTieneCriticidad.setText(criticidad ? "Si" : "No");
+		
 	}
 	
 	public void crearBotones() {
@@ -108,7 +170,7 @@ public class PanelDetalleBarrio extends JPanel {
 		//pongo el modelo y el scrollpane
 		tabla.setModel(modelo);
 		scrollPane.setViewportView(tabla);
-		
+
 		//cargo todos los datos que encontre en la base de datos
 		actualizarTabla(barrioSeleccionado.getNombre());
 	}

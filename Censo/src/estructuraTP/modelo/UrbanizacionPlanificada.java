@@ -17,7 +17,7 @@ public final class UrbanizacionPlanificada extends Barrio{
 	
 	@Override
 	public float calcularDensidad() {
-		float densidad = getPersonas().size() / getSuperficie();
+		float densidad = (float) getPersonas().size() / getSuperficie();
 		
 		
 		

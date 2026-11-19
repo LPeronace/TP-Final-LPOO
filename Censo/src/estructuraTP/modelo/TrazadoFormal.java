@@ -15,9 +15,7 @@ public final class TrazadoFormal extends Barrio{
 
 	@Override
 	public float calcularDensidad() {
-		float densidad = getPersonas().size() / cantEdificios;
-		
-		
+		float densidad = (float) getPersonas().size() / cantEdificios;
 		
 		return densidad;
 	}

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import estructuraTP.modelo.Barrio;
 import estructuraTP.modelo.Estado;
 import estructuraTP.modelo.Persona;
 
@@ -332,7 +333,11 @@ public class DaoPersona {
 		
 		String nombreDelEstado;
 		
-		String sql = "SELECT * FROM persona WHERE dni = ?";
+		String sql = "SELECT p.DNI,p.Nombre,p.Apellido,p.Fecha_nacimiento,sl.estado "
+				+ "FROM Persona p "
+				+ "INNER JOIN situacion_laboral sl "
+				+ "on p.Situacion_laboral_ID_Situacion_laboral = sl.ID_Situacion_laboral "
+				+ "WHERE p.dni = ?";
 		
 		try(Connection c = conex.conectar()){
 			PreparedStatement stmt = c.prepareStatement(sql);
@@ -470,5 +475,136 @@ public class DaoPersona {
 		
 		return fechas;
 	}
+	
 
+	public ArrayList<Barrio> asociarBarriosConPersonas() {
+
+	    ArrayList<Barrio> barrios = conexionBarrio.conseguirTodosLosBarrios();
+
+	    ArrayList<Persona> personas = conseguirTodasLasPersonas();
+
+	    String dni;
+	    String nombreBarrio;
+
+	    String sql = "SELECT p.DNI, b.nombre "
+	            + "FROM persona p "
+	            + "INNER JOIN barrio b "
+	            + "ON p.Barrio_ID_barrio = b.ID_barrio;";
+
+	    try (Connection conexion = conex.conectar()) {
+
+	        PreparedStatement stmt = conexion.prepareStatement(sql);
+
+	        ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+
+	            dni = rs.getString("DNI");
+	            nombreBarrio = rs.getString("nombre");
+
+	            for (Barrio b : barrios) {
+
+	                if (b.getNombre().equals(nombreBarrio)) {
+
+	                    for (Persona p : personas) {
+
+	                        if (p.getDNI().equals(dni)) {
+
+	                            b.getPersonas().add(p);
+	                            break;
+	                        }
+	                    }
+
+	                    break;
+	                }
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return barrios;
+	}
+	
+	public ArrayList<Persona> conseguirPersonasAsociadasABarrio(String nombreBarrio){
+		ArrayList<Persona> personas = new ArrayList<>();
+
+		String dni;
+		String nombre;
+		String apellido;
+		Estado situacionLaboral;
+		LocalDate fechaNacimiento;
+		String nombreDelEstado;
+
+		String sql = "SELECT p.DNI, p.Nombre, p.Apellido, p.Fecha_nacimiento, sl.estado "
+				+ "FROM persona p "
+				+ "INNER JOIN situacion_laboral sl "
+				+ "ON p.Situacion_laboral_ID_Situacion_laboral = sl.ID_Situacion_laboral "
+				+ "INNER JOIN barrio b "
+				+ "ON p.Barrio_ID_barrio = b.ID_barrio "
+				+ "WHERE b.nombre = ?";
+	
+		try(Connection c = conex.conectar()){
+			PreparedStatement stmt = c.prepareStatement(sql);
+			
+			stmt.setString(1, nombreBarrio);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				
+				dni = rs.getString("DNI");
+				
+				nombre = rs.getString("nombre");
+				
+				apellido = rs.getString("Apellido");
+				
+				nombreDelEstado = rs.getString("estado");
+				
+				switch(nombreDelEstado) {
+				
+				case "Ocupado":
+					situacionLaboral = Estado.OCUPADO;
+					break;
+					
+				case "Desocupado":
+					situacionLaboral = Estado.DESOCUPADO;
+					break;
+					
+				case "Subocupado":
+					situacionLaboral = Estado.SUBOCUPADO;
+					break;
+					
+					default:
+						situacionLaboral = null;
+					break;
+				}
+				
+				fechaNacimiento = rs.getDate("Fecha_nacimiento").toLocalDate();
+				
+				
+				Persona p = new Persona(dni,nombre,apellido,situacionLaboral,fechaNacimiento);
+				
+				personas.add(p);
+			}
+			
+			
+		}catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return personas;
+	}
+	
+	public Barrio conseguirBarrioConPersonas(String nombreBarrio) {
+
+	    Barrio barrio = conexionBarrio.buscarBarrioPorNombre(nombreBarrio);
+
+	    barrio.setPersonas(conseguirPersonasAsociadasABarrio(nombreBarrio));
+
+
+	    return barrio;
+	}
 }

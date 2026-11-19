@@ -75,6 +75,7 @@ public class PanelAgregarPersona extends JPanel {
 		crearSpinner();
 		crearComboBox();
 		crearTextfields();
+		rellenar();
 		eventos();
 
 	}
@@ -97,6 +98,34 @@ public class PanelAgregarPersona extends JPanel {
 		eventos();
 		
 	}
+	
+	public void rellenar() {
+		Persona personaElegida = sentencia.conexionPersona.conseguirPersonaPorDNI(dniAntiguo);
+		
+		String dni = personaElegida.getDNI();
+		String nombre = personaElegida.getNombre();
+		String apellido = personaElegida.getApellido();
+		
+		
+		textFieldDNI.setText(dni);
+		textFieldNombre.setText(nombre);
+		textFieldApellido.setText(apellido);
+		
+		Estado estado = personaElegida.getSituacionLaboral();
+		
+		comboBoxEstado.setSelectedItem(estado);
+		
+		LocalDate fechaCompleta = personaElegida.getFechaNacimiento();
+		
+		
+		
+		spinnerDia.setValue(fechaCompleta.getDayOfMonth());
+		comboBoxMes.setSelectedIndex(fechaCompleta.getMonthValue()-1);
+		spinnerAño.setValue(fechaCompleta.getYear());
+		
+		
+	}
+	
 	
 	public void crearPaneles() {
 		panelActual = this;

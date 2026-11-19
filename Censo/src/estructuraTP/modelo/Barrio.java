@@ -17,6 +17,11 @@ public abstract class Barrio {
 	public ArrayList<Persona> getPersonas() {
 		return personas;
 	}
+	
+	public void setPersonas(ArrayList<Persona> personas) {
+		this.personas = personas;
+	}
+	
 	public float getSuperficie() {
 		return superficie;
 	}
