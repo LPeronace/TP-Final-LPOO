@@ -31,8 +31,6 @@ public class PanelDetalleComuna extends JPanel {
 	
 	private Object[] columnas;
 	
-	private Sentencia sentencia;
-	
 	private String numeroSedeSeleccionada;
 	
 	private JButton botonVolver;
@@ -41,11 +39,10 @@ public class PanelDetalleComuna extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelDetalleComuna(JFrame marco, String numeroSedeSeleccionada, PanelComunaConsulta consulta,Sentencia sentencia) {
+	public PanelDetalleComuna(JFrame marco, String numeroSedeSeleccionada, PanelComunaConsulta consulta) {
 		this.marco = marco;
 		this.numeroSedeSeleccionada = numeroSedeSeleccionada;
 		this.consulta = consulta;
-		this.sentencia = sentencia;
 		setBounds(0,0,750,500);
 		
 		crearTablaCompleta();
@@ -95,7 +92,7 @@ public class PanelDetalleComuna extends JPanel {
 	public void actualizarTabla() {
 		modelo.setRowCount(0); 
 		String nombre;
-		for(Comuna com: sentencia.conexionComuna.asociarComunasConBarrios()) {
+		for(Comuna com: Sentencia.conexionComuna.asociarComunasConBarrios()) {
 			
 			if(com.getNumeroSede().equals(numeroSedeSeleccionada)) {
 				

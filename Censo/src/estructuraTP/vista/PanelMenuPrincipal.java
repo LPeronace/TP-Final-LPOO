@@ -31,8 +31,7 @@ public class PanelMenuPrincipal extends JPanel {
 	private JPanel PanelMenuComuna;
 	private PanelMenuPrincipal panelActual = this;
 	
-	public PanelMenuPrincipal(JFrame marco,Sentencia sentencia) {
-		this.sentencia = sentencia;
+	public PanelMenuPrincipal(JFrame marco) {
 		this.marco = marco;
 		setBounds(0, 0, 750, 500);
 		setLayout(null);
@@ -70,7 +69,7 @@ public class PanelMenuPrincipal extends JPanel {
 		botonPersona.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				PanelMenuPersona = new PanelMenuPersona(marco,panelActual,sentencia);
+				PanelMenuPersona = new PanelMenuPersona(marco,panelActual);
 				marco.setContentPane(PanelMenuPersona);
 			}
 		});
@@ -78,7 +77,7 @@ public class PanelMenuPrincipal extends JPanel {
 		botonBarrio.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				PanelMenuBarrio = new PanelMenuBarrio(marco, panelActual,sentencia);
+				PanelMenuBarrio = new PanelMenuBarrio(marco, panelActual);
 				marco.setContentPane(PanelMenuBarrio);
 			}
 		});
@@ -86,7 +85,7 @@ public class PanelMenuPrincipal extends JPanel {
 		botonComuna.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				PanelMenuComuna = new PanelMenuComuna(marco, panelActual,sentencia);
+				PanelMenuComuna = new PanelMenuComuna(marco, panelActual);
 				marco.setContentPane(PanelMenuComuna);
 			}
 		});

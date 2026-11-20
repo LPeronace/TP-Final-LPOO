@@ -31,8 +31,6 @@ public class PanelAgregarBarrio extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private JFrame marco;
-	
-	private Sentencia sentencia;
 	private PanelMenuBarrio menuBarrio;
 	
 	private JLabel labelTitulo;
@@ -70,11 +68,10 @@ public class PanelAgregarBarrio extends JPanel {
 	private String nombreBarrioAntiguo;
 	private boolean modoModificar = false;
 	
-	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio, String nombreBarrioAntiguo,Sentencia sentencia) {
+	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio, String nombreBarrioAntiguo) {
 		this.marco = marco;
 		this.menuBarrio = menuBarrio;
 		this.nombreBarrioAntiguo = nombreBarrioAntiguo;
-		this.sentencia = sentencia;
 		modoModificar = true;
 		setBounds(0, 0, 750, 500);
 		setLayout(null);
@@ -97,10 +94,9 @@ public class PanelAgregarBarrio extends JPanel {
 
 	
 	
-	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio,Sentencia sentencia) {
+	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio) {
 		this.marco = marco;
 		this.menuBarrio = menuBarrio;
-		this.sentencia = sentencia;
 		modoModificar = false;
 		setBounds(0, 0, 750, 500);
 		setLayout(null);
@@ -126,7 +122,7 @@ public class PanelAgregarBarrio extends JPanel {
 	}
 	
 	public void cargarDatosParaModificar() {
-		Barrio b = sentencia.conexionBarrio.buscarBarrioPorNombre(nombreBarrioAntiguo);
+		Barrio b = Sentencia.conexionBarrio.buscarBarrioPorNombre(nombreBarrioAntiguo);
 		
 		textFieldNombre.setText(b.getNombre());
 		
@@ -160,7 +156,7 @@ public class PanelAgregarBarrio extends JPanel {
 			checkBoxAgua.setSelected(bUP.getConexionAgua());
 		}
 		
-		comboBoxComuna.setSelectedItem(sentencia.conexionBarrio.conseguirNumeroSedeBarrioAsociado(nombreBarrioAntiguo));
+		comboBoxComuna.setSelectedItem(Sentencia.conexionBarrio.conseguirNumeroSedeBarrioAsociado(nombreBarrioAntiguo));
 		labelNombreComuna.setText(conseguirNombreComunaComboBox());
 
 		
@@ -259,17 +255,17 @@ public class PanelAgregarBarrio extends JPanel {
 				String numeroSedeComuna = (String) comboBoxComuna.getSelectedItem(); 
 				
 				
-				if(!sentencia.conexionBarrio.existeBarrioConEsteNombre(b.getNombre()) && !b.getNombre().equals(nombreBarrioAntiguo)) {
+				if(!Sentencia.conexionBarrio.existeBarrioConEsteNombre(b.getNombre()) && !b.getNombre().equals(nombreBarrioAntiguo)) {
 					
 					if(modoModificar) {
 						JOptionPane.showMessageDialog(panelActual, "Modificado con exito!");
 						
-						sentencia.conexionBarrio.modificarBarrioElegido(b,nombreBarrioAntiguo,numeroSedeComuna);
+						Sentencia.conexionBarrio.modificarBarrioElegido(b,nombreBarrioAntiguo,numeroSedeComuna);
 						marco.setContentPane(menuBarrio);
 					}
 					
 					else {
-						sentencia.conexionBarrio.cargarBarrio(b, numeroSedeComuna);
+						Sentencia.conexionBarrio.cargarBarrio(b, numeroSedeComuna);
 						JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
 						reiniciarCarga();
 					}
@@ -300,7 +296,7 @@ public class PanelAgregarBarrio extends JPanel {
 	public String conseguirNombreComunaComboBox() {
 		String numeroSedeComuna = (String) comboBoxComuna.getSelectedItem(); 
 		
-		Comuna comunaEspecifica = sentencia.conexionComuna.buscarComunaEspecifica(numeroSedeComuna);
+		Comuna comunaEspecifica = Sentencia.conexionComuna.buscarComunaEspecifica(numeroSedeComuna);
 		
 		String nombreComuna = comunaEspecifica.getNombre();
 		
@@ -440,7 +436,7 @@ public class PanelAgregarBarrio extends JPanel {
 		comboBoxTipoBarrio.addItem("Complejos Habitacionales");
 		comboBoxTipoBarrio.addItem("Urbanizacion Planificada");
 		
-		for(Comuna comuna: sentencia.conexionComuna.conseguirTodasLasComunas()) {
+		for(Comuna comuna: Sentencia.conexionComuna.conseguirTodasLasComunas()) {
 			comboBoxComuna.addItem(comuna.getNumeroSede());
 		}
 		

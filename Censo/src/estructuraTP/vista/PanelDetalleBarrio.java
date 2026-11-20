@@ -26,8 +26,6 @@ public class PanelDetalleBarrio extends JPanel {
 	private JFrame marco;
 	private PanelBarrioConsulta barrioConsulta;
 	
-	private Sentencia sentencia;
-	
 	private JButton botonVolver;
 	
 	private JScrollPane scrollPane;
@@ -45,11 +43,10 @@ public class PanelDetalleBarrio extends JPanel {
 	private JLabel lblDensidadPoblacional;
 	private JLabel labelNumeroDensidad;
 	
-	public PanelDetalleBarrio(JFrame marco, PanelBarrioConsulta barrioConsulta,Barrio barrioSeleccionado,Sentencia sentencia) {
+	public PanelDetalleBarrio(JFrame marco, PanelBarrioConsulta barrioConsulta,Barrio barrioSeleccionado) {
 		this.marco = marco;
 		this.barrioConsulta = barrioConsulta;
 		this.barrioSeleccionado = barrioSeleccionado;
-		this.sentencia = sentencia;
 		asociarPersonitas();
 		
 		setBounds(0,0,750,500);
@@ -66,7 +63,7 @@ public class PanelDetalleBarrio extends JPanel {
 	public void asociarPersonitas() {
 		String nombre = barrioSeleccionado.getNombre();
 		
-		barrioSeleccionado.setPersonas(sentencia.conexionPersona.conseguirPersonasAsociadasABarrio(nombre));
+		barrioSeleccionado.setPersonas(Sentencia.conexionPersona.conseguirPersonasAsociadasABarrio(nombre));
 	}
 	
 	public void crearLabels() {
@@ -191,7 +188,7 @@ public class PanelDetalleBarrio extends JPanel {
 	    boolean conexionAgua;
 	    
 		
-		for(Barrio b: sentencia.conexionBarrio.conseguirTodosLosBarrios()) {
+		for(Barrio b: Sentencia.conexionBarrio.conseguirTodosLosBarrios()) {
 			if(b.getNombre().equals(nombreBarrioActualizar)) {
 				nombre = b.getNombre();
 				superficie = b.getSuperficie();

@@ -1,11 +1,11 @@
 package estructuraTP.dao;
 
-public class Sentencia {
+public abstract class Sentencia {
 	
-	private Conexion conex = new Conexion();
+	private static Conexion conex = new Conexion();
 	
-	public DaoComuna conexionComuna = new DaoComuna(conex);
-	public DaoBarrio conexionBarrio = new DaoBarrio(conex,conexionComuna);
-	public DaoPersona conexionPersona = new DaoPersona(conex,conexionBarrio);
+	public static final DaoComuna conexionComuna = new DaoComuna(conex);
+	public static final DaoBarrio conexionBarrio = new DaoBarrio(conex,conexionComuna);
+	public static final DaoPersona conexionPersona = new DaoPersona(conex,conexionBarrio);
 
 }

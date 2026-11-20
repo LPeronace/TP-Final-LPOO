@@ -19,32 +19,26 @@ public class PanelMenuPersona extends JPanel {
 	
 	private JLabel labelTitulo;
 	
-	private Sentencia sentencia;
-	
 	private JButton botonAgregar;
 	private JButton botonConsulta;
 	private JButton botonVolver;
 
 	private PanelPersonaConsulta consulta;
 	private PanelAgregarPersona agregar;
+	private PanelMenuPersona panelActual = this;
 	
-	public PanelMenuPersona(JFrame marco, PanelMenuPrincipal menuPrincipal,Sentencia sentencia) {
+	
+	public PanelMenuPersona(JFrame marco, PanelMenuPrincipal menuPrincipal) {
 		this.marco = marco;
 		this.menuPrincipal = menuPrincipal;
-		this.sentencia = sentencia;
 		setBounds(0,0,750,500);
 		setLayout(null);
 		
 		crearLabels();
-		crearPaneles();
 		crearBotones();
 		accionBotones();
 	}
-	public void crearPaneles() {
-		consulta = new PanelPersonaConsulta(marco,this,sentencia);
-		agregar = new PanelAgregarPersona(marco,this);
-	}
-	
+
 	public void crearLabels() {
 		labelTitulo = new JLabel("Persona");
 		labelTitulo.setBounds(342, 23, 83, 14);
@@ -69,6 +63,7 @@ public class PanelMenuPersona extends JPanel {
 		botonConsulta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				consulta = new PanelPersonaConsulta(marco,panelActual);
 				consulta.actualizarTabla();
 				marco.setContentPane(consulta);
 			}
@@ -84,6 +79,7 @@ public class PanelMenuPersona extends JPanel {
 		botonAgregar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				agregar = new PanelAgregarPersona(marco,panelActual);
 				marco.setContentPane(agregar);
 			}
 		});

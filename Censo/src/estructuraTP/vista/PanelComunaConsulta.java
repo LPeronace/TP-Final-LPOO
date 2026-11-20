@@ -61,13 +61,12 @@ public class PanelComunaConsulta extends JPanel {
 	 *Como no dice si una comuna se puede borrar con barrios asignados, y que hacer con esos barrios, decidimos que solamente se puede borrar una comuna
 	 *cuando no tenga ningun barrio asignado
 	*/
-	public PanelComunaConsulta(JFrame marco, PanelMenuComuna menuComuna,Sentencia sentencia) {
+	public PanelComunaConsulta(JFrame marco, PanelMenuComuna menuComuna) {
 		setBounds(0, 0, 750, 500);
 		setLayout(null);
 		
 		this.marco = marco;
 		this.menuComuna = menuComuna;
-		this.sentencia = sentencia;
 		crearPaneles();
 		crearLabels();
 		crearTablaCompleta();
@@ -122,7 +121,7 @@ public class PanelComunaConsulta extends JPanel {
 				String numeroSede = (String) modelo.getValueAt(eleccion, 1);
 				
 				if(eleccion != -1) {
-					detalleComuna = new PanelDetalleComuna(marco,numeroSede, consulta,sentencia);
+					detalleComuna = new PanelDetalleComuna(marco,numeroSede, consulta);
 					
 					detalleComuna.actualizarTabla();
 					marco.setContentPane(detalleComuna);
@@ -182,7 +181,7 @@ public class PanelComunaConsulta extends JPanel {
 				if(eleccion != -1) {
 					String numeroSede = (String) modelo.getValueAt(eleccion, 1);
 					
-					agregar = new PanelAgregarComuna(marco,menuComuna,numeroSede,sentencia);
+					agregar = new PanelAgregarComuna(marco,menuComuna,numeroSede);
 					
 					marco.setContentPane(agregar);
 				}

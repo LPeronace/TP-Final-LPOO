@@ -26,11 +26,8 @@ public class PanelBarrioConsulta extends JPanel {
 	private JFrame marco;
 	private PanelMenuBarrio menuBarrio;
 	private PanelDetalleBarrio detalleBarrio;
-	private JPanel panelActual;
+	private PanelBarrioConsulta panelActual;
 	private PanelAgregarBarrio agregar; 
-	private PanelBarrioConsulta consulta;
-	
-	private Sentencia sentencia;
 	
 	private JButton botonVolver;
 	
@@ -48,10 +45,9 @@ public class PanelBarrioConsulta extends JPanel {
 	private JButton botonVerDetalle;
 	private JButton botonActualizar;
 
-	public PanelBarrioConsulta(JFrame marco, PanelMenuBarrio menuBarrio,Sentencia sentencia) {
+	public PanelBarrioConsulta(JFrame marco, PanelMenuBarrio menuBarrio) {
 		this.marco = marco;
 		this.menuBarrio = menuBarrio;
-		this.sentencia = sentencia;
 		setBounds(0,0,750,500);
 		setLayout(null);
 		
@@ -64,7 +60,6 @@ public class PanelBarrioConsulta extends JPanel {
 
 	public void crearPaneles() {
 		panelActual = this;
-		consulta = this;
 	}
 	
 	public void crearBotones() {
@@ -104,7 +99,7 @@ public class PanelBarrioConsulta extends JPanel {
 				
 				if(eleccion != -1) {
 					String nombreBarrio = (String) modelo.getValueAt(eleccion,0);
-					agregar = new PanelAgregarBarrio(marco,menuBarrio,nombreBarrio,sentencia);	
+					agregar = new PanelAgregarBarrio(marco,menuBarrio,nombreBarrio);	
 					
 					marco.setContentPane(agregar);
 				}
@@ -123,9 +118,9 @@ public class PanelBarrioConsulta extends JPanel {
 				if(eleccion != -1) {
 					String nombreBarrio = (String) modelo.getValueAt(eleccion,0);
 					
-					Barrio barrioEspecifico = sentencia.conexionBarrio.buscarBarrioPorNombre(nombreBarrio);
+					Barrio barrioEspecifico = Sentencia.conexionBarrio.buscarBarrioPorNombre(nombreBarrio);
 					
-					detalleBarrio = new PanelDetalleBarrio(marco,consulta,barrioEspecifico,sentencia);
+					detalleBarrio = new PanelDetalleBarrio(marco,panelActual,barrioEspecifico);
 					
 					detalleBarrio.actualizarTabla(nombreBarrio);
 					marco.setContentPane(detalleBarrio);
@@ -147,7 +142,7 @@ public class PanelBarrioConsulta extends JPanel {
 				if(eleccion != -1) {
 					String nombreBarrio = (String) modelo.getValueAt(eleccion, 0);
 					
-					if(sentencia.conexionBarrio.eliminarBarrioSeleccionado(nombreBarrio)) {
+					if(Sentencia.conexionBarrio.eliminarBarrioSeleccionado(nombreBarrio)) {
 						JOptionPane.showMessageDialog(panelActual, "Barrio borrado con éxito :)");
 					}
 					else {
@@ -196,7 +191,7 @@ public class PanelBarrioConsulta extends JPanel {
 		String nombre;
 		float superficie;
 		
-		for(Barrio b: sentencia.conexionBarrio.conseguirTodosLosBarrios()) {
+		for(Barrio b: Sentencia.conexionBarrio.conseguirTodosLosBarrios()) {
 			nombre = b.getNombre();
 			superficie = b.getSuperficie();
 			

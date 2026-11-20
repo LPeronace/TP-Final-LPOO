@@ -31,18 +31,15 @@ public class PanelHistorial extends JPanel {
 	private Object[] columnas;
 	private DefaultTableModel modelo;
 	
-	private Sentencia sentencia;
-	
 	private JLabel labelTitulo;
 	private JLabel labelDNI;
 	
 	private JButton botonVolver;
 	
 	
-	public PanelHistorial(JFrame marco, PanelPersonaConsulta consulta,String dni,Sentencia sentencia) {
+	public PanelHistorial(JFrame marco, PanelPersonaConsulta consulta,String dni) {
 			this.marco = marco;
 			this.consulta = consulta;
-			this.sentencia = sentencia;
 			this.dni = dni;
 			
 			setBounds(0,0,750,500);
@@ -107,18 +104,18 @@ public class PanelHistorial extends JPanel {
 
 	    modelo.setRowCount(0);
 
-	    int idPersona = sentencia.conexionPersona.conseguirIdPersonaConDni(dni);
+	    int idPersona = Sentencia.conexionPersona.conseguirIdPersonaConDni(dni);
 
-	    ArrayList<Integer> idsBarrios = sentencia.conexionPersona.conseguirIDBarrioEnHistorial(idPersona);
+	    ArrayList<Integer> idsBarrios = Sentencia.conexionPersona.conseguirIDBarrioEnHistorial(idPersona);
 
-	    ArrayList<LocalDate> fechas = sentencia.conexionPersona.conseguirFechaEnHistorial(idPersona);
+	    ArrayList<LocalDate> fechas = Sentencia.conexionPersona.conseguirFechaEnHistorial(idPersona);
 
 	    String nombreBarrio;
 	    LocalDate fechaDeMovida;
 
 	    for (int i = 0; i < idsBarrios.size(); i++) {
 
-	        nombreBarrio = sentencia.conexionBarrio.conseguirNombreBarrio(idsBarrios.get(i));
+	        nombreBarrio = Sentencia.conexionBarrio.conseguirNombreBarrio(idsBarrios.get(i));
 
 	        fechaDeMovida = fechas.get(i);
 

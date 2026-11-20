@@ -30,32 +30,21 @@ public class PanelMenuBarrio extends JPanel {
 	
 	private JFrame marco;
 	
-	private Sentencia sentencia;
-	
 	private PanelAgregarBarrio agregar;
 	private PanelBarrioConsulta consultar;
 	private PanelMenuPrincipal menuPrincipal;
+	private PanelMenuBarrio panelActual = this; 
 	
-	public PanelMenuBarrio(JFrame marco,PanelMenuPrincipal menuPrincipal, Sentencia sentencia) {
+	public PanelMenuBarrio(JFrame marco,PanelMenuPrincipal menuPrincipal) {
 		this.marco = marco;
 		this.menuPrincipal = menuPrincipal;
-		this.sentencia = sentencia;
 		setBounds(0,0,750,500);
 		
 		crearLabels();
-		crearPaneles();
 		crearBotones();
 		accionBotones();
 	}
-	
-	public void crearPaneles() {
-		agregar = new PanelAgregarBarrio(marco, this,sentencia);
-		
-		consultar = new PanelBarrioConsulta(marco,this,sentencia);
-		
-		
-	}
-	
+
 	public void crearLabels() {
 		setLayout(null);
 		labelTitulo = new JLabel("Barrio");
@@ -85,6 +74,7 @@ public class PanelMenuBarrio extends JPanel {
 		botonAgregar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				agregar = new PanelAgregarBarrio(marco, panelActual);
 				marco.setContentPane(agregar);
 			}
 		});
@@ -92,6 +82,7 @@ public class PanelMenuBarrio extends JPanel {
 		botonConsultar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				consultar = new PanelBarrioConsulta(marco,panelActual);
 				consultar.actualizarTabla();
 				marco.setContentPane(consultar);
 			}

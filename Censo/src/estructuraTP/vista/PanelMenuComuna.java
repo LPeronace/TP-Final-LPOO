@@ -26,17 +26,17 @@ public class PanelMenuComuna extends JPanel {
 	private PanelAgregarComuna PanelAgregar;
 	private PanelComunaConsulta PanelConsultar;
 	private PanelMenuPrincipal PanelMenuPrincipal;
+	private PanelMenuComuna panelActual = this;
 	
-	public PanelMenuComuna(JFrame marco, PanelMenuPrincipal menuPrincipal,Sentencia sentencia) {
+	
+	public PanelMenuComuna(JFrame marco, PanelMenuPrincipal menuPrincipal) {
 	    this.marco = marco;
 	    this.PanelMenuPrincipal = menuPrincipal;
-	    this.sentencia = sentencia;
 	    setLayout(null);
 	    setBounds(0,0,750,500);
 
 	    crearLabels();
 	    crearBotones();
-	    crearPaneles();
 	    eventoBotones();
 	}
 	
@@ -44,12 +44,6 @@ public class PanelMenuComuna extends JPanel {
 		titulo = new JLabel("Comuna");
 		titulo.setBounds(318, 28, 100, 14);
 		add(titulo);
-	}
-	
-	public void crearPaneles() {
-		PanelAgregar = new PanelAgregarComuna(marco, this,sentencia);
-		
-		PanelConsultar = new PanelComunaConsulta(marco,this,sentencia);
 	}
 	
 	public void crearBotones() {
@@ -71,6 +65,7 @@ public class PanelMenuComuna extends JPanel {
 		botonCargar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				PanelAgregar = new PanelAgregarComuna(marco, panelActual);
 				marco.setContentPane(PanelAgregar);
 			}
 		});
@@ -78,6 +73,7 @@ public class PanelMenuComuna extends JPanel {
 		botonConsultar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				PanelConsultar = new PanelComunaConsulta(marco,panelActual);
 				PanelConsultar.actualizarTabla();
 				marco.setContentPane(PanelConsultar);
 			}

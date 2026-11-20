@@ -56,8 +56,6 @@ public class PanelPersonaConsulta extends JPanel {
 	
 	private Object[] columnas;
 	
-	private Sentencia sentencia;
-	
 	private PanelAgregarPersona agregar;
 	private JPanel panelActual;
 	
@@ -69,10 +67,9 @@ public class PanelPersonaConsulta extends JPanel {
 	private Meses mes;
 	
 	
-	public PanelPersonaConsulta(JFrame marco, PanelMenuPersona menuPersona,Sentencia sentencia) {
+	public PanelPersonaConsulta(JFrame marco, PanelMenuPersona menuPersona) {
 		this.marco = marco;
 		this.menuPersona = menuPersona;
-		this.sentencia = sentencia;
 		setBounds(0,0,750,500);
 		setLayout(null);
 		
@@ -158,7 +155,7 @@ public class PanelPersonaConsulta extends JPanel {
 		add(comboBoxCambiarBarrio);
 
 		
-		for(Barrio b: sentencia.conexionBarrio.conseguirTodosLosBarrios()) {
+		for(Barrio b: Sentencia.conexionBarrio.conseguirTodosLosBarrios()) {
 			comboBoxCambiarBarrio.addItem(b.getNombre());
 		}
 		
@@ -180,7 +177,7 @@ public class PanelPersonaConsulta extends JPanel {
 				
 				if(eleccion != -1) {
 					String dni = (String) modelo.getValueAt(eleccion, 0);
-					if(sentencia.conexionPersona.eliminarPersonaSeleccionada(dni)) {
+					if(Sentencia.conexionPersona.eliminarPersonaSeleccionada(dni)) {
 						JOptionPane.showMessageDialog(panelActual, "Eliminado con exito!!");
 					}
 					else {
@@ -206,7 +203,7 @@ public class PanelPersonaConsulta extends JPanel {
 				if(eleccion != -1) {
 					String dni = (String) modelo.getValueAt(eleccion, 0);
 					
-					sentencia.conexionPersona.añadirHistorial(dni,nombreBarrio,fechaCambio);
+					Sentencia.conexionPersona.añadirHistorial(dni,nombreBarrio,fechaCambio);
 						
 					JOptionPane.showMessageDialog(panelActual,"Se ha hecho el cambio con exito!");
 					actualizarTabla();
@@ -226,7 +223,7 @@ public class PanelPersonaConsulta extends JPanel {
 				
 				if(eleccion != -1) {
 					String dniAntiguo = (String) modelo.getValueAt(eleccion, 0);
-					agregar = new PanelAgregarPersona(marco,menuPersona,dniAntiguo,sentencia);
+					agregar = new PanelAgregarPersona(marco,menuPersona,dniAntiguo);
 					marco.setContentPane(agregar);
 				}
 				else {
@@ -243,7 +240,7 @@ public class PanelPersonaConsulta extends JPanel {
 				
 				if(eleccion != -1) {
 					String dni = (String) modelo.getValueAt(eleccion, 0);
-					historial = new PanelHistorial(marco,consulta,dni,sentencia);
+					historial = new PanelHistorial(marco,consulta,dni);
 					
 					marco.setContentPane(historial);
 				}
@@ -259,7 +256,7 @@ public class PanelPersonaConsulta extends JPanel {
 			public void keyReleased(KeyEvent e) {
 				String textoParaBusqueda = textFieldBusqueda.getText();
 				
-				ArrayList<Persona> personas = sentencia.conexionPersona.buscarPersonaAproximacion(textoParaBusqueda);
+				ArrayList<Persona> personas = Sentencia.conexionPersona.buscarPersonaAproximacion(textoParaBusqueda);
 				
 				actualizarTabla(personas);
 			}
@@ -276,7 +273,7 @@ public class PanelPersonaConsulta extends JPanel {
 		Estado situacion;
 		LocalDate fechaNacimiento;
 
-		for(Persona p: sentencia.conexionPersona.conseguirTodasLasPersonas()) {
+		for(Persona p: Sentencia.conexionPersona.conseguirTodasLasPersonas()) {
 			dni = p.getDNI();
 			
 			nombre = p.getNombre();
@@ -287,7 +284,7 @@ public class PanelPersonaConsulta extends JPanel {
 			
 			fechaNacimiento = p.getFechaNacimiento();
 			
-			nombreBarrioAsociado = sentencia.conexionBarrio.conseguirNombreDelBarrioAsociado(dni);
+			nombreBarrioAsociado = Sentencia.conexionBarrio.conseguirNombreDelBarrioAsociado(dni);
 			
 			modelo.addRow(new Object[] {dni, nombre, apellido, nombreBarrioAsociado, situacion, fechaNacimiento});
 		}
@@ -317,7 +314,7 @@ public class PanelPersonaConsulta extends JPanel {
 			
 			fechaNacimiento = p.getFechaNacimiento();
 			
-			nombreBarrioAsociado = sentencia.conexionBarrio.conseguirNombreDelBarrioAsociado(dni);
+			nombreBarrioAsociado = Sentencia.conexionBarrio.conseguirNombreDelBarrioAsociado(dni);
 			
 			modelo.addRow(new Object[] {dni, nombre, apellido, nombreBarrioAsociado, situacion, fechaNacimiento});
 		}

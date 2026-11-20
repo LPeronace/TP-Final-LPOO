@@ -22,7 +22,6 @@ public class PanelAgregarComuna extends JPanel {
 	private JTextField textFieldNombre;
 	private JTextField textFieldNumeroSede;
 	
-	private Sentencia sentencia;
 	
 	private JLabel labelTitulo;
 	private JLabel labelNombre;
@@ -39,11 +38,10 @@ public class PanelAgregarComuna extends JPanel {
 	private boolean modoModificar;
 
 	
-	public PanelAgregarComuna(JFrame marco, PanelMenuComuna panelMenuComuna,String numeroSedeAntiguo, Sentencia sentencia) {
+	public PanelAgregarComuna(JFrame marco, PanelMenuComuna panelMenuComuna,String numeroSedeAntiguo) {
 		this.marco = marco;
 		this.panelMenuComuna = panelMenuComuna;
 		this.numeroSedeAntiguo = numeroSedeAntiguo;
-		this.sentencia = sentencia;
 		modoModificar = true;
 		setBounds(0,0,750,500);
 		setLayout(null);
@@ -55,10 +53,9 @@ public class PanelAgregarComuna extends JPanel {
 		rellenarCampos();
 	}
 	
-	public PanelAgregarComuna(JFrame marco, PanelMenuComuna panelMenuComuna,Sentencia sentencia) {
+	public PanelAgregarComuna(JFrame marco, PanelMenuComuna panelMenuComuna) {
 		this.marco = marco;
 		this.panelMenuComuna = panelMenuComuna;
-		this.sentencia = sentencia;
 		modoModificar = false;
 		setBounds(0,0,750,500);
 		setLayout(null);
@@ -118,17 +115,17 @@ public class PanelAgregarComuna extends JPanel {
 				
 				String numeroSede = comuna.getNumeroSede();
 				
-				if(!sentencia.conexionComuna.existeComunaConEsteNumero(numeroSede)) {
+				if(!Sentencia.conexionComuna.existeComunaConEsteNumero(numeroSede)) {
 					if(modoModificar) {
 						JOptionPane.showMessageDialog(panelActual, "Modificado con exito!!!");
 						
-						sentencia.conexionComuna.modificarComuna(comuna,numeroSedeAntiguo);
+						Sentencia.conexionComuna.modificarComuna(comuna,numeroSedeAntiguo);
 						marco.setContentPane(panelMenuComuna);
 					}
 					else {
 						JOptionPane.showMessageDialog(panelActual, "Cargado con exito!!!");
 						
-						sentencia.conexionComuna.cargarComuna(comuna);
+						Sentencia.conexionComuna.cargarComuna(comuna);
 					}
 				}
 				else {
@@ -147,7 +144,7 @@ public class PanelAgregarComuna extends JPanel {
 	}
 	
 	public void rellenarCampos() {
-		Comuna comuna = sentencia.conexionComuna.buscarComunaEspecifica(numeroSedeAntiguo);
+		Comuna comuna = Sentencia.conexionComuna.buscarComunaEspecifica(numeroSedeAntiguo);
 		
 		textFieldNombre.setText(comuna.getNombre());
 		

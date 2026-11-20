@@ -39,7 +39,6 @@ public class PanelAgregarPersona extends JPanel {
 	private JLabel labelSituacionLaboral;
 	private JLabel labelAsociarBarrio;
 	
-	private Sentencia sentencia;
 	
 	private JButton botonVolver;
 	private JButton botonCargar;
@@ -61,11 +60,10 @@ public class PanelAgregarPersona extends JPanel {
 	private boolean modoModificar;
 	private String dniAntiguo;
 	
-	public PanelAgregarPersona(JFrame marco, PanelMenuPersona menuPersona, String dniAntiguo,Sentencia sentencia) {
+	public PanelAgregarPersona(JFrame marco, PanelMenuPersona menuPersona, String dniAntiguo) {
 		this.marco = marco;
 		this.menuPersona = menuPersona;
 		this.dniAntiguo = dniAntiguo;
-		this.sentencia = sentencia;
 		modoModificar = true;
 		
 		setBounds(0,0,750,500);
@@ -85,7 +83,6 @@ public class PanelAgregarPersona extends JPanel {
 	public PanelAgregarPersona(JFrame marco, PanelMenuPersona menuPersona) {
 		this.marco = marco;
 		this.menuPersona = menuPersona;
-		
 		modoModificar = false;
 		
 		setBounds(0,0,750,500);
@@ -101,7 +98,7 @@ public class PanelAgregarPersona extends JPanel {
 	}
 	
 	public void rellenar() {
-		Persona personaElegida = sentencia.conexionPersona.conseguirPersonaPorDNI(dniAntiguo);
+		Persona personaElegida = Sentencia.conexionPersona.conseguirPersonaPorDNI(dniAntiguo);
 		
 		String dni = personaElegida.getDNI();
 		String nombre = personaElegida.getNombre();
@@ -215,17 +212,17 @@ public class PanelAgregarPersona extends JPanel {
 				
 				String dniParaVerSiExiste = personaCargada.getDNI();
 				
-				if(!sentencia.conexionPersona.verSiExisteDni(dniParaVerSiExiste) && !personaCargada.getDNI().equals(dniAntiguo) ) {
+				if(!Sentencia.conexionPersona.verSiExisteDni(dniParaVerSiExiste) && !personaCargada.getDNI().equals(dniAntiguo) ) {
 					if(modoModificar) {
 						
-						sentencia.conexionPersona.modificarPersona(personaCargada,nombreBarrioAsociado,dniAntiguo);
+						Sentencia.conexionPersona.modificarPersona(personaCargada,nombreBarrioAsociado,dniAntiguo);
 						JOptionPane.showMessageDialog(panelActual, "Modificado con exito!!!!!!!!!!!!");
 						
 						marco.setContentPane(menuPersona);
 						
 					}else {
 						JOptionPane.showMessageDialog(panelActual,"Cargado/a con exito!");
-						sentencia.conexionPersona.crearPersona(personaCargada, nombreBarrioAsociado);
+						Sentencia.conexionPersona.crearPersona(personaCargada, nombreBarrioAsociado);
 						reiniciarCarga();
 				}
 					
@@ -274,7 +271,7 @@ public class PanelAgregarPersona extends JPanel {
 			comboBoxEstado.addItem(e);
 		}
 			
-		for(Barrio b: sentencia.conexionBarrio.conseguirTodosLosBarrios()) {
+		for(Barrio b: Sentencia.conexionBarrio.conseguirTodosLosBarrios()) {
 			comboBoxBarrioAsociado.addItem(b.getNombre());
 		}
 	}
