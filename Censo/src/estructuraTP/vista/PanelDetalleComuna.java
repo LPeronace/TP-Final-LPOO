@@ -31,7 +31,7 @@ public class PanelDetalleComuna extends JPanel {
 	
 	private Object[] columnas;
 	
-	private Sentencia sentencia = new Sentencia();
+	private Sentencia sentencia;
 	
 	private String numeroSedeSeleccionada;
 	
@@ -41,10 +41,11 @@ public class PanelDetalleComuna extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelDetalleComuna(JFrame marco, String numeroSedeSeleccionada, PanelComunaConsulta consulta) {
+	public PanelDetalleComuna(JFrame marco, String numeroSedeSeleccionada, PanelComunaConsulta consulta,Sentencia sentencia) {
 		this.marco = marco;
 		this.numeroSedeSeleccionada = numeroSedeSeleccionada;
 		this.consulta = consulta;
+		this.sentencia = sentencia;
 		setBounds(0,0,750,500);
 		
 		crearTablaCompleta();

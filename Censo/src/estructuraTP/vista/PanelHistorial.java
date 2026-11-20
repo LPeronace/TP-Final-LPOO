@@ -31,7 +31,7 @@ public class PanelHistorial extends JPanel {
 	private Object[] columnas;
 	private DefaultTableModel modelo;
 	
-	private Sentencia sentencia = new Sentencia();
+	private Sentencia sentencia;
 	
 	private JLabel labelTitulo;
 	private JLabel labelDNI;
@@ -39,10 +39,10 @@ public class PanelHistorial extends JPanel {
 	private JButton botonVolver;
 	
 	
-	public PanelHistorial(JFrame marco, PanelPersonaConsulta consulta,String dni) {
+	public PanelHistorial(JFrame marco, PanelPersonaConsulta consulta,String dni,Sentencia sentencia) {
 			this.marco = marco;
 			this.consulta = consulta;
-			
+			this.sentencia = sentencia;
 			this.dni = dni;
 			
 			setBounds(0,0,750,500);

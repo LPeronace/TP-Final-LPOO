@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import estructuraTP.dao.Sentencia;
+
 public class PanelMenuPrincipal extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -20,36 +22,33 @@ public class PanelMenuPrincipal extends JPanel {
 	
 	private JLabel labelTitulo;
 	
+	private Sentencia sentencia;
+	
 	private JFrame marco;
 	
 	private JPanel PanelMenuPersona;
 	private JPanel PanelMenuBarrio; 
 	private JPanel PanelMenuComuna;
+	private PanelMenuPrincipal panelActual = this;
 	
-	public PanelMenuPrincipal(JFrame marco) {
-		
+	public PanelMenuPrincipal(JFrame marco,Sentencia sentencia) {
+		this.sentencia = sentencia;
 		this.marco = marco;
 		setBounds(0, 0, 750, 500);
 		setLayout(null);
-		crearPaneles();
 		crearLabel();
 		crearBotones();
 		eventoBotones();
 		
 	}
 	
-	
-	public void crearPaneles() {
-		PanelMenuPersona = new PanelMenuPersona(marco,this);
-		PanelMenuBarrio = new PanelMenuBarrio(marco, this);
-		PanelMenuComuna = new PanelMenuComuna(marco, this);
-	}
-	public void crearLabel() {
 
+	public void crearLabel() {
 		labelTitulo = new JLabel("Bienvenido Al MENU");
 		labelTitulo.setBounds(318, 24, 126, 14);
 		add(labelTitulo);		
 	}
+	
 	public void crearBotones() {
 
 		botonComuna = new JButton("Comuna");
@@ -65,13 +64,13 @@ public class PanelMenuPrincipal extends JPanel {
 		botonPersona.setBounds(318, 122, 111, 23);
 		add(botonPersona);
 		
-		
 	}
 	
 	public void eventoBotones() {
 		botonPersona.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				PanelMenuPersona = new PanelMenuPersona(marco,panelActual,sentencia);
 				marco.setContentPane(PanelMenuPersona);
 			}
 		});
@@ -79,6 +78,7 @@ public class PanelMenuPrincipal extends JPanel {
 		botonBarrio.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				PanelMenuBarrio = new PanelMenuBarrio(marco, panelActual,sentencia);
 				marco.setContentPane(PanelMenuBarrio);
 			}
 		});
@@ -86,6 +86,7 @@ public class PanelMenuPrincipal extends JPanel {
 		botonComuna.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				PanelMenuComuna = new PanelMenuComuna(marco, panelActual,sentencia);
 				marco.setContentPane(PanelMenuComuna);
 			}
 		});

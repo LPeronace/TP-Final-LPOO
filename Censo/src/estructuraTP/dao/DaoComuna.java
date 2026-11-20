@@ -19,23 +19,24 @@ public class DaoComuna {
 	}
 	
 	public void cargarComuna(Comuna c) {
-		
-		System.out.println();
+
+
 		String sql = "INSERT INTO comuna(Nombre_Sede,Numero_Comuna)VALUES(?,?)";
 		
-		try(Connection conexion = conex.conectar()) {
-			PreparedStatement stmt = conexion.prepareStatement(sql);
+		
+		try(Connection conexion = conex.conectar();
+			PreparedStatement stmt = conexion.prepareStatement(sql)
+				) {
 			
 			stmt.setString(1, c.getNombre());
 			stmt.setString(2, c.getNumeroSede());
 			
 			stmt.executeUpdate();
 			
-			
-			
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+		
 	}
 	
 	public void modificarComuna(Comuna comuna, String numeroSedeAntiguo) {
@@ -169,7 +170,7 @@ public class DaoComuna {
 	
 	public boolean existeComunaConEsteNumero(String numeroComunaACheckear) {
 		boolean existe = false;
-		
+
 		String sql = "SELECT * FROM comuna WHERE Numero_Comuna = ?";
 		
 		try(Connection c = conex.conectar()){

@@ -178,3 +178,6 @@ VALUES
 ('41123456', 'Ines', 'Medina', '1997-07-25', 2, 5),
 ('38555111', 'Juan', 'Castro', '1991-03-08', 1, 6);
 
+INSERT INTO situacion_laboral(estado) VALUES("OCUPADO");
+INSERT INTO situacion_laboral(estado) VALUES("SUBOCUPADO");
+INSERT INTO situacion_laboral(estado) VALUES("DESOCUPADO");

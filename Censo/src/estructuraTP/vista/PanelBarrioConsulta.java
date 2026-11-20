@@ -30,7 +30,7 @@ public class PanelBarrioConsulta extends JPanel {
 	private PanelAgregarBarrio agregar; 
 	private PanelBarrioConsulta consulta;
 	
-	private Sentencia sentencia = new Sentencia();
+	private Sentencia sentencia;
 	
 	private JButton botonVolver;
 	
@@ -48,10 +48,10 @@ public class PanelBarrioConsulta extends JPanel {
 	private JButton botonVerDetalle;
 	private JButton botonActualizar;
 
-	public PanelBarrioConsulta(JFrame marco, PanelMenuBarrio menuBarrio) {
+	public PanelBarrioConsulta(JFrame marco, PanelMenuBarrio menuBarrio,Sentencia sentencia) {
 		this.marco = marco;
 		this.menuBarrio = menuBarrio;
-		
+		this.sentencia = sentencia;
 		setBounds(0,0,750,500);
 		setLayout(null);
 		
@@ -104,7 +104,7 @@ public class PanelBarrioConsulta extends JPanel {
 				
 				if(eleccion != -1) {
 					String nombreBarrio = (String) modelo.getValueAt(eleccion,0);
-					agregar = new PanelAgregarBarrio(marco,menuBarrio,nombreBarrio);	
+					agregar = new PanelAgregarBarrio(marco,menuBarrio,nombreBarrio,sentencia);	
 					
 					marco.setContentPane(agregar);
 				}
@@ -125,7 +125,7 @@ public class PanelBarrioConsulta extends JPanel {
 					
 					Barrio barrioEspecifico = sentencia.conexionBarrio.buscarBarrioPorNombre(nombreBarrio);
 					
-					detalleBarrio = new PanelDetalleBarrio(marco,consulta,barrioEspecifico);
+					detalleBarrio = new PanelDetalleBarrio(marco,consulta,barrioEspecifico,sentencia);
 					
 					detalleBarrio.actualizarTabla(nombreBarrio);
 					marco.setContentPane(detalleBarrio);

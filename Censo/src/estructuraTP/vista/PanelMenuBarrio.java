@@ -1,6 +1,9 @@
 package estructuraTP.vista;
 
 import javax.swing.JPanel;
+
+import estructuraTP.dao.Sentencia;
+
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,15 +30,16 @@ public class PanelMenuBarrio extends JPanel {
 	
 	private JFrame marco;
 	
+	private Sentencia sentencia;
 	
 	private PanelAgregarBarrio agregar;
 	private PanelBarrioConsulta consultar;
 	private PanelMenuPrincipal menuPrincipal;
 	
-	public PanelMenuBarrio(JFrame marco,PanelMenuPrincipal menuPrincipal) {
+	public PanelMenuBarrio(JFrame marco,PanelMenuPrincipal menuPrincipal, Sentencia sentencia) {
 		this.marco = marco;
 		this.menuPrincipal = menuPrincipal;
-		
+		this.sentencia = sentencia;
 		setBounds(0,0,750,500);
 		
 		crearLabels();
@@ -45,9 +49,9 @@ public class PanelMenuBarrio extends JPanel {
 	}
 	
 	public void crearPaneles() {
-		agregar = new PanelAgregarBarrio(marco, this);
+		agregar = new PanelAgregarBarrio(marco, this,sentencia);
 		
-		consultar = new PanelBarrioConsulta(marco,this);
+		consultar = new PanelBarrioConsulta(marco,this,sentencia);
 		
 		
 	}

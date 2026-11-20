@@ -22,8 +22,7 @@ public class PanelAgregarComuna extends JPanel {
 	private JTextField textFieldNombre;
 	private JTextField textFieldNumeroSede;
 	
-	private Sentencia sentencia = new Sentencia();
-
+	private Sentencia sentencia;
 	
 	private JLabel labelTitulo;
 	private JLabel labelNombre;
@@ -40,10 +39,11 @@ public class PanelAgregarComuna extends JPanel {
 	private boolean modoModificar;
 
 	
-	public PanelAgregarComuna(JFrame marco, PanelMenuComuna panelMenuComuna,String numeroSedeAntiguo) {
+	public PanelAgregarComuna(JFrame marco, PanelMenuComuna panelMenuComuna,String numeroSedeAntiguo, Sentencia sentencia) {
 		this.marco = marco;
 		this.panelMenuComuna = panelMenuComuna;
 		this.numeroSedeAntiguo = numeroSedeAntiguo;
+		this.sentencia = sentencia;
 		modoModificar = true;
 		setBounds(0,0,750,500);
 		setLayout(null);
@@ -55,9 +55,10 @@ public class PanelAgregarComuna extends JPanel {
 		rellenarCampos();
 	}
 	
-	public PanelAgregarComuna(JFrame marco, PanelMenuComuna panelMenuComuna) {
+	public PanelAgregarComuna(JFrame marco, PanelMenuComuna panelMenuComuna,Sentencia sentencia) {
 		this.marco = marco;
 		this.panelMenuComuna = panelMenuComuna;
+		this.sentencia = sentencia;
 		modoModificar = false;
 		setBounds(0,0,750,500);
 		setLayout(null);

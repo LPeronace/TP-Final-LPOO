@@ -32,7 +32,7 @@ public class PanelAgregarBarrio extends JPanel {
 	
 	private JFrame marco;
 	
-	private Sentencia sentencia = new Sentencia();
+	private Sentencia sentencia;
 	private PanelMenuBarrio menuBarrio;
 	
 	private JLabel labelTitulo;
@@ -70,10 +70,11 @@ public class PanelAgregarBarrio extends JPanel {
 	private String nombreBarrioAntiguo;
 	private boolean modoModificar = false;
 	
-	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio, String nombreBarrioAntiguo) {
+	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio, String nombreBarrioAntiguo,Sentencia sentencia) {
 		this.marco = marco;
 		this.menuBarrio = menuBarrio;
 		this.nombreBarrioAntiguo = nombreBarrioAntiguo;
+		this.sentencia = sentencia;
 		modoModificar = true;
 		setBounds(0, 0, 750, 500);
 		setLayout(null);
@@ -96,9 +97,10 @@ public class PanelAgregarBarrio extends JPanel {
 
 	
 	
-	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio) {
+	public PanelAgregarBarrio(JFrame marco, PanelMenuBarrio menuBarrio,Sentencia sentencia) {
 		this.marco = marco;
 		this.menuBarrio = menuBarrio;
+		this.sentencia = sentencia;
 		modoModificar = false;
 		setBounds(0, 0, 750, 500);
 		setLayout(null);

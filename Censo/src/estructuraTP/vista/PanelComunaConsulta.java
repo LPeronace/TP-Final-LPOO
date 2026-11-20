@@ -31,7 +31,7 @@ public class PanelComunaConsulta extends JPanel {
 	
 	private JTable tabla;
 	
-	private Sentencia sentencia = new Sentencia();
+	private Sentencia sentencia;
 
 	
 	private DefaultTableModel modelo;
@@ -51,7 +51,6 @@ public class PanelComunaConsulta extends JPanel {
 	private PanelAgregarComuna agregar;
 	
 	private Comuna comuna = new Comuna();
-
 	
 	private Object[] columnas;
 	
@@ -62,12 +61,13 @@ public class PanelComunaConsulta extends JPanel {
 	 *Como no dice si una comuna se puede borrar con barrios asignados, y que hacer con esos barrios, decidimos que solamente se puede borrar una comuna
 	 *cuando no tenga ningun barrio asignado
 	*/
-	public PanelComunaConsulta(JFrame marco, PanelMenuComuna menuComuna) {
+	public PanelComunaConsulta(JFrame marco, PanelMenuComuna menuComuna,Sentencia sentencia) {
 		setBounds(0, 0, 750, 500);
 		setLayout(null);
 		
 		this.marco = marco;
 		this.menuComuna = menuComuna;
+		this.sentencia = sentencia;
 		crearPaneles();
 		crearLabels();
 		crearTablaCompleta();
@@ -122,7 +122,7 @@ public class PanelComunaConsulta extends JPanel {
 				String numeroSede = (String) modelo.getValueAt(eleccion, 1);
 				
 				if(eleccion != -1) {
-					detalleComuna = new PanelDetalleComuna(marco,numeroSede, consulta);
+					detalleComuna = new PanelDetalleComuna(marco,numeroSede, consulta,sentencia);
 					
 					detalleComuna.actualizarTabla();
 					marco.setContentPane(detalleComuna);
@@ -182,7 +182,7 @@ public class PanelComunaConsulta extends JPanel {
 				if(eleccion != -1) {
 					String numeroSede = (String) modelo.getValueAt(eleccion, 1);
 					
-					agregar = new PanelAgregarComuna(marco,menuComuna,numeroSede);
+					agregar = new PanelAgregarComuna(marco,menuComuna,numeroSede,sentencia);
 					
 					marco.setContentPane(agregar);
 				}
@@ -227,7 +227,12 @@ public class PanelComunaConsulta extends JPanel {
 			numeroSede = com.getNumeroSede();
 			cantidadBarrio = com.getCantidadBarrio();
 			cantidadCriticos = com.getCantidadBarriosCriticos();
-			atencionPrioritaria = (cantidadBarrio*0.5) <= cantidadCriticos;
+			if(cantidadBarrio == 0) {
+				atencionPrioritaria = false;
+			}
+			else {
+				atencionPrioritaria = (cantidadBarrio*0.5) <= cantidadCriticos;
+			}
 			
 			modelo.addRow(new Object[] {nombre, numeroSede, cantidadBarrio, cantidadCriticos, atencionPrioritaria ? "Si":"No"});
 		

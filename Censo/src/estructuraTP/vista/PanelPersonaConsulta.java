@@ -56,7 +56,7 @@ public class PanelPersonaConsulta extends JPanel {
 	
 	private Object[] columnas;
 	
-	private Sentencia sentencia = new Sentencia();
+	private Sentencia sentencia;
 	
 	private PanelAgregarPersona agregar;
 	private JPanel panelActual;
@@ -69,10 +69,10 @@ public class PanelPersonaConsulta extends JPanel {
 	private Meses mes;
 	
 	
-	public PanelPersonaConsulta(JFrame marco, PanelMenuPersona menuPersona) {
+	public PanelPersonaConsulta(JFrame marco, PanelMenuPersona menuPersona,Sentencia sentencia) {
 		this.marco = marco;
 		this.menuPersona = menuPersona;
-		
+		this.sentencia = sentencia;
 		setBounds(0,0,750,500);
 		setLayout(null);
 		
@@ -226,7 +226,7 @@ public class PanelPersonaConsulta extends JPanel {
 				
 				if(eleccion != -1) {
 					String dniAntiguo = (String) modelo.getValueAt(eleccion, 0);
-					agregar = new PanelAgregarPersona(marco,menuPersona,dniAntiguo);
+					agregar = new PanelAgregarPersona(marco,menuPersona,dniAntiguo,sentencia);
 					marco.setContentPane(agregar);
 				}
 				else {
@@ -243,7 +243,7 @@ public class PanelPersonaConsulta extends JPanel {
 				
 				if(eleccion != -1) {
 					String dni = (String) modelo.getValueAt(eleccion, 0);
-					historial = new PanelHistorial(marco,consulta,dni);
+					historial = new PanelHistorial(marco,consulta,dni,sentencia);
 					
 					marco.setContentPane(historial);
 				}

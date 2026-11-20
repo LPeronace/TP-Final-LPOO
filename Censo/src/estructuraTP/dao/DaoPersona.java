@@ -207,16 +207,16 @@ public class DaoPersona {
 				nombreDelEstado = rs.getString("estado");
 				
 				switch(nombreDelEstado) {
-				
-				case "Ocupado":
+				//TODO
+				case "OCUPADO":
 					situacionLaboral = Estado.OCUPADO;
 					break;
 					
-				case "Desocupado":
+				case "DESOCUPADO":
 					situacionLaboral = Estado.DESOCUPADO;
 					break;
 					
-				case "Subocupado":
+				case "SUBOCUPADO":
 					situacionLaboral = Estado.SUBOCUPADO;
 					break;
 					
@@ -607,4 +607,6 @@ public class DaoPersona {
 
 	    return barrio;
 	}
+	
+	
 }

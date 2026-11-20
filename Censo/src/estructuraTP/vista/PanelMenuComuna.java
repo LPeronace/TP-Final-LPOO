@@ -2,6 +2,9 @@ package estructuraTP.vista;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import estructuraTP.dao.Sentencia;
+
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
@@ -11,18 +14,23 @@ public class PanelMenuComuna extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	private JFrame marco;
+	
 	private JLabel titulo;
+	
 	private JButton botonCargar;
 	private JButton botonConsultar;
 	private JButton botonVolver;
+	
+	private Sentencia sentencia;
+	
 	private PanelAgregarComuna PanelAgregar;
 	private PanelComunaConsulta PanelConsultar;
 	private PanelMenuPrincipal PanelMenuPrincipal;
 	
-	public PanelMenuComuna(JFrame marco, PanelMenuPrincipal menuPrincipal) {
+	public PanelMenuComuna(JFrame marco, PanelMenuPrincipal menuPrincipal,Sentencia sentencia) {
 	    this.marco = marco;
 	    this.PanelMenuPrincipal = menuPrincipal;
-
+	    this.sentencia = sentencia;
 	    setLayout(null);
 	    setBounds(0,0,750,500);
 
@@ -39,9 +47,9 @@ public class PanelMenuComuna extends JPanel {
 	}
 	
 	public void crearPaneles() {
-		PanelAgregar = new PanelAgregarComuna(marco, this);
+		PanelAgregar = new PanelAgregarComuna(marco, this,sentencia);
 		
-		PanelConsultar = new PanelComunaConsulta(marco,this);
+		PanelConsultar = new PanelComunaConsulta(marco,this,sentencia);
 	}
 	
 	public void crearBotones() {

@@ -26,7 +26,7 @@ public class PanelDetalleBarrio extends JPanel {
 	private JFrame marco;
 	private PanelBarrioConsulta barrioConsulta;
 	
-	private Sentencia sentencia = new Sentencia();
+	private Sentencia sentencia;
 	
 	private JButton botonVolver;
 	
@@ -45,10 +45,11 @@ public class PanelDetalleBarrio extends JPanel {
 	private JLabel lblDensidadPoblacional;
 	private JLabel labelNumeroDensidad;
 	
-	public PanelDetalleBarrio(JFrame marco, PanelBarrioConsulta barrioConsulta,Barrio barrioSeleccionado) {
+	public PanelDetalleBarrio(JFrame marco, PanelBarrioConsulta barrioConsulta,Barrio barrioSeleccionado,Sentencia sentencia) {
 		this.marco = marco;
 		this.barrioConsulta = barrioConsulta;
 		this.barrioSeleccionado = barrioSeleccionado;
+		this.sentencia = sentencia;
 		asociarPersonitas();
 		
 		setBounds(0,0,750,500);

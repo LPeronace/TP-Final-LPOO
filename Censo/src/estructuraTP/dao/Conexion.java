@@ -21,6 +21,10 @@ public class Conexion {
 								//aca el puerto//aca va la bdd
 	String path = "jdbc:mysql://localhost:3306/Censo";
 
+	
+	//TODO comprobar si se abrio y no cerrarla si no se abrio
+	
+	//TODO que el programa siga si no se puede conectar
 	public Connection conectar() {
 		Connection c = null;
 		
@@ -40,5 +44,4 @@ public class Conexion {
 		return c;
 	}
 
-		
 }

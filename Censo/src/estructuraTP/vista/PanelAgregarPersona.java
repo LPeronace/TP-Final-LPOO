@@ -39,7 +39,7 @@ public class PanelAgregarPersona extends JPanel {
 	private JLabel labelSituacionLaboral;
 	private JLabel labelAsociarBarrio;
 	
-	private Sentencia sentencia = new Sentencia();
+	private Sentencia sentencia;
 	
 	private JButton botonVolver;
 	private JButton botonCargar;
@@ -61,10 +61,11 @@ public class PanelAgregarPersona extends JPanel {
 	private boolean modoModificar;
 	private String dniAntiguo;
 	
-	public PanelAgregarPersona(JFrame marco, PanelMenuPersona menuPersona, String dniAntiguo) {
+	public PanelAgregarPersona(JFrame marco, PanelMenuPersona menuPersona, String dniAntiguo,Sentencia sentencia) {
 		this.marco = marco;
 		this.menuPersona = menuPersona;
 		this.dniAntiguo = dniAntiguo;
+		this.sentencia = sentencia;
 		modoModificar = true;
 		
 		setBounds(0,0,750,500);
